@@ -1,9 +1,27 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary-color: #2b74e7; /* Default primary color */
+  --primary-light-color-10: #9bd4ee;
+  --primary-light-color-20: #25a7e3;
+  --primary-dark-color-10: #1a4a99;
+  --primary-dark-color-20: #102a55;
+
+  --offwhite-color: #fbfeff;
+  --white-color: #ffffff;
+
+  --gray-color-10: #f8f8f8;
+  --gray-color-20: #eef0f1;
+  --gray-color-30: #cfcfcf;
+  --gray-color-40: #e6e9ef;
+  --gray-color-50: #868788;
+
+  --dark-color: #191d1f;
+
+  font-family: Montserrat, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -15,6 +33,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-width: 100%;
+  background-color: #fff;
 }
 
 a {
