@@ -1,22 +1,18 @@
-// import { useState } from 'react'
-import currentseaLogo from './assets/currentsea-logo.png'
-import './App.css'
-
-function App() {
-  // const [count, setCount] = useState(0)
-
+import React from 'react';
+import { ThemeProvider } from '@emotion/react';
+import DashboardLayout from './layout/DashboardLayout';
+import { useTheme } from '@/hooks/useTheme';
+import { Home } from '@/views/Home/Home';
+  
+  const App: React.FC = () => {
+  const { theme } = useTheme();
   return (
-    <>
-      <div>
-        <a href="https://currentsea.com/" target="_blank" rel="noreferrer">
-          <img src={currentseaLogo} className="logo" alt="CurrentSea logo" />
-        </a>
-      </div>
-      <p className="read-the-docs">
-        Placeholder
-      </p>
-    </>
-  )
-}
+    <ThemeProvider theme={theme.value}>
+      <DashboardLayout theme={theme.value}>
+        <Home />
+        </DashboardLayout>
+    </ThemeProvider>
+  );
+};
 
-export default App
+export default App;

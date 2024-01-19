@@ -38,6 +38,7 @@
 #root {
   min-width: 100%;
   background-color: #fff;
+  color: #595858;
 }
 
 a {
@@ -58,8 +59,9 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 1.875rem;
+  line-height: 2.5rem;
+  font-weight: 600;
 }
 
 button {
