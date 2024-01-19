@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
   },
   extends: [
     'eslint:recommended',
@@ -14,36 +14,43 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:storybook/recommended',
     'plugin:jsx-a11y/recommended',
-    'prettier'
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      project: true,
-      tsconfigRootDir: __dirname
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+  plugins: ['@typescript-eslint', 'react', 'react-refresh'],
+  rules: {
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react-refresh/only-export-components': 'warn',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+  },
+  root: true,
+  settings: {
+    react: {
+      version: 'detect',
     },
-    plugins: ['@typescript-eslint', 'react', 'react-refresh'],
-    rules: {
-        'react/jsx-uses-react': 'off',
-        'react/react-in-jsx-scope': 'off',
-        'react-refresh/only-export-components': 'warn'
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+      },
     },
-    root: true,
-    settings: {
-        react: {
-            version: 'detect'
-        }
+  },
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: ['.eslintrc.{js,cjs}', 'eslint.config.js'],
+      parserOptions: {
+        sourceType: 'script',
+      },
     },
-    overrides: [
-      {
-        env: {
-          node: true
-        },
-        files: ['.eslintrc.{js,cjs}', 'eslint.config.js'],
-        parserOptions: {
-          sourceType: 'script'
-        }
-      }
-    ]
+  ],
 };

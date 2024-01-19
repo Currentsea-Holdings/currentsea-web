@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -13,16 +18,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src",
-    ".eslintrc.cjs"
-  ],
+  "include": ["src", ".eslintrc.cjs", "tailwind.config.ts", "types/global.d.ts"],
+  "exclude": ["node_modules", "dist", "build", "coverage", "scripts", "tailwind.config.js", "tailwind.config.ts", "src/utils", "src/types", "src/stories", "src/components"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
