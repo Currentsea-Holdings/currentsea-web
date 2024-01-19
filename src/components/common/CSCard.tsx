@@ -7,11 +7,13 @@ export type CardProps<T extends ElementType = 'div'> = {
   title?: string;
   color?: PrimaryColors;
   padding?: string;
+  imgAlt?: string;
+  imgSrc?: string;
   disabled?: boolean;
   children?: ReactNode;
 } & ComponentPropsWithoutRef<T>;
 
-const Card = ({ title, padding = 'p-6', children, ...props }: CardProps) => {
+const Card = ({ title, padding = 'p-4', children, ...props }: CardProps) => {
   const componentTheme: CustomFlowbiteTheme['card'] = {
     root: {
       children: `flex h-full flex-col gap-4 ${padding}`,
@@ -34,12 +36,13 @@ const Card = ({ title, padding = 'p-6', children, ...props }: CardProps) => {
   );
 };
 
-export const CSCard = (props: CardProps) => {
-  const { children, color, ...otherProps } = props;
+export const CSCard = ({ children, color, imgAlt, imgSrc, ...props }: CardProps) => {
   return (
     <Card
       color={color as PrimaryColors}
-      {...otherProps}
+      imgAlt={imgAlt}
+      imgSrc={imgSrc}
+      {...props}
     >
       {children}
     </Card>
