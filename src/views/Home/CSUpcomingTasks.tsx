@@ -7,8 +7,6 @@ import { CSCard } from '@/components/common';
 import { CSUpcomingTasksCard } from '@/views/Home/CSUpcomingTasksCard';
 
 export const CSUpcomingTasks: FC<{ title: string }> = ({ title }: { title: string }) => {
-  const theme = getTheme();
-
   const carouselButtonStyles = css`
     .carouselLeftButton button,
     .carouselRightButton button {
@@ -27,6 +25,8 @@ export const CSUpcomingTasks: FC<{ title: string }> = ({ title }: { title: strin
   const StyledCarouselContainer = styled.div`
     ${carouselButtonStyles}
   `;
+
+  const theme = getTheme();
 
   const componentTheme: CustomFlowbiteTheme['carousel'] = {
     root: {
@@ -47,7 +47,7 @@ export const CSUpcomingTasks: FC<{ title: string }> = ({ title }: { title: strin
       title={title}
       className="col-span-2"
     >
-      <div className="-mx-6 min-h-[20px] max-h-[304px] sm:h-64 xl:h-80 2xl:h-96">
+      <div className="-mx-4 min-h-[20px] max-h-[304px] sm:h-64 xl:h-80 2xl:h-96">
         <StyledCarouselContainer className="h-full">
           <Carousel
             theme={componentTheme}
@@ -75,6 +75,14 @@ export const CSUpcomingTasks: FC<{ title: string }> = ({ title }: { title: strin
           </Carousel>
         </StyledCarouselContainer>
       </div>
+      <span className="ml-auto mr-2 CurrentseaButton">
+        <a
+          href="/"
+          className="flex p-2 text-xs font-semibold leading-none Text text-zinc-900"
+        >
+          See all...
+        </a>
+      </span>
     </CSCard>
   );
 };

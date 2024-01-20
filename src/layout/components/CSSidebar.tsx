@@ -1,14 +1,10 @@
 import { Sidebar } from 'flowbite-react';
-import {
-  HiOutlineHome,
-  HiInbox,
-  HiTable,
-  HiViewBoards,
-} from 'react-icons/hi';
+import { HiOutlineHome, HiInbox } from 'react-icons/hi';
 import { IconType } from 'react-icons/lib';
 import logo from '@/assets/logo-title-black.svg';
 import { useTheme, Global, css } from '@emotion/react';
-import { InboxIcon, CalendarIcon, ClipboardListIcon, AffiliateProgramIcon } from '@/assets/icons';
+import Icons from '@/assets/icons';
+import { getTheme, CustomFlowbiteTheme } from 'flowbite-react';
 
 interface CSSidebarProps {
   // theme: {
@@ -28,17 +24,30 @@ interface MyTheme {
 export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
   const theme = useTheme() as MyTheme; // Type assertion
 
+  const sidebarTheme: CustomFlowbiteTheme['sidebar'] = getTheme().sidebar;
+
+  const componentTheme: CustomFlowbiteTheme['sidebar'] = {
+    ...sidebarTheme,
+    item: {
+      ...sidebarTheme.item,
+      icon: {
+        ...sidebarTheme.item?.icon,
+        base: `${sidebarTheme.item?.icon?.base} text-gray-60`,
+      },
+    },
+  };
+
   // const tw = (strings: TemplateStringsArray, ...values: string[]) => String.raw({ raw: strings }, ...values);
 
   const menuItems = [
     { href: '#', icon: HiOutlineHome, label: 'Home' },
-    { href: '#', icon: HiViewBoards, label: 'Discover' },
+    { href: '#', icon: Icons.CompassIcon, label: 'Discover' },
     { href: '#', icon: HiInbox, label: 'Campaigns' },
-    { href: '#', icon: InboxIcon, label: 'Inbox' },
-    { href: '#', icon: CalendarIcon, label: 'Calendar' },
-    { href: '#', icon: ClipboardListIcon, label: 'Tasks' },
-    { href: '#', icon: AffiliateProgramIcon, label: 'Affiliate Program' },
-    { href: '#', icon: HiTable, label: 'Payments' },
+    { href: '#', icon: Icons.InboxIcon, label: 'Inbox' },
+    { href: '#', icon: Icons.CalendarIcon, label: 'Calendar' },
+    { href: '#', icon: Icons.ClipboardListIcon, label: 'Tasks' },
+    { href: '#', icon: Icons.AffiliateProgramIcon, label: 'Affiliate Program' },
+    { href: '#', icon: Icons.DollarIcon, label: 'Payments' },
   ];
   return (
     <>
@@ -51,11 +60,11 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
         `}
       />
       <Sidebar
-        // aria-label="Sidebar with logo branding example"
+        theme={componentTheme}
+        // aria-label="Sidebar - Main navigation"
         className={`flex items-center my-sidebar-class h-auto ${className}`}
         {...props}
-        >
-        {/* Custom Logo with direct control over the img tag */}
+      >
         <div className="flex items-center mb-5">
           <a
             className="flex items-center mb-5"
@@ -64,7 +73,7 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
             <img
               src={logo}
               alt="Logo"
-              className="h-12 mr-3" // Tailwind class for 50px height applied directly to the image
+              className="h-12 mr-3"
             />
             <span className="self-center text-xl font-semibold whitespace-nowrap align dark:text-white"></span>
           </a>
