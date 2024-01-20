@@ -1,11 +1,9 @@
-import { Carousel, CustomFlowbiteTheme, getTheme } from 'flowbite-react';
+import { CustomFlowbiteTheme, getTheme } from 'flowbite-react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import type { FC } from 'react';
-import Icons from '@/assets/icons';
 import { CSCard } from '@/components/common';
 import { CSActiveCampaignsCard } from '@/views/Home/CSActiveCampaignsCard';
-import { Campaign } from './Campaign';
 
 export const CSActiveCampaigns: FC<{ title: string }> = ({ title }: { title: string }) => {
   const theme = getTheme();
