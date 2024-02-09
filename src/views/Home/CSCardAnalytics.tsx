@@ -1,13 +1,14 @@
-import { ComponentPropsWithoutRef, ElementType, type ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ElementType, type ReactNode, FC } from 'react';
 import { Card as FlowbiteCard } from 'flowbite-react';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
+import type { IconProps } from '@/assets/icons';
 
 type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';
 
 export type CardProps<T extends ElementType = 'div'> = {
   amount: string;
   label: string;
-  icon?: () => JSX.Element;
+  icon?: FC<IconProps>;
   children?: ReactNode;
 } & ComponentPropsWithoutRef<T>;
 
@@ -27,7 +28,7 @@ const Card = ({ amount, label, icon, children, ...props }: CardProps) => {
       >
         {children}
         <div className="flex items-center justify-center w-8 h-8 rounded-lg IconShapes bg-sky-100">
-          {icon && icon()}
+            {icon && icon({})}
         </div>
         <div className="inline-flex flex-col items-start justify-start gap-1 HeadingDescription grow shrink basis-0">
           <div className="self-stretch text-3xl font-bold leading-9 text-gray-900">{amount}</div>

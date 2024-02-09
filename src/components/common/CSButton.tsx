@@ -6,13 +6,14 @@ type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';
 export type ButtonProps<T extends ElementType = 'button'> = {
   color?: PrimaryColors;
   disabled?: boolean;
+  className?: string;
   children: ReactNode;
 } & ComponentPropsWithoutRef<T>;
 
-const Button = ({ color = 'primary', disabled, children, ...props }: ButtonProps) => {
+const Button = ({ color = 'primary', disabled, className, children, ...props }: ButtonProps) => {
   return (
     <FlowbiteButton
-      className={`bg-${color} text-offwhite rounded enabled:hover:bg-${color} hover:opacity-90`}
+    className={`bg-${color} text-offwhite rounded enabled:hover:bg-${color} hover:opacity-90 ${className}`}
       {...props}
       disabled={disabled}
     >
