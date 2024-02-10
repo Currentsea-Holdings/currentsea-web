@@ -53,5 +53,5 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['src/stories/**/*', 'src/**/*.stories.tsx'],
+  ignorePatterns: ['src/stories/**/*', 'src/**/*.stories.tsx', 'vite.config.ts'],
 };
