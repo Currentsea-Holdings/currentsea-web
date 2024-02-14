@@ -6783,6 +6783,7 @@ __metadata:
     match-sorter: "npm:^6.3.1"
     postcss: "npm:^8.4.32"
     prettier: "npm:^3.1.0"
+    prettier-plugin-classnames: "npm:^0.6.0"
     prettier-plugin-tailwindcss: "npm:^0.5.11"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
@@ -12747,6 +12748,19 @@ __metadata:
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
   checksum: b00d617431e7886c520a6f498a2e14c75ec58f6d93ba48c3b639cf241b54232d90daa05d83a9e9b9fef6baa63cb7e1e4602c2372fea5bc169668401eb127d0cd
+  languageName: node
+  linkType: hard
+
+"prettier-plugin-classnames@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "prettier-plugin-classnames@npm:0.6.0"
+  peerDependencies:
+    prettier: ^2 || ^3
+    prettier-plugin-astro: "*"
+  peerDependenciesMeta:
+    prettier-plugin-astro:
+      optional: true
+  checksum: 12bfc3cef62883dfbb9a552b38167c33d4e178876bed7c079f84018b45d4324645651a387425a44448472195d9a690977237b01973b7a0a59506a646a5146120
   languageName: node
   linkType: hard
 
