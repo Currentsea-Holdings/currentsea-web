@@ -316,7 +316,7 @@ const SignUp: FC = function () {
             href="#"
             className="font-medium text-primary-600 hover:underline dark:text-primary-500"
           >
-            <Link to={`/signin`}>Log In</Link>
+            <Link to={`/login`}>Log In</Link>
           </a>
         </p>
       </form>
