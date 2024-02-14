@@ -137,7 +137,7 @@ export const LoginView = function () {
                 className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
                   text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
                   dark:text-white dark:placeholder-gray-400"
-                placeholder="email@gmail.com"
+                placeholder=""
                 required={false}
                 value={email}
                 onChange={(e) => {
@@ -156,7 +156,7 @@ export const LoginView = function () {
                 type="password"
                 {...register('password')}
                 id="password"
-                placeholder="••••••••"
+                placeholder=""
                 className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
                   text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
                   dark:text-white dark:placeholder-gray-400"

@@ -1,6 +1,6 @@
 import { Spinner, CustomFlowbiteTheme, getTheme } from 'flowbite-react';
 
-export type CSSpinnerProps<> = {
+interface CSSpinnerProps {
   className?: string;
   color?: string;
 };
