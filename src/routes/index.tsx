@@ -3,7 +3,7 @@ import { RequireAuth } from '@/routes/RequireAuth';
 import { ThemeProvider } from '@emotion/react';
 import { Outlet } from 'react-router-dom';
 import { Home } from '@/views/Home/Home';
-import SignIn from '@/views/Auth/SignIn';
+import { LoginView } from '@/views/Auth/Login';
 import Signup from '@/views/SignUp';
 import { RootRoute } from '@/routes/RootRoute';
 import { useTheme } from '@/hooks/useTheme';
@@ -22,8 +22,8 @@ export const Routes = () => {
       element: <Signup />,
     },
     {
-      path: '/signin',
-      element: <SignIn />,
+      path: '/login',
+      element: <LoginView />,
     },
     {
       path: '/dashboard/*',

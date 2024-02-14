@@ -13,7 +13,7 @@ export const RequireAuth: React.FC<Props> = ({ children }) => {
   if (!isLoggedIn) {
     return (
       <Navigate
-        to="/signin"
+        to="/login"
         state={{ from: location }}
         replace
       />
