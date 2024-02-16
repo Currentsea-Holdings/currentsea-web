@@ -1,62 +1,17 @@
-import { useState, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
 import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
-// import { login } from '@/api/authApi';
 
 interface LoginFormFields {
   email: string;
   password: string;
 }
-
-const useLogin = () => {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const { isLoggedIn, logIn } = useAuthStore();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/dashboard/home');
-    }
-  }, [isLoggedIn, navigate]);
-
-  const login = async (email: string, password: string) => {
-    setIsSubmitting(true);
-    try {
-      const response = await fakeLogin(email, password);
-      if (response.status === 200) {
-        logIn();
-      }
-    } catch (error) {
-      console.error('Login Error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return { login, isSubmitting };
-};
-
-const fakeLogin = (
-  email: string,
-  password: string,
-): Promise<{ status: number; data: { email: string } }> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        status: 200,
-        data: {
-          email: email,
-        },
-      });
-    }, 1000);
-  });
-};
 
 export const LoginView = function () {
   const {
@@ -67,11 +22,16 @@ export const LoginView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { login, isSubmitting } = useLogin();
+
+  const { login } = useAuthStore();
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const onSubmit = async (data: LoginFormFields) => {
     const { email, password } = data;
+    setIsSubmitting(true);
     await login(email, password);
+    setIsSubmitting(false);
   };
 
   return (
