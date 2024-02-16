@@ -1,9 +1,9 @@
 import { ComponentPropsWithoutRef, ElementType, type ReactNode } from 'react';
-import { Card as FlowbiteCard, CustomFlowbiteTheme } from 'flowbite-react';
+import { Card, CustomFlowbiteTheme } from 'flowbite-react';
 
 type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';
 
-export type CardProps<T extends ElementType = 'div'> = {
+export type CSCardProps<T extends ElementType = 'div'> = {
   title?: string;
   color?: PrimaryColors;
   padding?: string;
@@ -13,7 +13,20 @@ export type CardProps<T extends ElementType = 'div'> = {
   children?: ReactNode;
 } & ComponentPropsWithoutRef<T>;
 
-const Card = ({ title, padding = 'p-4', children, ...props }: CardProps) => {
+export const CSCard = ({ children, color, imgAlt, imgSrc, ...props }: CSCardProps) => {
+  return (
+    <FlowbiteCard
+      color={color as PrimaryColors}
+      imgAlt={imgAlt}
+      imgSrc={imgSrc}
+      {...props}
+    >
+      {children}
+    </FlowbiteCard>
+  );
+};
+
+const FlowbiteCard = ({ title, padding = 'p-4', children, ...props }: CSCardProps) => {
   const componentTheme: CustomFlowbiteTheme['card'] = {
     root: {
       children: `flex h-full flex-col gap-4 ${padding}`,
@@ -21,9 +34,9 @@ const Card = ({ title, padding = 'p-4', children, ...props }: CardProps) => {
   };
 
   return (
-    <FlowbiteCard
+    <Card
       theme={componentTheme}
-      className="rounded-lg bg-white h-full"
+      className="h-full rounded-lg bg-white"
       {...props}
     >
       {title ? (
@@ -31,19 +44,6 @@ const Card = ({ title, padding = 'p-4', children, ...props }: CardProps) => {
       ) : (
         ''
       )}
-      {children}
-    </FlowbiteCard>
-  );
-};
-
-export const CSCard = ({ children, color, imgAlt, imgSrc, ...props }: CardProps) => {
-  return (
-    <Card
-      color={color as PrimaryColors}
-      imgAlt={imgAlt}
-      imgSrc={imgSrc}
-      {...props}
-    >
       {children}
     </Card>
   );

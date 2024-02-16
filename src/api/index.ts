@@ -1,10 +1,13 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 const axiosParams = {
   baseURL: 'http://localhost:3000/',
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 };
+
+export const mock = new MockAdapter(axios);
 
 const axiosInstance = axios.create(axiosParams);
 
