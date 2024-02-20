@@ -12,13 +12,12 @@ interface LoginResponse {
   };
 }
 
-export const login = async (payload: LoginPayload): Promise<LoginResponse | undefined> => {
+export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   try {
-    const data: LoginResponse = await authApi.login(payload) as LoginResponse;
-    return data;
-  } catch (error) {
-    console.error('Login Error:', error);
-    throw error;
+    return await authApi.login(payload);
+  } catch (err) {
+    console.error('Login Error:', err);
+    throw err;
   }
 };
 

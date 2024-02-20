@@ -8,14 +8,14 @@ interface User {
   email: string;
 }
 
-interface AuthState {
+interface AuthStore {
   isLoggedIn: boolean;
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logOut: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
+export const useAuthStore = create<AuthStore>()(
   devtools(
     persist(
       (set) => ({
@@ -24,10 +24,10 @@ export const useAuthStore = create<AuthState>()(
         login: async (email, password) => {
           let userData: User | undefined;
           try {
-            const response = await login({ email, password });
-            userData = response?.user;
-          } catch (error) {
-            console.error('Login Error:', error);
+            const res = await login({ email, password });
+            userData = res.user;
+          } catch (err) {
+            console.error('Login Error:', err);
           } finally {
             set({ isLoggedIn: true, user: userData });
           }

@@ -1,13 +1,6 @@
 import { api, mock } from '@/api';
-import { useAuthStore } from '@/stores/authStore';
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-
-const isDevelopmentMode = process.env.NODE_ENV === 'development';
-
-interface LoginPayload {
-  email?: string;
-  password?: string;
-}
+import { isDevelopmentMode } from '@/utils';
 
 const mockLogin = () => {
   console.warn('Using mock data');
@@ -35,6 +28,11 @@ const mockLogin = () => {
   });
 };
 
+interface LoginPayload {
+  email?: string;
+  password?: string;
+}
+
 interface LoginResponse {
   user: {
     id: string;
@@ -46,43 +44,33 @@ interface LoginResponse {
 export const authApi = {
   login: async (payload: LoginPayload) => {
     try {
-      if (isDevelopmentMode) mockLogin();
-      const response = await api.post('auth/login', payload, { withCredentials: true });
-      return response.data;
-    } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        throw new Error(`Login failed: ${error.response.status} ${error.response.data}`);
-      } else {
-        throw new Error('An unexpected error occurred during login.');
-      }
+      if (isDevelopmentMode()) mockLogin();
+      const res = await api.post('auth/login', payload, { withCredentials: true });
+      return res.data as LoginResponse;
+    } catch (err) {
+      throw new Error(
+        err instanceof AxiosError && err.response
+          ? `Login failed: ${err.response.status} ${err.response.data}`
+          : 'An unexpected error occurred during login.',
+      );
     }
   },
-  
+
   profile: async () => {
     try {
-      const response = await api.get('auth/profile', { withCredentials: true });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
+      const res = await api.get('auth/profile', { withCredentials: true });
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
     }
   },
-};
-
-export const postLogin = async (payload: LoginPayload): Promise<AxiosResponse> => {
-    console.log('Logging in');
-    if (isDevelopmentMode) mockLogin();
-
-    return await api.post('auth/login', payload, { withCredentials: true });
 };
 
 export const profile = async () => {
   try {
-    const response = await api.get('auth/profile', { withCredentials: true });
-    console.log(response.data);
-  } catch (error) {
-    console.error(error);
+    const res = await api.get('auth/profile', { withCredentials: true });
+    console.log(res.data);
+  } catch (err) {
+    console.error(err);
   }
 };
-
-// email: 'john@doe.coms',
-// password: 'Password1@',

@@ -25,7 +25,12 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", ".eslintrc.cjs", "tailwind.config.ts", "types/global.d.ts"],
+  "include": [
+    "src",
+    ".eslintrc.cjs",
+    "tailwind.config.ts",
+    "types/global.d.ts",
+  ],
   "exclude": [
     "node_modules",
     "dist",
@@ -34,7 +39,6 @@
     "scripts",
     "tailwind.config.js",
     "tailwind.config.ts",
-    "src/utils",
     "src/types",
     "src/stories",
     "src/components"
