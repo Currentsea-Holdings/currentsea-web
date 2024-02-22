@@ -9,27 +9,23 @@ interface User {
 }
 
 interface AuthStore {
-  isLoggedIn: boolean;
+  isLoggedIn: () => boolean;
   user: User | null;
   setUser: (user: User) => void;
   logOut: () => void;
-  isSignedIn: () => boolean;
 }
 
 export const useAuthStore = create<AuthStore>()(
   devtools(
     persist(
       (set, get) => ({
-        isLoggedIn: false,
+        isLoggedIn: () => !!get().user,
         user: null,
         setUser: (user) => {
-          set({ user, isLoggedIn: true });
+          set({ user });
         },
         logOut: () => {
-          set({ isLoggedIn: false });
-        },
-        isSignedIn: () => {
-          return !!get().user;
+          set({ user: null });
         },
       }),
       {
