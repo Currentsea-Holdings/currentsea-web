@@ -11,29 +11,25 @@ interface User {
 interface AuthStore {
   isLoggedIn: boolean;
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
+  setUser: (user: User) => void;
   logOut: () => void;
+  isSignedIn: () => boolean;
 }
 
 export const useAuthStore = create<AuthStore>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         isLoggedIn: false,
         user: null,
-        login: async (email, password) => {
-          let userData: User | undefined;
-          try {
-            const res = await login({ email, password });
-            userData = res.user;
-          } catch (err) {
-            console.error('Login Error:', err);
-          } finally {
-            set({ isLoggedIn: true, user: userData });
-          }
+        setUser: (user) => {
+          set({ user, isLoggedIn: true });
         },
         logOut: () => {
           set({ isLoggedIn: false });
+        },
+        isSignedIn: () => {
+          return !!get().user;
         },
       }),
       {

@@ -2,7 +2,7 @@ import { api, mock } from '@/api';
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { isDevelopmentMode } from '@/utils';
 
-const mockLogin = () => {
+const mockLogin = ({ email }: LoginPayload) => {
   console.warn('Using mock data');
   mock.onPost('auth/login').reply(({ data }: AxiosRequestConfig<string>) => {
     const { email, password } = JSON.parse(data as string);
@@ -11,7 +11,7 @@ const mockLogin = () => {
       user: {
         id: 1,
         name: 'John Doe',
-        email: 'john@doe.com',
+        email: email,
         roles: ['creator'],
       },
     };
@@ -28,23 +28,23 @@ const mockLogin = () => {
   });
 };
 
-interface LoginPayload {
+export interface LoginPayload {
   email?: string;
   password?: string;
 }
 
-interface LoginResponse {
+export interface LoginResponse {
   user: {
     id: string;
     email: string;
   };
-  token: string;
+  // token: string;
 }
 
 export const authApi = {
   login: async (payload: LoginPayload) => {
     try {
-      if (isDevelopmentMode()) mockLogin();
+      if (isDevelopmentMode()) mockLogin(payload);
       const res = await api.post('auth/login', payload, { withCredentials: true });
       return res.data as LoginResponse;
     } catch (err) {

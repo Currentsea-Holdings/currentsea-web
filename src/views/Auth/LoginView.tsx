@@ -1,19 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
 import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
-
+import { useLogin } from '@/hooks/useLogin';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/stores/authStore';
 interface LoginFormFields {
   email: string;
   password: string;
 }
 
-export const LoginView = function () {
+export const LoginView = () => {
   const {
     register,
     handleSubmit,
@@ -23,15 +24,25 @@ export const LoginView = function () {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const { login } = useAuthStore();
+  const { loginUser, isPending } = useLogin();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  useEffect(() => {
+    setIsSubmitting(isPending);
+  }, [isPending]);
 
-  const onSubmit = async (data: LoginFormFields) => {
+  const isSignedIn = useAuthStore((state) => state.isSignedIn());
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate('/dashboard');
+    }
+  }, [isSignedIn, navigate]);
+
+  const onSubmit = (data: LoginFormFields) => {
     const { email, password } = data;
-    setIsSubmitting(true);
-    await login(email, password);
-    setIsSubmitting(false);
+    loginUser({ email, password });
   };
 
   return (
@@ -54,21 +65,11 @@ export const LoginView = function () {
           <h3 className="!mt-1.5 font-semibold text-gray-50">Opportunities await...</h3>
 
           <div className="items-center space-x-0 space-y-3 sm:flex sm:space-x-4 sm:space-y-0">
-            <CSButton
-              className="inline-flex w-full items-center justify-center rounded-lg border border-dark bg-white px-0 py-0
-                text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none
-                focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400
-                dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-            >
+            <CSButton className="inline-flex w-full items-center justify-center rounded-lg border border-dark bg-white px-0 py-0 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
               <Icons.FacebookIcon className="mr-2" />
               Log In with Facebook
             </CSButton>
-            <CSButton
-              className="inline-flex w-full items-center justify-center rounded-lg border border-dark bg-white px-0 py-0
-                text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:z-10
-                focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800
-                dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-            >
+            <CSButton className="inline-flex w-full items-center justify-center rounded-lg border border-dark bg-white px-0 py-0 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
               <Icons.InstagramIcon className="mr-2" />
               Log In with Instagram
             </CSButton>
@@ -80,7 +81,6 @@ export const LoginView = function () {
           </div>
           <form
             className="max-w-full md:space-y-6"
-            // action="#"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div>
