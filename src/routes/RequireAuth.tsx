@@ -7,10 +7,10 @@ interface Props {
 }
 
 export const RequireAuth: React.FC<Props> = ({ children }) => {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn as boolean);
+  const { isLoggedIn } = useAuthStore();
   const location = useLocation();
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn()) {
     return (
       <Navigate
         to="/login"

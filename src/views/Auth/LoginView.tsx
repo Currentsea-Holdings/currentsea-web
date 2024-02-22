@@ -31,14 +31,14 @@ export const LoginView = () => {
     setIsSubmitting(isPending);
   }, [isPending]);
 
-  const isSignedIn = useAuthStore((state) => state.isSignedIn());
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn());
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isSignedIn) {
+    if (isLoggedIn) {
       navigate('/dashboard');
     }
-  }, [isSignedIn, navigate]);
+  }, [isLoggedIn, navigate]);
 
   const onSubmit = (data: LoginFormFields) => {
     const { email, password } = data;

@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 export const RootRoute = () => {
   const { isLoggedIn } = useAuthStore();
 
-  if (isLoggedIn) {
+  if (isLoggedIn()) {
     return <Navigate to="/dashboard/home" />;
   } else {
     return <Navigate to="/signup" />;
