@@ -1,11 +1,12 @@
 import { authApi } from '@/api/authApi';
+import { AxiosResponse } from 'axios';
 
-interface LoginPayload {
+export interface LoginPayload {
   email?: string;
   password?: string;
 }
 
-interface LoginResponse {
+export interface LoginResponse {
   user: {
     id: string;
     email: string;
@@ -14,7 +15,7 @@ interface LoginResponse {
 
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   try {
-    return await authApi.login(payload);
+    return await authApi.login(payload) as LoginResponse;
   } catch (err) {
     console.error('Login Error:', err);
     throw err;
