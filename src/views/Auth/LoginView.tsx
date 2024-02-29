@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
 import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useLogin } from '@/hooks/useLogin';
-import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 interface LoginFormFields {
   email: string;
@@ -31,11 +30,11 @@ export const LoginView = () => {
     setIsSubmitting(isPending);
   }, [isPending]);
 
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn());
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (typeof isLoggedIn === "boolean" && isLoggedIn === true) {
       navigate('/dashboard');
     }
   }, [isLoggedIn, navigate]);
