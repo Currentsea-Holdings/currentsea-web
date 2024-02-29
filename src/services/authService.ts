@@ -22,4 +22,13 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   }
 };
 
+export const register = async (payload: LoginPayload): Promise<LoginResponse> => {
+  try {
+    return await authApi.register(payload) as LoginResponse;
+  } catch (err) {
+    console.error('Registration Error:', err);
+    throw err;
+  }
+};
+
 export const fetchProfile = async () => {};

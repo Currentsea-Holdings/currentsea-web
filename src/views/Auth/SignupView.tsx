@@ -1,6 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import type { FormEvent } from 'react';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
@@ -8,7 +7,8 @@ import { CSButton } from '@/components/common';
 import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
-
+import { useRegister } from '@/hooks/useRegister';
+import { useAuthStore } from '@/stores/authStore';
 interface SignUpFormFields {
   email: string;
   password: string;
@@ -24,9 +24,26 @@ export const SignupView = function () {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const onSubmit = async (data: SignUpFormFields) => {
-    // const { email, password } = data;
-    // await login(email, password);
+  const { registerUser, isPending } = useRegister();
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  useEffect(() => {
+    setIsSubmitting(isPending);
+  }, [isPending]);
+
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (typeof isLoggedIn === "boolean" && isLoggedIn === true) {
+      navigate('/dashboard');
+    }
+  }, [isLoggedIn, navigate]);
+
+
+  const onSubmit = (data: SignUpFormFields) => {
+    const { email, password } = data;
+    registerUser({ email, password });
   };
 
   return (
@@ -65,8 +82,7 @@ export const SignupView = function () {
           </div>
           <form
             className="max-w-full md:space-y-6"
-            // action="#"
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div>
               <label
@@ -108,7 +124,7 @@ export const SignupView = function () {
                 }}
               />
               <a
-                href="#"
+                href="/"
                 className="mt-2 inline-block text-xs font-normal"
               >
                 Forgot password?
@@ -117,6 +133,7 @@ export const SignupView = function () {
             <CSButton
               type="submit"
               disabled={!email || !password}
+              isProcessing={isSubmitting}
               className="inline-flex w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
             >
               Sign Up
