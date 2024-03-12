@@ -40,10 +40,16 @@ export const SignupView = function () {
     }
   }, [isLoggedIn, navigate]);
 
-
   const onSubmit = (data: SignUpFormFields) => {
     const { email, password } = data;
-    registerUser({ email, password });
+    registerUser({ email, password }, {
+      onSuccess: (data) => {
+        console.log('DATA:', data);
+        console.log('Registration successful, verification email sent.');
+        navigate('/dashboard');
+        console.log('User state updated.');
+      }
+    });
   };
 
   return (

@@ -38,7 +38,9 @@ export interface LoginResponse {
   user: {
     id: string;
     email: string;
+    emailVerified: boolean;
   };
+  message: string;
   // token: string;
 }
 
@@ -46,9 +48,8 @@ export const authApi = {
   login: async (payload: LoginPayload) => {
     try {
       // if (isDevelopmentMode()) mockLogin(payload);
-      console.log('payload', payload);
-      const res: AxiosResponse = await api.post(API_ENDPOINTS.LOGIN, payload, { withCredentials: true });
-      return res.data as LoginResponse;
+      const res: LoginResponse = await api.post(API_ENDPOINTS.LOGIN, payload, { withCredentials: true });
+      return res;
     } catch (err) {
       throw new Error(
         err instanceof AxiosError && err.response

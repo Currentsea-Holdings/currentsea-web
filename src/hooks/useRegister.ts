@@ -1,19 +1,17 @@
 import { useMutation } from '@tanstack/react-query';
-import { register, LoginPayload, LoginResponse } from '@/services/authService';
-import { useAuthStore } from '@/stores/authStore';
+import { register, RegisterPayload, RegisterResponse } from '@/services/authService';
+import { type User } from '@/stores/authStore';
 
 export const useRegister = () => {
   const { mutate, isSuccess, isPending, data, isError, error } = useMutation<
-    LoginResponse,
+    RegisterResponse,
     Error,
-    LoginPayload
+    RegisterPayload,
+    User
   >({
     mutationFn: register,
     onSuccess: (data) => {
       console.log('Successful registration: ', data);
-      // const { setUser } = useAuthStore.getState();
-      // setUser(data.user);
-      return data;
     },
     onError: (error) => {
       console.log('error');

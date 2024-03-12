@@ -3,7 +3,7 @@ import { devtools, persist } from 'zustand/middleware';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { login } from '@/services/authService';
 
-interface User {
+export interface User {
   id: string;
   email: string;
 }

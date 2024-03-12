@@ -31,6 +31,7 @@ export const LoginView = () => {
   }, [isPending]);
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +42,14 @@ export const LoginView = () => {
 
   const onSubmit = (data: LoginFormFields) => {
     const { email, password } = data;
-    loginUser({ email, password });
+    loginUser({ email, password }, {
+      onSuccess: (data) => {
+        console.log('Login successful.');
+        setUser(data.user);
+        navigate('/dashboard');
+        console.log('User state updated.');
+      }
+    });
   };
 
   return (

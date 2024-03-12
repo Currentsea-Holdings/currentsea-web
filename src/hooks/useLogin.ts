@@ -1,19 +1,17 @@
 import { useMutation } from '@tanstack/react-query';
 import { login, LoginPayload, LoginResponse } from '@/services/authService';
-import { useAuthStore } from '@/stores/authStore';
+import { type User } from '@/stores/authStore';
 
 export const useLogin = () => {
   const { mutate, isSuccess, isPending, data, isError, error } = useMutation<
     LoginResponse,
     Error,
-    LoginPayload
+    LoginPayload,
+    User
   >({
     mutationFn: login,
     onSuccess: (data) => {
       console.log('Successful login: ', data);
-      const { setUser } = useAuthStore.getState();
-      setUser(data.user);
-      return data;
     },
     onError: (error) => {
       console.log('error');
