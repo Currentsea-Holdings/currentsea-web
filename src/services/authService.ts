@@ -1,5 +1,4 @@
 import { authApi } from '@/api/authApi';
-import { AxiosResponse } from 'axios';
 
 export interface LoginPayload {
   email?: string;
@@ -24,7 +23,16 @@ export interface RegisterResponse {
   user: {
     id: string;
     email: string;
+    emailVerified: boolean;
   };
+  message: string;
+}
+
+export interface ConfirmEmailPayload {
+  emailVerificationCode: string;
+}
+
+export interface ConfirmEmailResponse {
   message: string;
 }
 
@@ -42,6 +50,15 @@ export const register = async (payload: LoginPayload): Promise<RegisterResponse>
     return await authApi.register(payload);
   } catch (err) {
     console.error('Registration Error:', err);
+    throw err;
+  }
+};
+
+export const confirmEmail = async (payload: ConfirmEmailPayload, params: { email?: string }): Promise<ConfirmEmailResponse | undefined> => {
+  try {
+    return await authApi.confirmEmail(payload, params);
+  } catch (err) {
+    console.error('Email Confirmation Error:', err);
     throw err;
   }
 };
