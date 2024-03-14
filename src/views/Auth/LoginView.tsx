@@ -44,8 +44,10 @@ export const LoginView = () => {
     loginUser({ email, password }, {
       onSuccess: (data) => {
         console.log('Login successful.');
-        setUser(data.user);
-        navigate('/dashboard');
+        if (data.user.emailVerified) {
+          setUser(data.user);
+          navigate('/dashboard');
+        }
       }
     });
   };
