@@ -3,9 +3,10 @@ import { devtools, persist } from 'zustand/middleware';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { login } from '@/services/authService';
 
-interface User {
+export interface User {
   id: string;
   email: string;
+  emailVerified: boolean;
 }
 
 interface AuthStore {
@@ -13,6 +14,7 @@ interface AuthStore {
   user: User | null;
   setUser: (user: User) => void;
   logOut: () => void;
+  confirmUserEmail: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -26,6 +28,14 @@ export const useAuthStore = create<AuthStore>()(
         },
         logOut: () => {
           set({ user: null });
+        },
+        confirmUserEmail: () => {
+          const currentUser = get().user;
+          if (currentUser) {
+            set({
+              user: { ...currentUser, emailVerified: true },
+            });
+          }
         },
       }),
       {
