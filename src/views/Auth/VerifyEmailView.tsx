@@ -21,8 +21,6 @@ type VerificationCodeFields = {
 
 export const VerifyEmailView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
 
   const { registerUser, isPending } = useRegister();
 
@@ -31,7 +29,8 @@ export const VerifyEmailView = function () {
     setIsSubmitting(isPending);
   }, [isPending]);
 
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user = useAuthStore((state) => state.user);
+  const isEmailVerified = user?.emailVerified;
 
   const navigate = useNavigate();
 
@@ -55,7 +54,7 @@ export const VerifyEmailView = function () {
               alt="logo"
             />
           </a>
-          <Verify />
+          {isEmailVerified ? <Verified /> : <Verify />}
         </div>
       </AuthSplitLayout>
     </>
@@ -157,9 +156,8 @@ const Verify = function () {
     if (result) {
       console.log('Email verified:', result);
       confirmUserEmail();
-
+      // navigate('/dashboard');
     }
-    // navigate('/dashboard');
   };
 
   const inputs = [1, 2, 3, 4, 5, 6];
