@@ -14,14 +14,7 @@ interface LoginFormFields {
 }
 
 export const LoginView = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormFields>();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
 
   const { loginUser, isPending } = useLogin();
 
@@ -30,18 +23,33 @@ export const LoginView = () => {
     setIsSubmitting(isPending);
   }, [isPending]);
 
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
+  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  useEffect(() => {
-    if (typeof isLoggedIn === "boolean" && isLoggedIn === true) {
-      navigate('/dashboard');
-    }
-  }, [isLoggedIn, navigate]);
+  // useEffect(() => {
+  //   if (typeof isLoggedIn === "boolean" && isLoggedIn === true) {
+  //     navigate('/dashboard');
+  //   }
+  // }, [isLoggedIn, navigate]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<LoginFormFields>({ mode: "onChange" });
 
   const onSubmit = (data: LoginFormFields) => {
     const { email, password } = data;
-    loginUser({ email, password });
+    loginUser({ email, password }, {
+      onSuccess: (data) => {
+        console.log('Login successful.');
+        if (data.user.emailVerified) {
+          setUser(data.user);
+          navigate('/dashboard');
+        }
+      }
+    });
   };
 
   return (
@@ -91,17 +99,12 @@ export const LoginView = () => {
               </label>
               <input
                 type="email"
-                {...register('email')}
+                {...register('email', { required: true })}
                 id="email"
                 className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
                   text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
                   dark:text-white dark:placeholder-gray-400"
                 placeholder=""
-                required={false}
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
               />
             </div>
             <div>
@@ -113,17 +116,12 @@ export const LoginView = () => {
               </label>
               <input
                 type="password"
-                {...register('password')}
+                {...register('password', { required: true })}
                 id="password"
                 placeholder=""
                 className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
                   text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
                   dark:text-white dark:placeholder-gray-400"
-                required={false}
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
               />
               <a
                 href="/"
@@ -134,7 +132,7 @@ export const LoginView = () => {
             </div>
             <CSButton
               type="submit"
-              disabled={!email || !password}
+              disabled={!isValid}
               isProcessing={isSubmitting}
               className="inline-flex w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
             >

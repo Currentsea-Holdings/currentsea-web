@@ -7,6 +7,21 @@ import { LoginView } from '@/views/Auth/LoginView';
 import { SignupView } from '@/views/Auth/SignupView';
 import { RootRoute } from '@/routes/RootRoute';
 import { useTheme } from '@/hooks/useTheme';
+import { ReactNode } from 'react';
+import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
+
+interface ProtectedRouteProps {
+  user: { id: string; email: string } | null;
+  children: ReactNode;
+}
+const ProtectedRoute = ({ user, children }: ProtectedRouteProps) => {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -24,6 +39,10 @@ export const Routes = () => {
     {
       path: '/login',
       element: <LoginView />,
+    },
+    {
+      path: '/verify-email',
+      element: <VerifyEmailView />,
     },
     {
       path: '/dashboard/*',

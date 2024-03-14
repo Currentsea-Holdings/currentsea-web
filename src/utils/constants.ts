@@ -7,4 +7,5 @@ export const API_VERSION = 'alpha';
 export const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
+  CONFIRM_VERIFICATION_CODE: '/auth/confirm-email-verification-code',
 };

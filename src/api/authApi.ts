@@ -38,17 +38,41 @@ export interface LoginResponse {
   user: {
     id: string;
     email: string;
+    emailVerified: boolean;
   };
-  // token: string;
+  message: string;
+}
+
+export interface RegisterPayload {
+  email: string;
+  password: string;
+}
+
+export interface RegisterResponse {
+  user: {
+    id: string;
+    email: string;
+    emailVerified: boolean;
+  };
+  message: string;
+}
+
+export interface ConfirmEmailPayload {
+  emailVerificationCode: string;
+}
+
+export interface ConfirmEmailResponse {
+  message: string;
 }
 
 export const authApi = {
   login: async (payload: LoginPayload) => {
     try {
       // if (isDevelopmentMode()) mockLogin(payload);
-      console.log('payload', payload);
-      const res: AxiosResponse = await api.post(API_ENDPOINTS.LOGIN, payload, { withCredentials: true });
-      return res.data as LoginResponse;
+      const res: LoginResponse = await api.post(API_ENDPOINTS.LOGIN, payload, {
+        withCredentials: true,
+      });
+      return res;
     } catch (err) {
       throw new Error(
         err instanceof AxiosError && err.response
@@ -60,14 +84,32 @@ export const authApi = {
 
   register: async (payload: LoginPayload) => {
     try {
-      console.log('payload', payload);
-      const res: AxiosResponse = await api.post(API_ENDPOINTS.REGISTER, payload, { withCredentials: true });
-      return res.data as LoginResponse;
+      const res: RegisterResponse = await api.post(API_ENDPOINTS.REGISTER, payload, {
+        withCredentials: true,
+      });
+      return res;
     } catch (err) {
       throw new Error(
         err instanceof AxiosError && err.response
           ? `Login failed: ${err.response.status} ${err.response.data}`
           : 'An unexpected error occurred during login.',
+      );
+    }
+  },
+
+  confirmEmail: async (payload: ConfirmEmailPayload, params: { email?: string } = {}) => {
+    try {
+      const res: ConfirmEmailResponse = await api.post(
+        API_ENDPOINTS.CONFIRM_VERIFICATION_CODE,
+        payload,
+        { withCredentials: true, params },
+      );
+      return res;
+    } catch (err) {
+      throw new Error(
+        err instanceof AxiosError && err.response
+          ? `Email verification failed: ${err.response.status} ${err.response.data}`
+          : 'An unexpected error occurred during verification.',
       );
     }
   },
