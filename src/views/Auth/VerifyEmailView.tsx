@@ -68,7 +68,7 @@ const Verify = function () {
     handleSubmit,
     setValue,
     formState: { errors, isValid },
-  } = useForm<VerificationCodeFields>();
+  } = useForm<VerificationCodeFields>({ mode: 'onChange' });
 
   const user = useAuthStore((state) => state.user);
 
