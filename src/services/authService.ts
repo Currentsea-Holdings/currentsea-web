@@ -1,4 +1,5 @@
 import { authApi } from '@/api/authApi';
+import { isAxiosError } from 'axios';
 
 export interface LoginPayload {
   email?: string;
@@ -38,10 +39,17 @@ export interface ConfirmEmailResponse {
 
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   try {
-    return await authApi.login(payload);
+    const userData = await authApi.login(payload);
+    return userData;
   } catch (err) {
-    console.error('Login Error:', err);
-    throw err;
+    if (isAxiosError(err) && err.response) {
+      if (err.response.status === 401) {
+        throw new Error('Incorrect email or password. Please try again.');
+      }
+      throw new Error((err.response.data as { message: string }).message || 'An unknown error occurred');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
   }
 };
 

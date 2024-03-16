@@ -1,7 +1,7 @@
-import { api } from '@/api';
-import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { isDevelopmentMode } from '@/utils';
+import { axiosClient as api } from '@/api/axiosClient';
+import { AxiosError } from 'axios';
 import { API_ENDPOINTS } from '@/utils/constants';
+import { isDevelopmentMode } from '@/utils';
 
 // const mockLogin = ({ email }: LoginPayload) => {
 //   console.warn('Using mock data');
@@ -67,19 +67,11 @@ export interface ConfirmEmailResponse {
 
 export const authApi = {
   login: async (payload: LoginPayload) => {
-    try {
       // if (isDevelopmentMode()) mockLogin(payload);
       const res: LoginResponse = await api.post(API_ENDPOINTS.LOGIN, payload, {
         withCredentials: true,
       });
       return res;
-    } catch (err) {
-      throw new Error(
-        err instanceof AxiosError && err.response
-          ? `Login failed: ${err.response.status} ${err.response.data}`
-          : 'An unexpected error occurred during login.',
-      );
-    }
   },
 
   register: async (payload: LoginPayload) => {

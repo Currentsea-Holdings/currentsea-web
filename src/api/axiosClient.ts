@@ -15,9 +15,9 @@ axiosInstance.interceptors.response.use(
   (err: AxiosError) => {
     console.error(err.message);
     const res = err.response;
-    if (res && res.status == 404) {
-      window.location.href = `${import.meta.env.VITE_BASE_URL}/login`;
-    }
+    // if (res && res.status == 404) {
+    //   window.location.href = `${import.meta.env.VITE_BASE_URL}/login`;
+    // }
     console.error('API Error Status:', res?.status, 'Data:', res?.data);
     return Promise.reject(err);
   },
@@ -49,19 +49,22 @@ const invoke = async <T>({
     if (axios.isCancel(err)) {
       errorMessage = 'Request was cancelled.';
     } else if (err instanceof AxiosError) {
-      if (err.response) {
-        errorMessage = `Request failed with status ${err.response.status}: ${err.response.data}`;
-      } else if (err.request) {
-        errorMessage = 'No response was received for the request.';
-      } else {
-        errorMessage = err.message;
-      }
+      // if (err.response) {
+        // if(err.response?.data) {
+        // }
+        //   errorMessage = `Request failed with status ${err.response.status}: ${err.response.data}`;
+        // } else if (err.request) {
+          //   errorMessage = 'No response was received for the request.';
+          // } else {
+            //   errorMessage = err.message;
+            // }
+            return Promise.reject(err.response?.data);
     }
-    throw new Error(errorMessage);
+    return Promise.reject(err);
   }
 };
 
-interface Api {
+interface HttpService {
   get: <T>(url: string, config?: AxiosRequestConfig) => Promise<T>;
   post: <T>(url: string, body?: object, config?: AxiosRequestConfig) => Promise<T>;
   put: <T>(url: string, body?: object, config?: AxiosRequestConfig) => Promise<T>;
@@ -69,7 +72,7 @@ interface Api {
   delete: <T>(url: string, config?: AxiosRequestConfig) => Promise<T>;
 }
 
-export const api: Api = {
+export const axiosClient: HttpService = {
   get: <T>(url: string, config: AxiosRequestConfig = {}) => {
     const requestConfig: HTTPRequestOptions = {
       url: url,

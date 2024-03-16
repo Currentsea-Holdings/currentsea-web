@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
@@ -8,6 +8,7 @@ import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useLogin } from '@/hooks/useLogin';
 import { useAuthStore } from '@/stores/authStore';
+import { FloatingLabel } from 'flowbite-react';
 interface LoginFormFields {
   email: string;
   password: string;
@@ -16,7 +17,7 @@ interface LoginFormFields {
 export const LoginView = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
 
-  const { loginUser, isPending } = useLogin();
+  const { loginUser, isPending, isError, data } = useLogin();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   useEffect(() => {
@@ -32,25 +33,40 @@ export const LoginView = () => {
   //     navigate('/dashboard');
   //   }
   // }, [isLoggedIn, navigate]);
+  const [error, setError] = useState('');
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginFormFields>({ mode: "onChange" });
+  } = useForm<LoginFormFields>({ mode: 'onChange' });
 
   const onSubmit = (data: LoginFormFields) => {
     const { email, password } = data;
-    loginUser({ email, password }, {
-      onSuccess: (data) => {
-        console.log('Login successful.');
-        if (data.user.emailVerified) {
-          setUser(data.user);
-          navigate('/dashboard');
-        }
-      }
-    });
+    loginUser(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          console.log('Login successful.');
+          console.log(data);
+          if (data.user.emailVerified) {
+            setUser(data.user);
+            console.log('hi');
+            navigate('/dashboard');
+          }
+        },
+        onError: (error) => {
+          setError(error.message);
+          console.log('useLogin Error:', error);
+        },
+      },
+    );
   };
+
+  const errorMessage = () => {
+    if (errors.email?.type === 'required')
+    return 'Email is required.';
+  }
 
   return (
     <>
@@ -97,14 +113,14 @@ export const LoginView = () => {
               >
                 Email
               </label>
-              <input
-                type="email"
-                {...register('email', { required: true })}
+              <FloatingLabel
                 id="email"
-                className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
-                  text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
-                  dark:text-white dark:placeholder-gray-400"
-                placeholder=""
+                type="text"
+                {...register('email', { required: true })}
+                variant="outlined"
+                label=""
+                className="focus:border-2"
+                helperText={isError ? data?.message : ''}
               />
             </div>
             <div>
@@ -114,14 +130,15 @@ export const LoginView = () => {
               >
                 Password
               </label>
-              <input
+              <FloatingLabel
+                id="password"
                 type="password"
                 {...register('password', { required: true })}
-                id="password"
-                placeholder=""
-                className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
-                  text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
-                  dark:text-white dark:placeholder-gray-400"
+                variant="outlined"
+                label=""
+                className="focus:border-2"
+                // helperText="Incorrect email or password. Please try again."
+                helperText={error}
               />
               <a
                 href="/"
