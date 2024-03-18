@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
@@ -26,14 +26,6 @@ export const LoginView = () => {
 
   const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
-  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
-  // useEffect(() => {
-  //   if (typeof isLoggedIn === "boolean" && isLoggedIn === true) {
-  //     navigate('/dashboard');
-  //   }
-  // }, [isLoggedIn, navigate]);
-  const [error, setError] = useState('');
 
   const {
     register,
@@ -51,22 +43,23 @@ export const LoginView = () => {
           console.log(data);
           if (data.user.emailVerified) {
             setUser(data.user);
-            console.log('hi');
             navigate('/dashboard');
+          } else {
+            navigate(`/verify-email?email=${email}`);
           }
         },
         onError: (error) => {
-          setError(error.message);
-          console.log('useLogin Error:', error);
+          setErrorMessage(error.message);
         },
       },
     );
   };
 
-  const errorMessage = () => {
-    if (errors.email?.type === 'required')
-    return 'Email is required.';
-  }
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const floatingLabelColor = () => {
+    if (errorMessage) return 'error';
+  };
 
   return (
     <>
@@ -120,7 +113,8 @@ export const LoginView = () => {
                 variant="outlined"
                 label=""
                 className="focus:border-2"
-                helperText={isError ? data?.message : ''}
+                helperText={errorMessage}
+                color={floatingLabelColor()}
               />
             </div>
             <div>
@@ -137,8 +131,7 @@ export const LoginView = () => {
                 variant="outlined"
                 label=""
                 className="focus:border-2"
-                // helperText="Incorrect email or password. Please try again."
-                helperText={error}
+                color={floatingLabelColor()}
               />
               <a
                 href="/"

@@ -8,6 +8,8 @@ import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useRegister } from '@/hooks/useRegister';
 import { useAuthStore } from '@/stores/authStore';
+import { FloatingLabel } from 'flowbite-react';
+
 interface SignUpFormFields {
   email: string;
   password: string;
@@ -25,32 +27,33 @@ export const SignupView = function () {
 
   const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
-  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
-  // useEffect(() => {
-  //   if (typeof isLoggedIn === "boolean" && isLoggedIn === true) {
-  //     navigate('/dashboard');
-  //   }
-  // }, [isLoggedIn, navigate]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<SignUpFormFields>({ mode: "onChange" });
+  } = useForm<SignUpFormFields>({ mode: 'onChange' });
 
   const onSubmit = (data: SignUpFormFields) => {
     const { email, password } = data;
-    registerUser({ email, password }, {
-      onSuccess: (data) => {
-        console.log('DATA:', data);
-        setUser(data.user);
-        console.log('Registration successful, verification email sent.');
-        
-        // navigate('/verify-email', { state: { email: data.user.email } });
-        navigate(`/verify-email?email=${email}`)
-      }
-    });
+    registerUser(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          setUser(data.user);
+          console.log('Registration successful, verification email sent.');
+          navigate(`/verify-email?email=${email}`);
+        },
+        onError: (error) => {
+          setErrorMessage(error.message);
+        },
+      },
+    );
+  };
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const floatingLabelColor = () => {
+    if (errorMessage) return 'error';
   };
 
   return (
@@ -98,12 +101,15 @@ export const SignupView = function () {
               >
                 Email
               </label>
-              <input
-                type="email"
-                {...register('email', { required: true })}
+              <FloatingLabel
                 id="email"
-                className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                placeholder=""
+                type="text"
+                {...register('email', { required: true })}
+                variant="outlined"
+                label=""
+                className="focus:border-2"
+                helperText={errorMessage}
+                color={floatingLabelColor()}
               />
             </div>
             <div>
@@ -113,12 +119,13 @@ export const SignupView = function () {
               >
                 Password
               </label>
-              <input
+              <FloatingLabel
+                id="password"
                 type="password"
                 {...register('password', { required: true })}
-                id="password"
-                placeholder=""
-                className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                variant="outlined"
+                label=""
+                className="focus:border-2"
               />
               <a
                 href="/"

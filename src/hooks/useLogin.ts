@@ -10,12 +10,6 @@ export const useLogin = () => {
     User
   >({
     mutationFn: login,
-    onSuccess: (data) => {
-      console.log('Successful login: ', data);
-    },
-    onError: (error) => {
-      console.log('error');
-    },
   });
 
   return { loginUser: mutate, isSuccess, isPending, isError, error, data };
