@@ -8,6 +8,7 @@ import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useLogin } from '@/hooks/useLogin';
 import { useAuthStore } from '@/stores/authStore';
+import { FloatingLabel } from 'flowbite-react';
 interface LoginFormFields {
   email: string;
   password: string;
@@ -16,7 +17,7 @@ interface LoginFormFields {
 export const LoginView = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
 
-  const { loginUser, isPending } = useLogin();
+  const { loginUser, isPending, isError, data } = useLogin();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   useEffect(() => {
@@ -25,31 +26,39 @@ export const LoginView = () => {
 
   const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
-  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
-  // useEffect(() => {
-  //   if (typeof isLoggedIn === "boolean" && isLoggedIn === true) {
-  //     navigate('/dashboard');
-  //   }
-  // }, [isLoggedIn, navigate]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginFormFields>({ mode: "onChange" });
+  } = useForm<LoginFormFields>({ mode: 'onChange' });
 
   const onSubmit = (data: LoginFormFields) => {
     const { email, password } = data;
-    loginUser({ email, password }, {
-      onSuccess: (data) => {
-        console.log('Login successful.');
-        if (data.user.emailVerified) {
-          setUser(data.user);
-          navigate('/dashboard');
-        }
-      }
-    });
+    loginUser(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          console.log('Login successful.');
+          console.log(data);
+          if (data.user.emailVerified) {
+            setUser(data.user);
+            navigate('/dashboard');
+          } else {
+            navigate(`/verify-email?email=${email}`);
+          }
+        },
+        onError: (error) => {
+          setErrorMessage(error.message);
+        },
+      },
+    );
+  };
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const floatingLabelColor = () => {
+    if (errorMessage) return 'error';
   };
 
   return (
@@ -97,14 +106,15 @@ export const LoginView = () => {
               >
                 Email
               </label>
-              <input
-                type="email"
-                {...register('email', { required: true })}
+              <FloatingLabel
                 id="email"
-                className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
-                  text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
-                  dark:text-white dark:placeholder-gray-400"
-                placeholder=""
+                type="text"
+                {...register('email', { required: true })}
+                variant="outlined"
+                label=""
+                className="focus:border-2"
+                helperText={errorMessage}
+                color={floatingLabelColor()}
               />
             </div>
             <div>
@@ -114,14 +124,14 @@ export const LoginView = () => {
               >
                 Password
               </label>
-              <input
+              <FloatingLabel
+                id="password"
                 type="password"
                 {...register('password', { required: true })}
-                id="password"
-                placeholder=""
-                className="block w-full rounded-lg border border-gray-300 bg-white p-2.5
-                  text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700
-                  dark:text-white dark:placeholder-gray-400"
+                variant="outlined"
+                label=""
+                className="focus:border-2"
+                color={floatingLabelColor()}
               />
               <a
                 href="/"

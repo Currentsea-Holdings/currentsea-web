@@ -13,11 +13,10 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (res) => res,
   (err: AxiosError) => {
-    console.error(err.message);
     const res = err.response;
-    if (res && res.status == 404) {
-      window.location.href = `${import.meta.env.VITE_BASE_URL}/login`;
-    }
+    // if (res && res.status == 404) {
+    //   window.location.href = `${import.meta.env.VITE_BASE_URL}/login`;
+    // }
     console.error('API Error Status:', res?.status, 'Data:', res?.data);
     return Promise.reject(err);
   },
@@ -36,32 +35,16 @@ const invoke = async <T>({
   payload: data,
   params,
 }: HTTPRequestOptions): Promise<T> => {
-  try {
-    const response: AxiosResponse<T> = await axiosInstance({
-      method,
-      url,
-      data,
-      params,
-    });
-    return response.data;
-  } catch (err) {
-    let errorMessage = 'An unexpected error occurred.';
-    if (axios.isCancel(err)) {
-      errorMessage = 'Request was cancelled.';
-    } else if (err instanceof AxiosError) {
-      if (err.response) {
-        errorMessage = `Request failed with status ${err.response.status}: ${err.response.data}`;
-      } else if (err.request) {
-        errorMessage = 'No response was received for the request.';
-      } else {
-        errorMessage = err.message;
-      }
-    }
-    throw new Error(errorMessage);
-  }
+  const response: AxiosResponse<T> = await axiosInstance({
+    method,
+    url,
+    data,
+    params,
+  });
+  return response.data;
 };
 
-interface Api {
+interface HttpService {
   get: <T>(url: string, config?: AxiosRequestConfig) => Promise<T>;
   post: <T>(url: string, body?: object, config?: AxiosRequestConfig) => Promise<T>;
   put: <T>(url: string, body?: object, config?: AxiosRequestConfig) => Promise<T>;
@@ -69,7 +52,7 @@ interface Api {
   delete: <T>(url: string, config?: AxiosRequestConfig) => Promise<T>;
 }
 
-export const api: Api = {
+export const axiosClient: HttpService = {
   get: <T>(url: string, config: AxiosRequestConfig = {}) => {
     const requestConfig: HTTPRequestOptions = {
       url: url,
