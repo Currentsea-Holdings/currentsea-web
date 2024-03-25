@@ -88,7 +88,7 @@ export const authApi = {
     return await api.post(API_ENDPOINTS.FORGOT_PASSWORD, payload, { withCredentials: true });
   },
 
-  resetPasssword: async (payload: LoginPayload): Promise<RegisterResponse> => {
+  resetPassword: async (payload: { token: string; password: string; }): Promise<RegisterResponse> => {
     return await api.post(API_ENDPOINTS.RESET_PASSWORD, payload, { withCredentials: true });
   },
 
