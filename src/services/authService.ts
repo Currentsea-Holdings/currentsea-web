@@ -90,4 +90,13 @@ export const sendPasswordResetEmail = async (payload: { email: string }): Promis
   }
 };
 
+export const resetPassword = async (payload: { token: string; password: string }): Promise<unknown> => {
+  try {
+    return await authApi.resetPassword(payload);
+  } catch (err) {
+    console.error('Send Password Reset Error:', err);
+    throw err;
+  }
+};
+
 export const fetchProfile = async () => {};
