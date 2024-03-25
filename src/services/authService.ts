@@ -81,4 +81,13 @@ export const confirmEmail = async (
   }
 };
 
+export const sendPasswordResetEmail = async (payload: { email: string }): Promise<unknown> => {
+  try {
+    return await authApi.sendPasswordResetEmail(payload);
+  } catch (err) {
+    console.error('Send Password Reset Error:', err);
+    throw err;
+  }
+};
+
 export const fetchProfile = async () => {};

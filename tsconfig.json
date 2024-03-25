@@ -37,8 +37,6 @@
     "build",
     "coverage",
     "scripts",
-    "tailwind.config.js",
-    "tailwind.config.ts",
     "src/types",
     "src/stories",
     "src/components"

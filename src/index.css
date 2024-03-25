@@ -1,7 +1,16 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-3xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+}
 
 :root {
   --primary-color: #2b74e7; /* Default primary color */
@@ -57,12 +66,6 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-}
-
-h1 {
-  font-size: 1.875rem;
-  line-height: 2.5rem;
-  font-weight: 600;
 }
 
 button {

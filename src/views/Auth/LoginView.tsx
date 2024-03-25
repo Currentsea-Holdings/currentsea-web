@@ -133,12 +133,12 @@ export const LoginView = () => {
                 className="focus:border-2"
                 color={floatingLabelColor()}
               />
-              <a
-                href="/"
+              <Link
+                to={`/forgot-password`}
                 className="mt-2 inline-block text-xs font-normal"
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
             <CSButton
               type="submit"
