@@ -1,10 +1,10 @@
-import { Sidebar } from 'flowbite-react';
+import { Sidebar, getTheme } from 'flowbite-react';
 import { HiOutlineHome, HiInbox } from 'react-icons/hi';
-import { IconType } from 'react-icons/lib';
+import type { IconType } from 'react-icons/lib';
 import logo from '@/assets/logo-title-black.svg';
 import { useTheme, Global, css } from '@emotion/react';
 import Icons from '@/assets/icons';
-import { getTheme, CustomFlowbiteTheme } from 'flowbite-react';
+import type { CustomFlowbiteTheme } from 'flowbite-react';
 
 interface CSSidebarProps {
   // theme: {

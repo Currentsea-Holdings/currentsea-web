@@ -1,8 +1,7 @@
 import { CSCard } from '@/components/common';
-import { FC } from 'react';
 import Icons from '@/assets/icons';
 
-export const CSUpcomingTasksCard: FC<{ title: string }> = ({ title }: { title: string }) => {
+export const CSUpcomingTasksCard = ({ title }: { title: string }) => {
     return (
       <CSCard padding="p-4">
         <div className="flex items-center justify-between">

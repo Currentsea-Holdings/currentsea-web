@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosError, AxiosResponse, Method } from 'axios';
+import type { AxiosRequestConfig, AxiosError, AxiosResponse, Method } from 'axios';
+import axios from 'axios';
 import { BASE_API_URL, TIMEOUT, HEADERS } from '@/utils/constants';
 // import MockAdapter from 'axios-mock-adapter';
 

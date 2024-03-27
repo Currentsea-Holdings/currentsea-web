@@ -1,5 +1,6 @@
-import { ComponentPropsWithoutRef, ElementType, type ReactNode } from 'react';
-import { getTheme, CustomFlowbiteTheme, Button } from 'flowbite-react';
+import type { ComponentPropsWithoutRef, ElementType, ReactNode} from 'react';
+import type { CustomFlowbiteTheme} from 'flowbite-react';
+import { getTheme, Button } from 'flowbite-react';
 import { CSSpinner } from '@/components/common/CSSpinner';
 
 type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';

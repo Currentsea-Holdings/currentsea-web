@@ -1,4 +1,5 @@
-import { CustomFlowbiteTheme, getTheme } from 'flowbite-react';
+import type { CustomFlowbiteTheme} from 'flowbite-react';
+import { getTheme } from 'flowbite-react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import type { FC } from 'react';

@@ -1,4 +1,5 @@
-import { ComponentPropsWithoutRef, ElementType, type ReactNode, FC } from 'react';
+import type { ComponentPropsWithoutRef, ElementType, FC } from 'react';
+import { type ReactNode } from 'react';
 import { Card as FlowbiteCard } from 'flowbite-react';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import type { IconProps } from '@/assets/icons';

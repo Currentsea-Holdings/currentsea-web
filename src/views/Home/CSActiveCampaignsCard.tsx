@@ -1,7 +1,6 @@
 import { CSCard } from '@/components/common';
-import { FC } from 'react';
 
-export const CSActiveCampaignsCard: FC<{ title: string }> = ({ title }: { title: string }) => {
+export const CSActiveCampaignsCard = ({ title }: { title: string }) => {
     return (
       <CSCard
         padding="p-4"

@@ -1,5 +1,6 @@
-import { ComponentPropsWithoutRef, ElementType, type ReactNode } from 'react';
-import { Card, CustomFlowbiteTheme } from 'flowbite-react';
+import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
+import type { CustomFlowbiteTheme } from 'flowbite-react';
+import { Card } from 'flowbite-react';
 
 type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';
 

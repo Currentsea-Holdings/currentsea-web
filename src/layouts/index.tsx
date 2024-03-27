@@ -1,3 +1,1 @@
-import { SplitScreenLayout } from "./SplitScreenLayout";
-
-export { SplitScreenLayout };
+export { SplitScreenLayout } from "./SplitScreenLayout";
