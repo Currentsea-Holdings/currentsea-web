@@ -34,6 +34,7 @@ module.exports = {
       'error', // or 'warn'
       { checksVoidReturn: false },
     ],
+    '@typescript-eslint/consistent-type-imports': 'error',
   },
   root: true,
   settings: {
