@@ -1,13 +1,13 @@
-import { RouteObject, Navigate } from 'react-router-dom';
+import type { RouteObject} from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { RequireAuth } from '@/routes/RequireAuth';
 import { ThemeProvider } from '@emotion/react';
-import { Outlet } from 'react-router-dom';
 import { Home } from '@/views/Home/Home';
 import { LoginView } from '@/views/Auth/LoginView';
 import { SignupView } from '@/views/Auth/SignupView';
 import { RootRoute } from '@/routes/RootRoute';
 import { useTheme } from '@/hooks/useTheme';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
 import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';

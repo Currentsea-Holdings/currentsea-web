@@ -1,12 +1,12 @@
-import { Carousel, CustomFlowbiteTheme, getTheme } from 'flowbite-react';
+import type { CustomFlowbiteTheme} from 'flowbite-react';
+import { Carousel, getTheme } from 'flowbite-react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import type { FC } from 'react';
 import Icons from '@/assets/icons';
 import { CSCard } from '@/components/common';
 import { CSUpcomingTasksCard } from '@/views/Home/CSUpcomingTasksCard';
 
-export const CSUpcomingTasks: FC<{ title: string }> = ({ title }: { title: string }) => {
+export const CSUpcomingTasks = ({ title }: { title: string }) => {
   const carouselButtonStyles = css`
     .carouselLeftButton button,
     .carouselRightButton button {

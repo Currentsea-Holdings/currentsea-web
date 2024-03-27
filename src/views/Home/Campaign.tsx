@@ -18,7 +18,7 @@
 
 // export default Content;
 
-import React from 'react';
+import type React from 'react';
 // import { useTheme } from '@/context/ThemeContext';
 import { Button } from 'flowbite-react';
 import { CSButton } from '@/components/common/CSButton';

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 
 interface SplitScreenLayoutProps {
   Left: React.ReactNode;

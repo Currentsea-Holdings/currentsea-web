@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import classNames from 'classnames';
 import Icons, { ChartMixedDollarIcon, RotateIcon, MouseIcon } from '@/assets/icons';
 import { CSUpcomingTasks } from '@/views/Home/CSUpcomingTasks';
@@ -14,7 +13,7 @@ interface HomeProps {
   className?: string;
 }
 
-export const Home: FC<HomeProps> = ({ className, ...props }: HomeProps) => {
+export const Home = ({ className, ...props }: HomeProps) => {
   return (
     <DashboardLayout>
       <h1 className="my-2">Home</h1>
@@ -149,7 +148,7 @@ const Privacy = () => {
   );
 };
 
-const MainContentFooter: FC = function () {
+const MainContentFooter = function () {
   const [openModal, setOpenModal] = useState(false);
   const [modalContent, setModalContent] = useState(Terms());
 
