@@ -1,7 +1,6 @@
 import { CSButton } from '@/components/common';
 import { useToast } from '@/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
-import { censorEmail } from '@/utils/emailUtils';
 import { usePasswordResetContext } from '@/hooks/usePasswordResetContext';
 
 export const ForgotPasswordEmailSent = ({ submittedEmail }: { submittedEmail: string }) => {
@@ -34,7 +33,7 @@ export const ForgotPasswordEmailSent = ({ submittedEmail }: { submittedEmail: st
               Please check your email.
             </h1>
             <h3 className="!mt-1.5 font-semibold text-gray-50">
-              We have sent an email to {censorEmail(submittedEmail)}. To reset your password, click on
+              We have sent an email to {submittedEmail}. To reset your password, click on
               the link contained in that email.
             </h3>
           </div>

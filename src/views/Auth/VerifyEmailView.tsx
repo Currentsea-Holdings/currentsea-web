@@ -1,10 +1,9 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
-import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useRegister } from '@/hooks/useRegister';
@@ -14,6 +13,7 @@ import {
   type ConfirmEmailResponse,
   confirmEmail,
 } from '@/services/authService';
+import { GoBackButton } from './components/GoBackButton';
 
 type VerificationCodeFields = {
   [K in `code${number}`]: string;
@@ -165,7 +165,7 @@ const Verify = function () {
   return (
     <>
       <div className="flex">
-        <Icons.LeftArrowIcon className="ml-2 mr-3 mt-1 text-dark" />
+        <GoBackButton />
         <div className="pb-4">
           <h1 className="leding-tight col-span-11 mb-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             Verify your email address.
@@ -238,7 +238,7 @@ const Verified = function () {
   return (
     <>
       <div className="flex">
-        <Icons.LeftArrowIcon className="ml-2 mr-3 mt-1 text-dark" />
+        <GoBackButton />
         <div className="pb-4">
           <h1 className="leding-tight col-span-11 mb-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             Email has been verified!
