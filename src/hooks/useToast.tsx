@@ -27,7 +27,7 @@ const toastIcon = {
 export const useToast = () => {
   return (type?: toastTypes) => toast(
     <div className="flex items-center">
-      <div className={classNames('grid h-screen grid-cols-2', type && toastIcon[type].className)}>
+      <div className={classNames(type && toastIcon[type].className)}>
         {type && toastIcon[type].icon}
       </div>
       <div className="ml-3 text-sm font-normal">

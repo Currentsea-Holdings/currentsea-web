@@ -3,7 +3,7 @@ import { useToast } from '@/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
 import { usePasswordResetContext } from '@/hooks/usePasswordResetContext';
 
-export const ForgotPasswordEmailSent = ({ submittedEmail }: { submittedEmail: string }) => {
+export const ForgotPasswordConfirmation = ({ submittedEmail }: { submittedEmail: string }) => {
     const showToast = useToast();
     const navigate = useNavigate();
     const { sendResetPassEmail } = usePasswordResetContext();
