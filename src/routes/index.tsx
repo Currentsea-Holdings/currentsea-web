@@ -11,6 +11,7 @@ import type { ReactNode } from 'react';
 import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
 import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';
+import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 
 interface ProtectedRouteProps {
   user: { id: string; email: string } | null;
@@ -47,12 +48,20 @@ export const Routes = () => {
       element: <VerifyEmailView />,
     },
     {
+      path: '/email-verified',
+      element: <EmailVerifiedView />,
+    },
+    {
       path: '/forgot-password',
       element: <ForgotPasswordView />,
     },
     {
       path: '/reset-password',
       element: <PasswordResetView />,
+    },
+    {
+      path: '/onboarding',
+      element: <h1>Account Setup</h1>,
     },
     {
       path: '/dashboard/*',

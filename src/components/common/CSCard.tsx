@@ -12,22 +12,23 @@ export type CSCardProps<T extends ElementType = 'div'> = {
   imgSrc?: string;
   disabled?: boolean;
   children?: ReactNode;
+  restProps?: T;
 } & ComponentPropsWithoutRef<T>;
 
-export const CSCard = ({ children, color, imgAlt, imgSrc, ...props }: CSCardProps) => {
+export const CSCard = ({ children, color, imgAlt, imgSrc, ...restProps }: CSCardProps) => {
   return (
     <FlowbiteCard
       color={color as PrimaryColors}
       imgAlt={imgAlt}
       imgSrc={imgSrc}
-      {...props}
+      {...restProps}
     >
       {children}
     </FlowbiteCard>
   );
 };
 
-const FlowbiteCard = ({ title, padding = 'p-4', children, ...props }: CSCardProps) => {
+const FlowbiteCard = ({ title, padding = 'p-4', children, ...restProps }: CSCardProps) => {
   const componentTheme: CustomFlowbiteTheme['card'] = {
     root: {
       children: `flex h-full flex-col gap-4 ${padding}`,
@@ -38,7 +39,7 @@ const FlowbiteCard = ({ title, padding = 'p-4', children, ...props }: CSCardProp
     <Card
       theme={componentTheme}
       className="h-full rounded-lg bg-white"
-      {...props}
+      {...restProps}
     >
       {title ? (
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{title}</h5>

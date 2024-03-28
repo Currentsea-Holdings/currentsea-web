@@ -13,7 +13,7 @@ import { isDevelopmentMode } from '@/utils';
 //         id: 1,
 //         name: 'John Doe',
 //         email: email,
-//         roles: ['creator'],
+//         roles: ['Creator'],
 //       },
 //     };
 

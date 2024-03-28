@@ -14,7 +14,7 @@ interface LoginFormFields {
   password: string;
 }
 
-export const LoginView = () => {
+export const LoginView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
 
   const { loginUser, isPending, isError, data } = useLogin();

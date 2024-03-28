@@ -48,7 +48,7 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
         throw new Error(ERROR_MESSAGES.INVALID_CREDENTIALS);
       }
       throw new Error(
-        (err.response?.data as { message: string }).message || 'An unknown error occurred',
+        (err.response?.data as { message: string }).message || ERROR_MESSAGES.GENERAL_ERROR,
       );
     } else {
       throw err;
@@ -65,7 +65,7 @@ export const register = async (payload: LoginPayload): Promise<RegisterResponse>
         throw new Error(ERROR_MESSAGES.EMAIL_ALREADY_EXISTS);
       }
       throw new Error(
-        (err.response?.data as { message: string }).message || 'An unknown error occurred',
+        (err.response?.data as { message: string }).message || ERROR_MESSAGES.GENERAL_ERROR,
       );
     } else {
       throw err;
@@ -94,7 +94,7 @@ export const sendPasswordResetEmail = async (payload: { email: string }): Promis
         throw new Error(ERROR_MESSAGES.EMAIL_NOT_FOUND);
       }
       throw new Error(
-        (err.response?.data as { message: string }).message || 'An unknown error occurred',
+        (err.response?.data as { message: string }).message || ERROR_MESSAGES.GENERAL_ERROR,
       );
     }
     throw err;
