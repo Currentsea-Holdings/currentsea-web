@@ -24,24 +24,14 @@ import type { UserResponse } from '@/services/usersService';
 import { updateUser } from '@/services/usersService';
 import { useMutation } from '@tanstack/react-query';
 
-type VerificationCodeFields = {
-  [K in `code${number}`]: string;
-};
+const cardData: { type: 'Agency' | 'Brand' | 'Creator'; img: string }[] = [
+  { type: 'Agency', img: agencyImg },
+  { type: 'Creator', img: creatorImg },
+  { type: 'Brand', img: brandImg },
+];
 
 export const EmailVerifiedView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
-
-  const { registerUser, isPending } = useRegister();
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  useEffect(() => {
-    setIsSubmitting(isPending);
-  }, [isPending]);
-
-  const user = useAuthStore((state) => state.user);
-  const isEmailVerified = user?.emailVerified;
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -64,16 +54,8 @@ export const EmailVerifiedView = function () {
   );
 };
 
-const cardData: { type: 'Agency' | 'Brand' | 'Creator'; img: string }[] = [
-  { type: 'Agency', img: agencyImg },
-  { type: 'Creator', img: creatorImg },
-  { type: 'Brand', img: brandImg },
-];
-
 const Verified = function () {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [selectedType, setSelectedType] = useState<'Creator' | 'Agency' | 'Brand' | undefined>(
+  const [selectedType, setSelectedType] = useState<'Agency' | 'Brand' | 'Creator' | undefined>(
     undefined,
   );
 
