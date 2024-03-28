@@ -1,5 +1,6 @@
 import { authApi } from '@/api/authApi';
 import { isAxiosError } from 'axios';
+import { ERROR_MESSAGES } from '@/utils/constants';
 
 export interface LoginPayload {
   email?: string;
@@ -44,7 +45,7 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   } catch (err) {
     if (isAxiosError(err)) {
       if (err.response?.status === 401) {
-        throw new Error('Incorrect email or password. Please try again.');
+        throw new Error(ERROR_MESSAGES.INVALID_CREDENTIALS);
       }
       throw new Error(
         (err.response?.data as { message: string }).message || 'An unknown error occurred',
@@ -60,6 +61,9 @@ export const register = async (payload: LoginPayload): Promise<RegisterResponse>
     return await authApi.register(payload);
   } catch (err) {
     if (isAxiosError(err)) {
+      if (err.response?.status === 409) {
+        throw new Error(ERROR_MESSAGES.EMAIL_ALREADY_EXISTS);
+      }
       throw new Error(
         (err.response?.data as { message: string }).message || 'An unknown error occurred',
       );
@@ -85,12 +89,22 @@ export const sendPasswordResetEmail = async (payload: { email: string }): Promis
   try {
     return await authApi.sendPasswordResetEmail(payload);
   } catch (err) {
-    console.error('Send Password Reset Error:', err);
+    if (isAxiosError(err)) {
+      if (err.response?.status === 404) {
+        throw new Error(ERROR_MESSAGES.EMAIL_NOT_FOUND);
+      }
+      throw new Error(
+        (err.response?.data as { message: string }).message || 'An unknown error occurred',
+      );
+    }
     throw err;
   }
 };
 
-export const resetPassword = async (payload: { token: string; password: string }): Promise<unknown> => {
+export const resetPassword = async (payload: {
+  token: string;
+  password: string;
+}): Promise<unknown> => {
   try {
     return await authApi.resetPassword(payload);
   } catch (err) {

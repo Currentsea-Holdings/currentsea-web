@@ -7,7 +7,7 @@ const App = () => {
 
   return (
     <>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -15,7 +15,7 @@ const App = () => {
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
-        pauseOnFocusLoss
+        pauseOnFocusLoss={false}
         draggable={false}
         pauseOnHover
         theme="light"

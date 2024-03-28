@@ -2,9 +2,9 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CSButton } from '@/components/common';
-import Icons from '@/assets/icons';
 import { FloatingLabel } from 'flowbite-react';
 import { usePasswordResetContext } from '@/hooks/usePasswordResetContext';
+import { GoBackButton } from '../../components/GoBackButton';
 
 export const ForgotPasswordForm = ({
   setIsEmailSent,
@@ -47,7 +47,7 @@ export const ForgotPasswordForm = ({
   return (
     <>
       <div className="flex">
-        <Icons.LeftArrowIcon className="ml-2 mr-3 mt-1 text-dark" />
+        <GoBackButton />
         <div className="pb-4">
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
             Forgot Password?

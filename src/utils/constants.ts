@@ -1,5 +1,5 @@
-export const BASE_URL = import.meta.env.BASE_URL || 'http://localhost:3000';
-export const BASE_API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
+export const BASE_API_URL = import.meta.env.VITE_API_BASE_URL;
 export const TIMEOUT = import.meta.env.TIMEOUT || 15000;
 
 export const HEADERS = {
@@ -17,4 +17,6 @@ export const API_ENDPOINTS = {
 
 export const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: 'Incorrect email or password. Please try again.',
+  EMAIL_ALREADY_EXISTS: 'This email is already in use. If this is your email, please log in or reset your password.',
+  EMAIL_NOT_FOUND: 'Email not found. Please try again.',
 }

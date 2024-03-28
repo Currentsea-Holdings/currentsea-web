@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLoaderData, useSearchParams, useNavigate } from 'react-router-dom';
-import type { Dispatch, SetStateAction } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
-import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useAuthStore } from '@/stores/authStore';
 import { resetPassword } from '@/services/authService';
 import { FloatingLabel } from 'flowbite-react';
 import { useMutation } from '@tanstack/react-query';
+import { GoBackButton } from './components/GoBackButton';
 
 export const PasswordResetView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
@@ -82,7 +81,7 @@ export const PasswordResetView = function () {
             />
           </a>
           <div className="flex">
-            <Icons.LeftArrowIcon className="ml-2 mr-3 mt-1 text-dark" />
+            <GoBackButton />
             <div className="pb-4">
               <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
                 Reset your password
