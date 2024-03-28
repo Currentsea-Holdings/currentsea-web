@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { censorEmail } from '@/utils/emailUtils';
 import { usePasswordResetContext } from '@/hooks/usePasswordResetContext';
 
-export const ResetPasswordEmailSent = ({ submittedEmail }: { submittedEmail: string }) => {
+export const ForgotPasswordEmailSent = ({ submittedEmail }: { submittedEmail: string }) => {
     const showToast = useToast();
     const navigate = useNavigate();
     const { sendResetPassEmail } = usePasswordResetContext();

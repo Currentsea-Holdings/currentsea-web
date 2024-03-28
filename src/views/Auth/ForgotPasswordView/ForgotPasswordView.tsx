@@ -3,7 +3,7 @@ import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { ForgotPasswordForm } from './components/ForgotPasswordForm';
-import { ResetPasswordEmailSent } from './components/ResetPasswordEmailSent';
+import { ForgotPasswordEmailSent } from './components/ForgotPasswordEmailSent';
 import { PasswordResetProvider } from '@/context/PasswordResetContext';
 
 export const ForgotPasswordView = () => {
@@ -32,7 +32,7 @@ export const ForgotPasswordView = () => {
                 setSubmittedEmail={setSubmittedEmail}
               />
             ) : (
-              <ResetPasswordEmailSent submittedEmail={submittedEmail} />
+              <ForgotPasswordEmailSent submittedEmail={submittedEmail} />
             )}
           </PasswordResetProvider>
         </div>
