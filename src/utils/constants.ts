@@ -17,4 +17,6 @@ export const API_ENDPOINTS = {
 
 export const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: 'Incorrect email or password. Please try again.',
+  EMAIL_ALREADY_EXISTS: 'This email is already in use. If this is your email, please log in or reset your password.',
+  EMAIL_NOT_FOUND: 'Email not found. Please try again.',
 }
