@@ -7,7 +7,6 @@ import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useLogin } from '@/hooks/useLogin';
-import { useAuthStore } from '@/stores/authStore';
 import { FloatingLabel } from 'flowbite-react';
 interface LoginFormFields {
   email: string;
@@ -24,7 +23,6 @@ export const LoginView = function () {
     setIsSubmitting(isPending);
   }, [isPending]);
 
-  const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
 
   const {
@@ -42,7 +40,6 @@ export const LoginView = function () {
           console.log('Login successful.');
           console.log(data);
           if (data.user.emailVerified) {
-            setUser(data.user);
             navigate('/');
           } else {
             navigate(`/verify-email?email=${email}`);
