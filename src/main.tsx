@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import { AuthProvider } from '@/context/AuthContext';
+import { AuthProvider } from '@/context/AuthProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const rootElement: HTMLElement | null = document.getElementById('root');

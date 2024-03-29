@@ -1,12 +1,11 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import type { FormEvent, KeyboardEvent } from 'react';
+import type { KeyboardEvent } from 'react';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { CSButton } from '@/components/common';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
-import { useRegister } from '@/hooks/useRegister';
 import { useAuthStore } from '@/stores/authStore';
 import {
   type ConfirmEmailPayload,
@@ -22,23 +21,8 @@ type VerificationCodeFields = {
 export const VerifyEmailView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
 
-  const { registerUser, isPending } = useRegister();
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  useEffect(() => {
-    setIsSubmitting(isPending);
-  }, [isPending]);
-
   const user = useAuthStore((state) => state.user);
   const isEmailVerified = user?.emailVerified;
-
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (typeof isLoggedIn === 'boolean' && isLoggedIn === true) {
-  //     navigate('/dashboard');
-  //   }
-  // }, [isLoggedIn, navigate]);
 
   return (
     <>
@@ -54,7 +38,7 @@ export const VerifyEmailView = function () {
               alt="logo"
             />
           </a>
-          {isEmailVerified ? <Verified /> : <Verify />}
+          {<Verify />}
         </div>
       </AuthSplitLayout>
     </>
@@ -156,7 +140,7 @@ const Verify = function () {
     if (result) {
       console.log('Email verified:', result);
       confirmUserEmail();
-      // navigate('/dashboard');
+      navigate('/email-verified');
     }
   };
 
@@ -220,40 +204,6 @@ const Verify = function () {
           className="inline-flex w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
         >
           Verify
-        </CSButton>
-      </form>
-    </>
-  );
-};
-
-const Verified = function () {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
-  };
-  return (
-    <>
-      <div className="flex">
-        <GoBackButton />
-        <div className="pb-4">
-          <h1 className="leding-tight col-span-11 mb-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Email has been verified!
-          </h1>
-          <p className="mb-36 text-gray-500 dark:text-gray-400">
-            Finish your account setup to start discovering exclusive opportunities.
-          </p>
-        </div>
-      </div>
-      <form action="#">
-        <CSButton
-          type="submit"
-          className="w-full"
-        >
-          Set Up Account
         </CSButton>
       </form>
     </>

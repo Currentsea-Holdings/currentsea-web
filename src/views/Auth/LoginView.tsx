@@ -7,14 +7,13 @@ import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useLogin } from '@/hooks/useLogin';
-import { useAuthStore } from '@/stores/authStore';
 import { FloatingLabel } from 'flowbite-react';
 interface LoginFormFields {
   email: string;
   password: string;
 }
 
-export const LoginView = () => {
+export const LoginView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
 
   const { loginUser, isPending, isError, data } = useLogin();
@@ -24,7 +23,6 @@ export const LoginView = () => {
     setIsSubmitting(isPending);
   }, [isPending]);
 
-  const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
 
   const {
@@ -42,8 +40,7 @@ export const LoginView = () => {
           console.log('Login successful.');
           console.log(data);
           if (data.user.emailVerified) {
-            setUser(data.user);
-            navigate('/dashboard');
+            navigate('/');
           } else {
             navigate(`/verify-email?email=${email}`);
           }
