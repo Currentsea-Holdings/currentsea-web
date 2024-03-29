@@ -1,0 +1,43 @@
+import type { ReactNode } from 'react';
+import { useAuthStore } from '@/stores/authStore';
+import { Navigate, useLocation } from 'react-router-dom';
+
+interface Props {
+  children: ReactNode;
+}
+
+const useRedirectInfo = () => {
+  const location = useLocation();
+  const { user } = useAuthStore();
+
+  if (!user) {
+    return { shouldRedirect: true, redirectTo: '/login' };
+  }
+
+  const pathsRestrictedForVerifiedUsers = ['/verify-email', '/email-verified'];
+  if (user.emailVerified && user.userType && pathsRestrictedForVerifiedUsers.includes(location.pathname)) {
+    return { shouldRedirect: true, redirectTo: '/' };
+  }
+
+  if (!user.emailVerified) {
+    const isOnVerifyEmailPage = location.pathname === '/verify-email';
+    return { shouldRedirect: !isOnVerifyEmailPage, redirectTo: '/verify-email' };
+  }
+
+  if (!user.userType && location.pathname !== '/email-verified') {
+    return { shouldRedirect: true, redirectTo: '/email-verified' };
+  }
+
+  return { shouldRedirect: false };
+};
+
+export const RequireAuth = ({ children }: Props) => {
+  const { shouldRedirect, redirectTo } = useRedirectInfo();
+  const location = useLocation();
+
+  if (shouldRedirect) {
+    return <Navigate to={redirectTo || '/'} state={{ from: location }} replace />;
+  }
+
+  return children;
+};

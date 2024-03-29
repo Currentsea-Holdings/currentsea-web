@@ -43,7 +43,7 @@ export const LoginView = function () {
           console.log(data);
           if (data.user.emailVerified) {
             setUser(data.user);
-            navigate('/dashboard');
+            navigate('/');
           } else {
             navigate(`/verify-email?email=${email}`);
           }

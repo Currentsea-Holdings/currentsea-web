@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Routes } from '@/routes';
+import { Routes } from '@/router/Routes';
 import { ToastContainer } from 'react-toastify';
 
 const App = () => {
@@ -10,7 +10,7 @@ const App = () => {
       <RouterProvider router={router} />
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={7000}
         hideProgressBar={true}
         newestOnTop={false}
         closeOnClick={false}
