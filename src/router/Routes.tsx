@@ -10,6 +10,7 @@ import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
 import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';
 import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
+import { AccountSetupInstructionsView } from '@/views/Onboarding/AccountSetupInstructionsView';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -23,10 +24,10 @@ export const Routes = () => {
         </RequireAuth>
       ),
       children: [
-        {
-          path: '/onboarding',
-          element: <h1>Account Setup</h1>,
-        },
+        // {
+        //   path: '/onboarding',
+        //   element: <AccountSetupInstructionsView />,
+        // },
         {
           path: '/',
           element: (
@@ -69,7 +70,7 @@ export const Routes = () => {
     },
     {
       path: '/onboarding',
-      element: <h1>Account Setup</h1>, // placeholder,
+      element: <AccountSetupInstructionsView />,
     },
   ];
 
