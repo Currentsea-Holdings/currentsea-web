@@ -5,8 +5,8 @@ export type Account = {
   city: string;
   state: string;
   country: string;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export interface User {
@@ -15,8 +15,8 @@ export interface User {
   location: string;
   description: string;
   socialLinks: { [key: string]: string };
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Creator extends User {

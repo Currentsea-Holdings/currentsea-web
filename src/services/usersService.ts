@@ -14,7 +14,7 @@ export interface UpdateUserPayload {
   name?: string;
   email?: string;
   password?: string;
-  user_type?: 'Creator' | 'Agency' | 'Brand';
+  userType?: 'Creator' | 'Agency' | 'Brand';
   refreshToken?: string;
   emailVerified?: boolean;
 }
@@ -23,7 +23,7 @@ export interface UserResponse {
   id: string;
   email: string;
   emailVerified: boolean;
-  user_type?: 'Creator' | 'Agency' | 'Brand';
+  userType?: 'Creator' | 'Agency' | 'Brand';
 }
 
 export const createUser = async (payload: CreateUserPayload): Promise<UserResponse> => {
