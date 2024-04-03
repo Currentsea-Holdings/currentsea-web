@@ -65,10 +65,10 @@ const Verified = function () {
   const { mutate: updateUserType, isPending } = useMutation<
     UserResponse,
     Error,
-    { id: string; user_type: 'Creator' | 'Agency' | 'Brand' }
+    { id: string; userType: 'Creator' | 'Agency' | 'Brand' }
   >({
-    mutationFn: async ({ id, user_type }) => await updateUser(id, { user_type }),
-    onSuccess: ({ user_type: userType }) => {
+    mutationFn: async ({ id, userType }) => await updateUser(id, { userType }),
+    onSuccess: ({ userType }) => {
       if (userType) {
         useAuthStore.getState().updateUserType(userType);
       }
@@ -84,7 +84,7 @@ const Verified = function () {
 
     try {
       if (selectedType && user) {
-        updateUserType({ id: user.id, user_type: selectedType });
+        updateUserType({ id: user.id, userType: selectedType });
       }
       console.log('User type updated successfully');
     } catch (error) {

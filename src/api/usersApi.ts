@@ -13,7 +13,7 @@ export interface UpdateUserPayload {
   name?: string;
   email?: string;
   password?: string;
-  user_type?: 'Creator' | 'Agency' | 'Brand';
+  userType?: 'Creator' | 'Agency' | 'Brand';
   refreshToken?: string;
   emailVerified?: boolean;
 }
