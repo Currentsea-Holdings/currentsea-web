@@ -10,7 +10,7 @@ import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
 import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';
 import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
-import { AccountSetupInstructionsView } from '@/views/Onboarding/AccountSetupInstructionsView';
+import { OnboardingView } from '@/views/Onboarding/OnboardingView';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -70,7 +70,7 @@ export const Routes = () => {
     },
     {
       path: '/onboarding',
-      element: <AccountSetupInstructionsView />,
+      element: <OnboardingView />,
     },
   ];
 

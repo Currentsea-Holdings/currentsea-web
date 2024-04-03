@@ -68,7 +68,7 @@ const Verified = function () {
     { id: string; userType: 'Creator' | 'Agency' | 'Brand' }
   >({
     mutationFn: async ({ id, userType }) => await updateUser(id, { userType }),
-    onSuccess: ({ userType }) => {
+    onSuccess: ({ userType }: { userType?: 'Creator' | 'Agency' | 'Brand' }) => {
       if (userType) {
         useAuthStore.getState().updateUserType(userType);
       }
