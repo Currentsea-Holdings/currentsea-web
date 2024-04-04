@@ -6,4 +6,9 @@ export const API_ENDPOINTS = {
   RESET_PASSWORD: '/auth/reset-password',
   USERS: '/users',
   USER_PROFILE: '/user-profile',
+  TIKTOK_AUTHORIZE: '/tiktok/auth/api/authorize',
+  TIKTOK_EXCHANGE_CODE: '/tiktok/auth/api/exchange-code',
+  TIKTOK_HANDLE_ACCESS_TOKEN: '/tiktok/auth/api/handle-access-token',
+  TIKTOK_CONNECT_ACCOUNT: '/tiktok/auth/api/connect-tiktok-account',
+  TIKTOK_USER_INFO: '/tiktok/auth/api/user-info',
 };

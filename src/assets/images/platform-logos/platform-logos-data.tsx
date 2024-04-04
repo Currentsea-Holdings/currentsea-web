@@ -12,6 +12,11 @@ import {
 
 export const socialLogoArray = [
   {
+    id: 'tiktok',
+    name: 'TikTok',
+    Icon: TikTokIcon,
+  },
+  {
     id: 'facebook',
     name: 'Facebook',
     Icon: FacebookIcon,
@@ -22,24 +27,9 @@ export const socialLogoArray = [
     Icon: InstagramIcon,
   },
   {
-    id: 'linkedin',
-    name: 'LinkedIn',
-    Icon: LinkedInIcon,
-  },
-  {
-    id: 'pinterest',
-    name: 'Pinterest',
-    Icon: PinterestIcon,
-  },
-  {
-    id: 'snapchat',
-    name: 'Snapchat',
-    Icon: SnapchatIcon,
-  },
-  {
-    id: 'tiktok',
-    name: 'TikTok',
-    Icon: TikTokIcon,
+    id: 'youtube',
+    name: 'YouTube',
+    Icon: YouTubeIcon,
   },
   {
     id: 'twitch',
@@ -47,13 +37,23 @@ export const socialLogoArray = [
     Icon: TwitchIcon,
   },
   {
+    id: 'snapchat',
+    name: 'Snapchat',
+    Icon: SnapchatIcon,
+  },
+  {
     id: 'x',
     name: 'X',
     Icon: XIcon,
   },
   {
-    id: 'youtube',
-    name: 'YouTube',
-    Icon: YouTubeIcon,
+    id: 'pinterest',
+    name: 'Pinterest',
+    Icon: PinterestIcon,
+  },
+  {
+    id: 'linkedin',
+    name: 'LinkedIn',
+    Icon: LinkedInIcon,
   },
 ];
