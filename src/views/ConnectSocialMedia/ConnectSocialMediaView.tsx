@@ -44,6 +44,24 @@ export const ConnectSocialMediaView = () => {
     }
   };
 
+  const onSubmit = (data: string) => {
+    const socialData = data;
+    navigate('/earnings');
+
+    // submitCreateUserProfile(
+    //   { userId: id as string, ...socialData },
+    //   {
+    //     onSuccess: (data) => {
+    //       console.log('User Profile created successfully.');
+    //       navigate('/earnings');
+    //     },
+    //     onError: (error) => {
+    //       console.error('error:', error);
+    //     },
+    //   },
+    // );
+  };
+
   return (
     <div className="flex h-screen">
       <OnboardingBreadcrumbs stepNum={2} />
@@ -66,7 +84,10 @@ export const ConnectSocialMediaView = () => {
               />
             ))}
           </div>
-          <form className="flex w-full flex-col items-center justify-center p-5">
+          <form
+            onSubmit={() => onSubmit}
+            className="flex w-full flex-col items-center justify-center p-5"
+          >
             <CSButton
               type="submit"
               className="flex h-12 w-[73%] items-center justify-center rounded-lg border bg-primary px-5"
