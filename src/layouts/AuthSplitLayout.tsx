@@ -15,13 +15,16 @@ export const AuthSplitLayout = ({ theme, backgroundImageUrl, children }: AuthSpl
     backgroundPosition: 'center',
   };
 
-  return SplitScreenLayout({
-    Left: <div className="flex h-full justify-center px-4 py-6 pt-20 sm:px-0">{children}</div>,
-    Right: (
+  
+  return (
+    <div className="flex h-screen flex-col lg:flex-row">
+      <div className="flex flex-1 items-center justify-center px-4 py-6 lg:px-6 lg:bg-transparent">
+        {children}
+      </div>
       <div
         style={backgroundImageStyle}
-        className="bg-primary-600 hidden h-full items-center justify-center px-4 py-6 sm:px-0 lg:flex lg:py-0"
+        className="hidden h-full w-full lg:flex lg:w-1/2"
       />
-    ),
-  });
+    </div>
+  );
 };
