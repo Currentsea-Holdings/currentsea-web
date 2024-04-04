@@ -2,6 +2,7 @@ import type { Theme } from '@/hooks/useTheme';
 import { SplitScreenLayout } from '@/layouts/SplitScreenLayout';
 
 interface AuthSplitLayoutProps {
+  // splitRatio: number;
   theme?: Theme;
   backgroundImageUrl?: string;
   children?: React.ReactNode;

@@ -1,16 +1,18 @@
-import type { RouteObject} from 'react-router-dom';
-import { Navigate, Outlet } from 'react-router-dom';
-import { RequireAuth } from '@/routes/RequireAuth';
-import { ThemeProvider } from '@emotion/react';
-import { Home } from '@/views/Home/Home';
-import { LoginView } from '@/views/Auth/LoginView';
-import { SignupView } from '@/views/Auth/SignupView';
-import { RootRoute } from '@/routes/RootRoute';
 import { useTheme } from '@/hooks/useTheme';
-import type { ReactNode } from 'react';
-import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
+import { RequireAuth } from '@/routes/RequireAuth';
+import { RootRoute } from '@/routes/RootRoute';
+import { AccountSetupInstructionsView } from '@/views/AccountSetup/AccountSetupInstructionsView';
+import { ConnectSocialMediaView } from '@/views/AccountSetup/ConnectSocialMediaView';
 import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
+import { LoginView } from '@/views/Auth/LoginView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';
+import { SignupView } from '@/views/Auth/SignupView';
+import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
+import { Home } from '@/views/Home/Home';
+import { ThemeProvider } from '@emotion/react';
+import type { ReactNode } from 'react';
+import type { RouteObject } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 interface ProtectedRouteProps {
   user: { id: string; email: string } | null;
@@ -53,6 +55,16 @@ export const Routes = () => {
     {
       path: '/reset-password',
       element: <PasswordResetView />,
+    },
+    //AccountSetupInstructions
+    {
+      path: '/account-setup-instructions',
+      element: <AccountSetupInstructionsView />
+    },
+    //ConnectSocialMediaPage
+    {
+      path: '/connect-social-media',
+      element: <ConnectSocialMediaView />
     },
     {
       path: '/dashboard/*',

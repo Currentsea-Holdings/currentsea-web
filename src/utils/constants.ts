@@ -13,6 +13,9 @@ export const API_ENDPOINTS = {
   CONFIRM_VERIFICATION_CODE: '/auth/confirm-email-verification-code',
   FORGOT_PASSWORD: '/auth/forgot-password',
   RESET_PASSWORD: '/auth/reset-password',
+  //AccountSetupInstructions
+  ACCOUNT_SETUP_INSTRUCTIONS: '/auth/account-setup-instructions',
+  CONNECT_SOCIAL_MEDIA: '/auth/connect-social-media'
 };
 
 export const ERROR_MESSAGES = {

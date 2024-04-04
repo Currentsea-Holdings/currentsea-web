@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
-import { CSButton } from '@/components/common';
 import Icons from '@/assets/icons';
-import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
+import logo from '@/assets/logo-title-black.svg';
+import { CSButton } from '@/components/common';
 import { useRegister } from '@/hooks/useRegister';
+import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { useAuthStore } from '@/stores/authStore';
 import { FloatingLabel } from 'flowbite-react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface SignUpFormFields {
   email: string;
@@ -57,8 +57,7 @@ export const SignupView = function () {
   };
 
   return (
-    <>
-      <AuthSplitLayout backgroundImageUrl={backgroundImageUrl}>
+    <AuthSplitLayout backgroundImageUrl={backgroundImageUrl}>
         <div className="w-5/6 max-w-md space-y-4 md:space-y-6 xl:max-w-full">
           <a
             href="/"
@@ -154,6 +153,12 @@ export const SignupView = function () {
           </form>
         </div>
       </AuthSplitLayout>
-    </>
   );
 };
+
+
+
+
+
+
+

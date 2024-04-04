@@ -1,5 +1,6 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { CSButton, type ButtonProps } from '@/components/common/CSButton';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import React from 'react';
 
 export default {
   title: 'Components/CSButton',

@@ -1,10 +1,9 @@
-import { StrictMode } from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
 import { AuthProvider } from '@/context/AuthContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
 const rootElement: HTMLElement | null = document.getElementById('root');
 
 const queryClient = new QueryClient();
