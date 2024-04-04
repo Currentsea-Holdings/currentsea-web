@@ -4,12 +4,16 @@ type SocialMediaConnectContainerProps = {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   name: string;
   onClick: () => void; 
+  isConnected: boolean;
+  setIsConnected: (value: boolean) => void;
 };
 
 export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerProps> = ({
   Icon,
   name,
   onClick,
+  isConnected,
+  setIsConnected,
 }: SocialMediaConnectContainerProps) => {
 
   return (
@@ -22,6 +26,8 @@ export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerPr
       <ConnectSocialMediaAccountButton
         text="Connect account"
         onClick={onClick}
+        isConnected={isConnected}
+        setIsConnected={setIsConnected}
       />
     </div>
   );

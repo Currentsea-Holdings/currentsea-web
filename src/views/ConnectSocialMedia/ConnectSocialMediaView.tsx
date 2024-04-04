@@ -9,10 +9,12 @@ import { OnboardingBreadcrumbs } from '../Onboarding/components/OnboardingBreadc
 import { CSButton } from '@/components/common';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavigate } from 'react-router-dom';
+import { tikTokApi } from '@/views/ConnectSocialMedia/api/tikTokApi.ts';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
   const navigate = useNavigate();
   if (!user) {
     navigate('/');
@@ -22,24 +24,41 @@ export const ConnectSocialMediaView = () => {
     navigate('/onboarding');
   };
 
-  const handleSocialMediaConnect = (socialMediaId: string) => () => {
+  const handleSocialMediaConnect = (socialMediaId: string) => async () => {
     if (socialMediaId === 'facebook') {
       console.log('Connect Facebook Account executed');
-    } else if (socialMediaId === 'instagram') {
+    }
+    if (socialMediaId === 'instagram') {
       console.log('Connect Instagram Account executed');
-    } else if (socialMediaId === 'linkedin') {
+    }
+    if (socialMediaId === 'linkedin') {
       console.log('Connect LinkedIn Account executed');
-    } else if (socialMediaId === 'pinterest') {
+    }
+    if (socialMediaId === 'pinterest') {
       console.log('Connect Pinterest Account executed');
-    } else if (socialMediaId === 'snapchat') {
+    }
+    if (socialMediaId === 'snapchat') {
       console.log('Connect Snapchat Account executed');
-    } else if (socialMediaId === 'tiktok') {
+    }
+    if (socialMediaId === 'tiktok') {
       console.log('Connect Tiktok Account executed');
-    } else if (socialMediaId === 'twitch') {
+      try {
+        const authorizationResponse = await tikTokApi.authorize();
+        window.location.href = authorizationResponse;
+      } catch (error) {
+        console.error('Failed to initiate TikTok authorization:', error);
+      }
+    } else {
+      setIsConnected(true)
+      console.log(`Connect ${socialMediaId} Account executed`);
+    }
+    if (socialMediaId === 'twitch') {
       console.log('Connect Twitch Account executed');
-    } else if (socialMediaId === 'x') {
+    }
+    if (socialMediaId === 'x') {
       console.log('Connect X Account executed');
-    } else if (socialMediaId === 'youtube') {
+    }
+    if (socialMediaId === 'youtube') {
       console.log('Connect Youtube Account executed');
     }
   };
@@ -77,10 +96,12 @@ export const ConnectSocialMediaView = () => {
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             {socialLogoArray.map(({ id, name, Icon }) => (
               <SocialMediaConnectContainer
-                key={id}
-                name={name}
-                Icon={Icon}
-                onClick={handleSocialMediaConnect(id)}
+              key={id}
+              name={name}
+              Icon={Icon}
+              onClick={handleSocialMediaConnect(id)}
+              isConnected={isConnected}
+              setIsConnected={setIsConnected}
               />
             ))}
           </div>
