@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { socialLogoArray } from '@/assets/images/platform-logos/platform-logos-data.tsx';
 import { SocialMediaConnectLayout } from '@/layouts/SocialMediaConnectLayout';
 import { LeftArrowIconBlack } from '@/assets/icons.tsx';
@@ -9,7 +9,7 @@ import { OnboardingBreadcrumbs } from '../Onboarding/components/OnboardingBreadc
 import { CSButton } from '@/components/common';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavigate } from 'react-router-dom';
-import { tikTokApi } from '@/views/ConnectSocialMedia/api/tikTokApi.ts';
+import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -25,6 +25,18 @@ export const ConnectSocialMediaView = () => {
   };
 
   const handleSocialMediaConnect = (socialMediaId: string) => async () => {
+    if (socialMediaId === 'tiktok') {
+      console.log('Connect Tiktok Account executed');
+      try {
+        const authorizationResponse = await tikTokApi.authorize();
+        window.location.href = authorizationResponse;
+      } catch (error) {
+        console.error('Failed to initiate TikTok authorization:', error);
+      }
+    } else {
+      setIsConnected(true);
+      console.log(`Connect ${socialMediaId} Account executed`);
+    }
     if (socialMediaId === 'facebook') {
       console.log('Connect Facebook Account executed');
     }
@@ -39,18 +51,6 @@ export const ConnectSocialMediaView = () => {
     }
     if (socialMediaId === 'snapchat') {
       console.log('Connect Snapchat Account executed');
-    }
-    if (socialMediaId === 'tiktok') {
-      console.log('Connect Tiktok Account executed');
-      try {
-        const authorizationResponse = await tikTokApi.authorize();
-        window.location.href = authorizationResponse;
-      } catch (error) {
-        console.error('Failed to initiate TikTok authorization:', error);
-      }
-    } else {
-      setIsConnected(true)
-      console.log(`Connect ${socialMediaId} Account executed`);
     }
     if (socialMediaId === 'twitch') {
       console.log('Connect Twitch Account executed');
@@ -96,12 +96,12 @@ export const ConnectSocialMediaView = () => {
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             {socialLogoArray.map(({ id, name, Icon }) => (
               <SocialMediaConnectContainer
-              key={id}
-              name={name}
-              Icon={Icon}
-              onClick={handleSocialMediaConnect(id)}
-              isConnected={isConnected}
-              setIsConnected={setIsConnected}
+                key={id}
+                name={name}
+                Icon={Icon}
+                onClick={handleSocialMediaConnect(id)}
+                isConnected={isConnected}
+                setIsConnected={setIsConnected}
               />
             ))}
           </div>
