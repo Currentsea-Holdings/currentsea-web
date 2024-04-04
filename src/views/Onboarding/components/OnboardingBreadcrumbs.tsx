@@ -7,7 +7,7 @@ const steps = ['Creator Info', 'Social Media', 'Earnings Set up'];
 export const OnboardingBreadcrumbs = ({ stepNum }: { stepNum: number }) => {
   return (
     <div
-      className="w-full bg-cover bg-center bg-no-repeat p-4 md:w-1/3"
+      className="w-full bg-cover bg-center bg-no-repeat p-4 md:w-1/2"
       style={{ backgroundImage: `url(${loginBackground})` }}
     >
       <div className="flex h-full flex-col items-center justify-center">
