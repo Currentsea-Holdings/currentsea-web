@@ -13,7 +13,6 @@ import {
   type ConfirmEmailResponse,
   confirmEmail,
 } from '@/services/authService';
-import { GoBackButton } from './components/GoBackButton';
 import { CSCard } from '@/components/common';
 import { Card } from 'flowbite-react';
 import agencyImg from '@/assets/images/authentication/agency.png';
@@ -98,7 +97,6 @@ const Verified = function () {
   return (
     <>
       <div className="flex">
-        <GoBackButton />
         <div className="pb-4">
           <h1 className="leding-tight col-span-11 mb-2 font-extrabold tracking-tight text-gray-900 dark:text-white">
             Email has been verified!

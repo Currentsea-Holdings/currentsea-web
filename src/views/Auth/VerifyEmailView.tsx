@@ -12,7 +12,7 @@ import {
   type ConfirmEmailResponse,
   confirmEmail,
 } from '@/services/authService';
-import { GoBackButton } from './components/GoBackButton';
+import { BackButton } from '@/components/common/BackButton';
 
 type VerificationCodeFields = {
   [K in `code${number}`]: string;
@@ -135,8 +135,11 @@ const Verify = function () {
 
   const onSubmit = async (data: VerificationCodeFields) => {
     const emailVerificationCode = Object.values(data).join('');
-    const result: ConfirmEmailResponse | undefined = await confirmEmail({ emailVerificationCode }, { email: user?.email });
-  
+    const result: ConfirmEmailResponse | undefined = await confirmEmail(
+      { emailVerificationCode },
+      { email: user?.email },
+    );
+
     if (result) {
       console.log('Email verified:', result);
       confirmUserEmail();
@@ -149,7 +152,12 @@ const Verify = function () {
   return (
     <>
       <div className="flex">
-        <GoBackButton />
+        <div className="h-full">
+          <BackButton
+            route="/login"
+            className="mr-2 mt-1 p-1 text-gray-300"
+          />
+        </div>
         <div className="pb-4">
           <h1 className="leding-tight col-span-11 mb-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             Verify your email address.

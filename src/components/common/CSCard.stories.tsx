@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import { CSCard, type CardProps } from '@/components/common/CSCard';
+import { CSCard, type CSCardProps } from '@/components/common/CSCard';
 
 export default {
   title: 'Components/CSCard',
@@ -18,7 +18,7 @@ export default {
   },
 } as Meta<typeof CSCard>;
 
-const Template: StoryFn<CardProps> = (args) => <CSCard {...args} />;
+const Template: StoryFn<CSCardProps> = (args) => <CSCard {...args} />;
 
 export const Default = Template.bind({});
 Default.storyName = 'Primary';

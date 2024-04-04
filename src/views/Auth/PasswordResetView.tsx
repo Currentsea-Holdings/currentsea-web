@@ -9,7 +9,6 @@ import { useAuthStore } from '@/stores/authStore';
 import { resetPassword } from '@/services/authService';
 import { FloatingLabel } from 'flowbite-react';
 import { useMutation } from '@tanstack/react-query';
-import { GoBackButton } from './components/GoBackButton';
 
 export const PasswordResetView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
@@ -81,7 +80,6 @@ export const PasswordResetView = function () {
             />
           </a>
           <div className="flex">
-            <GoBackButton />
             <div className="pb-4">
               <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
                 Reset your password

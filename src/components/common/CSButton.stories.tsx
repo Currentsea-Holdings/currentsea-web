@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import { CSButton, type ButtonProps } from '@/components/common/CSButton';
+import { CSButton, CSButtonProps } from '@/components/common/CSButton';
 
 export default {
   title: 'Components/CSButton',
@@ -18,7 +18,7 @@ export default {
   },
 } as Meta<typeof CSButton>;
 
-const Template: StoryFn<ButtonProps> = (args) => <CSButton {...args} />;
+const Template: StoryFn<CSButtonProps> = (args) => <CSButton {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
