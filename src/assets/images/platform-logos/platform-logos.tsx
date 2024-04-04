@@ -34,7 +34,9 @@ export const InstagramIcon: React.FC<IconProps> = ({ className = '' }: IconProps
       width="86"
       height="80"
       viewBox="0 0 86 80"
-      fill="#CD486B"
+      fill="white"
+      stroke="#CD486B"
+      strokeWidth="3.5"
     >
       <g id="Instagram">
         <g id="Vector">
