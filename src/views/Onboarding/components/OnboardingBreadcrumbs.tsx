@@ -11,7 +11,7 @@ export const OnboardingBreadcrumbs = ({ stepNum }: { stepNum: number }) => {
       style={{ backgroundImage: `url(${loginBackground})` }}
     >
       <div className="flex h-full flex-col items-center justify-center">
-        <div className="relative mt-12 min-h-[45%] w-5/6 rounded-lg bg-white p-8 text-center shadow-md">
+        <div className="relative mt-12 w-5/6 rounded-lg bg-white p-8 text-center shadow-md">
           {/* Logo */}
           <img
             src={logo}

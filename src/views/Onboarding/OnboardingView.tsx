@@ -1,20 +1,57 @@
 import { useForm } from 'react-hook-form';
 import { OnboardingBreadcrumbs } from './components/OnboardingBreadcrumbs';
-
+import { STATES } from '@/utils/constants';
+import PhoneInput from 'react-phone-number-input/input';
+import { CSButton } from '@/components/common';
+import { useMutation } from '@tanstack/react-query';
+import { createUserProfile } from '@/services/userProfileService';
+import type { UserProfileResponse, CreateUserProfilePayload } from '@/services/userProfileService';
+import { useAuthStore } from '@/stores/authStore';
+import { useNavigate } from 'react-router-dom';
 interface AccountSetupFormFields {
   firstName: string;
   lastName: string;
-  phone: string;
+  phoneNumber: string;
   city: string;
   state: string;
   profilePhoto: FileList;
 }
 
 export const OnboardingView = () => {
-  const { register, handleSubmit } = useForm<AccountSetupFormFields>();
+  const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+  if (!user) {
+    navigate('/');
+  }
+  const id = user?.id;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<AccountSetupFormFields>();
+
+  const { mutate: submitCreateUserProfile, isPending } = useMutation<
+    UserProfileResponse,
+    Error,
+    CreateUserProfilePayload
+  >({ mutationFn: createUserProfile });
+
   const onSubmit = (data: AccountSetupFormFields) => {
-    console.log(data);
-    // Handle form submission
+    const formData = data;
+    formData.phoneNumber = formData.phoneNumber.replace(/[^0-9]/g, '');
+
+    submitCreateUserProfile(
+      { userId: id as string, ...formData },
+      {
+        onSuccess: (data) => {
+          console.log('User Profile created successfully.');
+          navigate('/home');
+        },
+        onError: (error) => {
+          // console.error('error:', error);
+        },
+      },
+    );
   };
 
   return (
@@ -27,7 +64,7 @@ export const OnboardingView = () => {
           </h3>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className=" space-y-10 space-y-6 bg-white p-10"
+            className="space-y-10 bg-white p-10"
           >
             <div className="mb-0 text-left">
               <label
@@ -93,10 +130,12 @@ export const OnboardingView = () => {
               >
                 Phone
               </label>
-              <input
-                id="phone"
-                type="text"
-                {...register('phone')}
+              <PhoneInput
+                defaultCountry="US"
+                country="US"
+                isValidPhoneNumber={true}
+                {...register('phoneNumber')}
+                onChange={() => {}}
                 className="block w-full rounded-xl border border-gray-300 p-2"
               />
             </div>
@@ -129,19 +168,25 @@ export const OnboardingView = () => {
                   className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
                 >
                   <option value="">Select</option>
-                  {/* Need to Add more states */}
-                  <option value="state1">State 1</option>
-                  <option value="state2">State 2</option>
-                  <option value="state3">State 3</option>
+                  {Object.entries(STATES).map(([value, name]) => (
+                    <option
+                      key={value}
+                      value={value}
+                    >
+                      {name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
-            <button
+            <CSButton
               type="submit"
-              className="w-full rounded-xl border-gray-300 bg-gray-300 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              disabled={!isValid}
+              isProcessing={isPending}
+              className="inline-flex w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
             >
               Next: Social Media
-            </button>
+            </CSButton>
           </form>
         </div>
       </div>
