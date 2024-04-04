@@ -198,7 +198,7 @@ export const CalendarMonthIcon = ({ className = '' }: IconProps = {}) => {
 export const LeftArrowIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`h-6 w-6 text-gray-300 dark:text-white ${className}`}
+      className={`h-6 w-6 text-dark dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

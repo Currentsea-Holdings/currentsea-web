@@ -39,7 +39,6 @@
     "scripts",
     "src/types",
     "src/stories",
-    "src/components"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

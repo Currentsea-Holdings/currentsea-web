@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { CSButton } from '@/components/common';
 import { FloatingLabel } from 'flowbite-react';
 import { usePasswordResetContext } from '@/hooks/usePasswordResetContext';
-import { GoBackButton } from '../../components/GoBackButton';
+import { BackButton } from '@/components/common/BackButton';
 
 export const ForgotPasswordForm = ({
   setIsEmailSent,
@@ -47,7 +47,12 @@ export const ForgotPasswordForm = ({
   return (
     <>
       <div className="flex">
-        <GoBackButton />
+        <div className="h-full">
+          <BackButton
+            route="/login"
+            className="mr-2 mt-1 p-1 text-gray-300"
+          />
+        </div>
         <div className="pb-4">
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
             Forgot Password?
