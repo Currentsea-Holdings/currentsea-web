@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 export type IconProps = {
   className?: string;
@@ -27,7 +27,7 @@ export const CompassIcon = ({ className = '' }: IconProps = {}) => {
 export const InboxIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-[20px] h-[20px] text-gray-800 dark:text-white ${className}`}
+      className={`h-[20px] w-[20px] text-gray-800 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -47,7 +47,7 @@ export const InboxIcon = ({ className = '' }: IconProps = {}) => {
 export const CalendarIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-[20px] h-[20px] text-gray-800 dark:text-white ${className}`}
+      className={`h-[20px] w-[20px] text-gray-800 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -64,7 +64,7 @@ export const CalendarIcon = ({ className = '' }: IconProps = {}) => {
 export const ClipboardListIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-[20px] h-[20px] text-gray-800 dark:text-white ${className}`}
+      className={`h-[20px] w-[20px] text-gray-800 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       width="18"
@@ -85,7 +85,7 @@ export const ClipboardListIcon = ({ className = '' }: IconProps = {}) => {
 export const AffiliateProgramIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-[20px] h-[20px] text-gray-800 dark:text-white ${className}`}
+      className={`h-[20px] w-[20px] text-gray-800 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       width="18"
@@ -118,7 +118,7 @@ export const AffiliateProgramIcon = ({ className = '' }: IconProps = {}) => {
 export const DollarIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-5 h-5 text-gray-800 dark:text-white ${className}`}
+      className={`h-5 w-5 text-gray-800 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -138,7 +138,7 @@ export const DollarIcon = ({ className = '' }: IconProps = {}) => {
 export const ChartMixedDollarIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`relative w-4 h-4 text-primary dark:text-white ${className}`}
+      className={`relative h-4 w-4 text-primary dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
@@ -152,7 +152,7 @@ export const ChartMixedDollarIcon = ({ className = '' }: IconProps = {}) => {
 export const RotateIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`relative w-4 h-4 text-primary dark:text-white ${className}`}
+      className={`relative h-4 w-4 text-primary dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
@@ -166,7 +166,7 @@ export const RotateIcon = ({ className = '' }: IconProps = {}) => {
 export const MouseIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`relative w-4 h-4 text-primary dark:text-white ${className}`}
+      className={`relative h-4 w-4 text-primary dark:text-white ${className}`}
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 0 24 24"
@@ -198,7 +198,7 @@ export const CalendarMonthIcon = ({ className = '' }: IconProps = {}) => {
 export const LeftArrowIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-6 h-6 text-gray-300 dark:text-white ${className}`}
+      className={`h-6 w-6 text-gray-300 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -215,10 +215,39 @@ export const LeftArrowIcon = ({ className = '' }: IconProps = {}) => {
   );
 };
 
+export const LeftArrowIconBlack = ({
+  onClick,
+  className = '',
+}: IconProps & { onClick?: () => void }) => {
+  return (
+    <button
+    onClick={onClick}
+    aria-label="Go back"
+    className={`ml-[15%] ${className}`}
+    >
+      <svg
+        className={`h-4 w-4 text-gray-300 dark:text-white ${className}`}
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 8 14"
+      >
+        <path
+          stroke="black"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
+          d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"
+        />
+      </svg>
+    </button>
+  );
+};
+
 export const RightArrowIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-6 h-6 text-gray-300 dark:text-white ${className}`}
+      className={`h-6 w-6 text-gray-300 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -238,7 +267,7 @@ export const RightArrowIcon = ({ className = '' }: IconProps = {}) => {
 export const FacebookIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`w-6 h-6 text-gray-800 dark:text-white ${className}`}
+      className={`h-6 w-6 text-gray-800 dark:text-white ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
@@ -281,7 +310,7 @@ const Icons = {
   RightArrowIcon,
   LeftArrowIcon,
   FacebookIcon,
-  InstagramIcon
+  InstagramIcon,
 };
 
 export default Icons;

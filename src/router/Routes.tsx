@@ -11,6 +11,8 @@ import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';
 import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
+import { ConnectSocialMediaView } from '@/views/ConnectSocialMedia/ConnectSocialMediaView';
+
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -28,6 +30,10 @@ export const Routes = () => {
         //   path: '/onboarding',
         //   element: <AccountSetupInstructionsView />,
         // },
+        {
+          path: '/connect-social-media',
+          element: <ConnectSocialMediaView />,
+        },
         {
           path: '/',
           element: (
