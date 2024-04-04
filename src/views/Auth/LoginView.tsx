@@ -18,11 +18,6 @@ export const LoginView = function () {
 
   const { loginUser, isPending, isError, data } = useLogin();
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  useEffect(() => {
-    setIsSubmitting(isPending);
-  }, [isPending]);
-
   const navigate = useNavigate();
 
   const {
@@ -140,7 +135,7 @@ export const LoginView = function () {
             <CSButton
               type="submit"
               disabled={!isValid}
-              isProcessing={isSubmitting}
+              isProcessing={isPending}
               className="inline-flex w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
             >
               Log In

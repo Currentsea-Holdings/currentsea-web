@@ -1,2 +1,2 @@
 export * from './envUtils';
-export * as CONSTANTS from './constants';
+export * as CONSTANTS from './constants/';

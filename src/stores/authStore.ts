@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { login } from '@/services/authService';
 
 export interface User {
   id: string;
