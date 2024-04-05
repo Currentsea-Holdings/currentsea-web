@@ -50,7 +50,7 @@ export const ForgotPasswordForm = ({
         <div className="h-full">
           <BackButton
             route="/login"
-            className="mr-2 mt-1 p-1 text-gray-300"
+            className="mr-2 mt-1 p-1"
           />
         </div>
         <div className="pb-4">

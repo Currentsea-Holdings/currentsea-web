@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Icons from '@/assets/icons';
 
 export type BackButtonProps = {
@@ -17,15 +17,24 @@ export const BackButton = ({ className, route = -1 }: BackButtonProps) => {
     ?.split(' ')
     .filter((className) => !className.startsWith('text-'))
     .join(' ');
-    
+
   const handleNavigate = () => {
-    if (typeof route === 'string') {
-      navigate(route);
-    } else if (typeof route === 'number') {
+    if (typeof route === 'number') {
       navigate(route);
     }
-  }
-  return (
+  };
+
+  return typeof route === 'string' ? (
+    <Link
+      to={route}
+      title="Go back"
+      aria-label="Go back"
+    >
+      <div className={buttonClasses}>
+        <Icons.LeftArrowIcon className={iconClasses} />
+      </div>
+    </Link>
+  ) : (
     <button
       className={buttonClasses}
       title="Go back"
