@@ -41,7 +41,7 @@ export const AccountDetailsForm = ({ user }: { user: User }) => {
         {
           onSuccess: (data) => {
             console.log('User Profile created successfully.');
-            navigate('/home');
+            navigate('/connect-social-media');
           },
           onError: (error) => {
             // console.error('error:', error);
@@ -129,7 +129,7 @@ export const AccountDetailsForm = ({ user }: { user: User }) => {
                 <PhoneInput
                   defaultCountry="US"
                   country="US"
-                  isValidPhoneNumber={true}
+                  isvalidphonenumber={true.toString()}
                   {...register('phoneNumber')}
                   onChange={() => {}}
                   className="block w-full rounded-xl border border-gray-300 p-2"
