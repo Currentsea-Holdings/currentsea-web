@@ -7,7 +7,7 @@ import { OnboardingView } from '../Onboarding/OnboardingView';
 import { OnboardingBreadcrumbs } from '../Onboarding/components/OnboardingBreadcrumbs';
 import { CSButton } from '@/components/common';
 import { useAuthStore } from '@/stores/authStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
 import { BackButton } from '@/components/common/BackButton';
 
@@ -73,6 +73,20 @@ export const ConnectSocialMediaView = () => {
     // );
   };
 
+
+  /* FOR DEMO */
+  const [tiktokCode, setTiktokCode] = useState<string>();
+
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const code = searchParams.get('code');
+    if (code) {
+      setTiktokCode(code)
+    }
+  }, [searchParams]);
+
+  /* FOR DEMO */
+
   return (
     <div className="flex h-screen">
       <OnboardingBreadcrumbs stepNum={2} />
@@ -95,7 +109,8 @@ export const ConnectSocialMediaView = () => {
                 name={name}
                 Icon={Icon}
                 onClick={handleSocialMediaConnect(id)}
-                isConnected={isConnected[id] || false}
+                // isConnected={isConnected[id] || false}
+                isConnected={id === 'tiktok' && !!tiktokCode}
                 setIsConnected={() => {
                   setIsConnected((prev) => ({ ...prev, [id]: true }));
                 }}
