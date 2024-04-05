@@ -10,6 +10,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
 import { BackButton } from '@/components/common/BackButton';
+import { youtubeApi } from './api/youtube/youtubeApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -49,6 +50,15 @@ export const ConnectSocialMediaView = () => {
         console.log('Connect X Account executed');
       } else if (socialMediaId === 'youtube') {
         console.log('Connect Youtube Account executed');
+        const authorizationResponse = await youtubeApi.authorize();
+        console.log('Authorization response:', authorizationResponse);
+        window.location.href = authorizationResponse;
+        if (authorizationResponse) {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
+          console.log(`${socialMediaId} successfully authorized`);
+        } else {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
+        }
       }
     } catch (error) {
       console.error('Failed to initiate connection:', error);
@@ -73,7 +83,6 @@ export const ConnectSocialMediaView = () => {
     // );
   };
 
-
   /* FOR DEMO */
   const [tiktokCode, setTiktokCode] = useState<string>();
 
@@ -81,7 +90,7 @@ export const ConnectSocialMediaView = () => {
   useEffect(() => {
     const code = searchParams.get('code');
     if (code) {
-      setTiktokCode(code)
+      setTiktokCode(code);
     }
   }, [searchParams]);
 
@@ -109,8 +118,8 @@ export const ConnectSocialMediaView = () => {
                 name={name}
                 Icon={Icon}
                 onClick={handleSocialMediaConnect(id)}
-                // isConnected={isConnected[id] || false}
-                isConnected={id === 'tiktok' && !!tiktokCode}
+                isConnected={isConnected[id] || false}
+                // isConnected={id === 'tiktok' && !!tiktokCode}
                 setIsConnected={() => {
                   setIsConnected((prev) => ({ ...prev, [id]: true }));
                 }}
@@ -118,7 +127,9 @@ export const ConnectSocialMediaView = () => {
             ))}
           </div>
           <form
-            onSubmit={() => { navigate('/earnings') }}
+            onSubmit={() => {
+              navigate('/earnings');
+            }}
             className="flex w-full flex-col items-center justify-center p-5"
           >
             <CSButton
