@@ -5,6 +5,7 @@ import { useAuthStore, type User } from '@/stores/authStore';
 
 export const useLogin = () => {
   const setUser = useAuthStore((state) => state.setUser);
+  const setUserProfile = useAuthStore((state) => state.setUserProfile);
   const { mutate, isSuccess, isPending, data, isError, error } = useMutation<
     LoginResponse,
     Error,
@@ -16,6 +17,7 @@ export const useLogin = () => {
       console.log('Login successful.');
       console.log(data);
       setUser(data.user);
+      setUserProfile(data.userProfile);
     },
   });
 
