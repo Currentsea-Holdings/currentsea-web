@@ -5,7 +5,7 @@ import { CSButton } from '@/components/common';
 import { useMutation } from '@tanstack/react-query';
 import { createUserProfile } from '@/services/userProfileService';
 import type { UserProfileResponse, CreateUserProfilePayload } from '@/services/userProfileService';
-import type { User} from '@/stores/authStore';
+import { useAuthStore, type User} from '@/stores/authStore';
 import { useNavigate } from 'react-router-dom';
 
 interface AccountSetupFormFields {
@@ -19,6 +19,7 @@ interface AccountSetupFormFields {
 
 export const AccountDetailsForm = ({ user }: { user: User }) => {
     const navigate = useNavigate();
+    const setUserProfile = useAuthStore((state) => state.setUserProfile);
     const { id } = user;
     const {
       register,
@@ -41,6 +42,7 @@ export const AccountDetailsForm = ({ user }: { user: User }) => {
         {
           onSuccess: (data) => {
             console.log('User Profile created successfully.');
+            setUserProfile(data);
             navigate('/connect-social-media');
           },
           onError: (error) => {

@@ -8,7 +8,7 @@ interface Props {
 
 const useRedirectInfo = () => {
   const location = useLocation();
-  const { user } = useAuthStore();
+  const { user, userProfile } = useAuthStore();
 
   if (!user) {
     return { shouldRedirect: true, redirectTo: '/login' };
@@ -26,6 +26,10 @@ const useRedirectInfo = () => {
 
   if (!user.userType && location.pathname !== '/email-verified') {
     return { shouldRedirect: true, redirectTo: '/email-verified' };
+  }
+
+  if (!userProfile && location.pathname == '/') {
+    return { shouldRedirect: true, redirectTo: '/onboarding' };
   }
 
   return { shouldRedirect: false };

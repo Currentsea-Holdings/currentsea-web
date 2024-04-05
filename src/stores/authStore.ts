@@ -9,10 +9,24 @@ export interface User {
   userType?: 'Creator' | 'Agency' | 'Brand';
 }
 
+export interface UserProfile {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  companyName?: string;
+  phoneNumber?: string;
+  profilePicture?: string;
+  shortBio?: string;
+  city: string;
+  state: string;
+}
+
 interface AuthStore {
   isLoggedIn: () => boolean;
   user: User | null;
+  userProfile: UserProfile | null;
   setUser: (user: User) => void;
+  setUserProfile: (profile: UserProfile) => void;
   logOut: () => void;
   confirmUserEmail: () => void;
   updateUserType: (userType: 'Creator' | 'Agency' | 'Brand') => void;
@@ -24,8 +38,12 @@ export const useAuthStore = create<AuthStore>()(
       (set, get) => ({
         isLoggedIn: () => !!get().user,
         user: null,
+        userProfile: null,
         setUser: (user) => {
           set({ user });
+        },
+        setUserProfile: (userProfile) => {
+          set({ userProfile });
         },
         logOut: () => {
           set({ user: null });
