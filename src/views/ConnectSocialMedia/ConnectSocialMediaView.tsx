@@ -21,41 +21,31 @@ export const ConnectSocialMediaView = () => {
   }
 
   const handleSocialMediaConnect = (socialMediaId: string) => async () => {
-    if (socialMediaId === 'tiktok') {
-      console.log('Connect Tiktok Account executed');
-      try {
+    try {
+      if (socialMediaId === 'tiktok') {
+        console.log('Connect Tiktok Account executed');
         const authorizationResponse = await tikTokApi.authorize();
+        console.log('Authorization response:', authorizationResponse);
         window.location.href = authorizationResponse;
-      } catch (error) {
-        console.error('Failed to initiate TikTok authorization:', error);
+      } else if (socialMediaId === 'facebook') {
+        console.log('Connect Facebook Account executed');
+      } else if (socialMediaId === 'instagram') {
+        console.log('Connect Instagram Account executed');
+      } else if (socialMediaId === 'linkedin') {
+        console.log('Connect LinkedIn Account executed');
+      } else if (socialMediaId === 'pinterest') {
+        console.log('Connect Pinterest Account executed');
+      } else if (socialMediaId === 'snapchat') {
+        console.log('Connect Snapchat Account executed');
+      } else if (socialMediaId === 'twitch') {
+        console.log('Connect Twitch Account executed');
+      } else if (socialMediaId === 'x') {
+        console.log('Connect X Account executed');
+      } else if (socialMediaId === 'youtube') {
+        console.log('Connect Youtube Account executed');
       }
-    } else {
-      setIsConnected(true);
-      console.log(`Connect ${socialMediaId} Account executed`);
-    }
-    if (socialMediaId === 'facebook') {
-      console.log('Connect Facebook Account executed');
-    }
-    if (socialMediaId === 'instagram') {
-      console.log('Connect Instagram Account executed');
-    }
-    if (socialMediaId === 'linkedin') {
-      console.log('Connect LinkedIn Account executed');
-    }
-    if (socialMediaId === 'pinterest') {
-      console.log('Connect Pinterest Account executed');
-    }
-    if (socialMediaId === 'snapchat') {
-      console.log('Connect Snapchat Account executed');
-    }
-    if (socialMediaId === 'twitch') {
-      console.log('Connect Twitch Account executed');
-    }
-    if (socialMediaId === 'x') {
-      console.log('Connect X Account executed');
-    }
-    if (socialMediaId === 'youtube') {
-      console.log('Connect Youtube Account executed');
+    } catch (error) {
+      console.error('Failed to initiate connection:', error);
     }
   };
 
