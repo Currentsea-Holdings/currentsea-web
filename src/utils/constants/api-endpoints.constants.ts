@@ -11,4 +11,9 @@ export const API_ENDPOINTS = {
   TIKTOK_HANDLE_ACCESS_TOKEN: '/tiktok/auth/api/handle-access-token',
   TIKTOK_CONNECT_ACCOUNT: '/tiktok/auth/api/connect-tiktok-account',
   TIKTOK_USER_INFO: '/tiktok/auth/api/user-info',
+  YOUTUBE_AUTHORIZE: '/youtube/auth/api/authorize',
+  YOUTUBE_EXCHANGE_CODE: '/youtube/auth/api/exchange-code',
+  YOUTUBE_HANDLE_ACCESS_TOKEN: '/youtube/auth/api/handle-access-token',
+  YOUTUBE_CONNECT_ACCOUNT: '/youtube/auth/api/connect-youtube-account',
+  YOUTUBE_FETCH_ANALYTICS: '/youtube/auth/api/fetch-analytics',
 };
