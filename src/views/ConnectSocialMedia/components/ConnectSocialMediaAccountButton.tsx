@@ -19,7 +19,7 @@ export const ConnectSocialMediaAccountButton = ({
           {text}
         </button>
       ) : (
-        <h2 style={{color: 'green'}}>
+        <h2 style={{color: 'green', fontSize: '14px'}}>
           Connected!
         </h2>
       )}

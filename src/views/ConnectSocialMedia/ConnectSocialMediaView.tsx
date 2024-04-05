@@ -14,7 +14,7 @@ import { BackButton } from '@/components/common/BackButton';
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isConnected, setIsConnected] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
   if (!user) {
     navigate('/');
@@ -27,6 +27,12 @@ export const ConnectSocialMediaView = () => {
         const authorizationResponse = await tikTokApi.authorize();
         console.log('Authorization response:', authorizationResponse);
         window.location.href = authorizationResponse;
+        if (authorizationResponse) {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
+          console.log(`${socialMediaId} successfully authorized`);
+        } else {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
+        }
       } else if (socialMediaId === 'facebook') {
         console.log('Connect Facebook Account executed');
       } else if (socialMediaId === 'instagram') {
@@ -71,8 +77,11 @@ export const ConnectSocialMediaView = () => {
     <div className="flex h-screen">
       <OnboardingBreadcrumbs stepNum={2} />
       <div className="flex h-full w-full flex-col">
-        <div className="flex items-center justify-between p-4 mt-20">
-          <BackButton route="/onboarding" className="ml-[15%]" />
+        <div className="mt-20 flex items-center justify-between p-4">
+          <BackButton
+            route="/onboarding"
+            className="ml-[15%]"
+          />
           <h1 className="mr-[15%] font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
             Connect Social Media
           </h1>
@@ -86,8 +95,10 @@ export const ConnectSocialMediaView = () => {
                 name={name}
                 Icon={Icon}
                 onClick={handleSocialMediaConnect(id)}
-                isConnected={isConnected}
-                setIsConnected={setIsConnected}
+                isConnected={isConnected[id] || false}
+                setIsConnected={() => {
+                  setIsConnected((prev) => ({ ...prev, [id]: true }));
+                }}
               />
             ))}
           </div>
