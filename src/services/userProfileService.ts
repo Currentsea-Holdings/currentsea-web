@@ -30,6 +30,8 @@ export interface UserProfileResponse {
   id: string;
   email: string;
   emailVerified: boolean;
+  city: string;
+  state: string;
 }
 
 export const createUserProfile = async (payload: CreateUserProfilePayload): Promise<UserProfileResponse> => {
