@@ -118,7 +118,7 @@ export const ConnectSocialMediaView = () => {
             ))}
           </div>
           <form
-            onSubmit={() => onSubmit}
+            onSubmit={() => { navigate('/earnings') }}
             className="flex w-full flex-col items-center justify-center p-5"
           >
             <CSButton
