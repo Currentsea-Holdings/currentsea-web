@@ -1,6 +1,7 @@
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import logo from '@/assets/logo-title-black.png';
 import classNames from 'classnames';
+import { Fragment } from 'react';
 
 const steps = ['Creator Info', 'Social Media', 'Earnings Set up'];
 
@@ -24,9 +25,8 @@ export const OnboardingBreadcrumbs = ({ stepNum }: { stepNum: number }) => {
 
           <div className="relative ml-2 text-left text-sm">
             {steps.map((step, index) => (
-              <>
+              <Fragment key={index}>
                 <div
-                  key={index}
                   className="mb-12 flex items-center"
                 >
                   <div
@@ -57,7 +57,7 @@ export const OnboardingBreadcrumbs = ({ stepNum }: { stepNum: number }) => {
                   }}
                 ></div>
                 )}
-              </>
+              </Fragment>
             ))}
           </div>
         </div>

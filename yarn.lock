@@ -6856,6 +6856,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:^0.4.5"
     eslint-plugin-storybook: "npm:^0.6.15"
     flowbite-react: "npm:^0.7.2"
+    flowbite-react-icons: "npm:^1.0.5"
     localforage: "npm:^1.10.0"
     lodash-es: "npm:^4.17.21"
     match-sorter: "npm:^6.3.1"
@@ -8367,6 +8368,16 @@ __metadata:
   version: 0.223.3
   resolution: "flow-parser@npm:0.223.3"
   checksum: 4cf650719fe16c9aa9373bd1761b5f0ad29992b3974b612fee35dc6014f7454c769216ddeadcb55468c616a892f7b679e223d0da7355bd44337e13e645d95270
+  languageName: node
+  linkType: hard
+
+"flowbite-react-icons@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "flowbite-react-icons@npm:1.0.5"
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 1f7d80083510b0c42077fa11453f00c57971a0439e465405790ea84b82f819f945933b152191ffa021b420d4a255601fb5b2953e79953a5beb707d044bd4c965
   languageName: node
   linkType: hard
 

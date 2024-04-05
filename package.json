@@ -21,6 +21,7 @@
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
     "flowbite-react": "^0.7.2",
+    "flowbite-react-icons": "^1.0.5",
     "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
     "match-sorter": "^6.3.1",
