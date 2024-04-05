@@ -6,7 +6,7 @@
 
 @layer base {
   h1 {
-    @apply text-3xl;
+    @apply lg:text-3xl md:text-2xl sm:text-lg;
   }
   h2 {
     @apply text-2xl;
