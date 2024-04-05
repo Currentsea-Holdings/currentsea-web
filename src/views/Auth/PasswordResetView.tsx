@@ -9,6 +9,13 @@ import { useAuthStore } from '@/stores/authStore';
 import { resetPassword } from '@/services/authService';
 import { FloatingLabel } from 'flowbite-react';
 import { useMutation } from '@tanstack/react-query';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup.object().shape({
+  password: yup.string().required('Password is required'),
+  confirmPassword: yup.string().oneOf([yup.ref('password'), undefined], 'Passwords must match').required('Confirm Password is required'),
+});
 
 export const PasswordResetView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
@@ -24,7 +31,7 @@ export const PasswordResetView = function () {
     handleSubmit,
     watch,
     formState: { errors, isValid },
-  } = useForm<{ password: string; confirmPassword: string }>({ mode: 'onChange' });
+  } = useForm<{ password: string; confirmPassword: string }>({ mode: 'onChange', resolver: yupResolver(schema) });
   const [userEmail, setUserEmail] = useState('');
 
   const { mutate: submitPasswordReset, isPending } = useMutation<
@@ -93,50 +100,32 @@ export const PasswordResetView = function () {
             className="max-w-full md:space-y-6"
             onSubmit={handleSubmit(onSubmit)}
           >
-            {/* <div> */}
-              {/* <input
-                {...register('password', {
-                  required: true,
-                })}
-              />
-              <input
-                {...register('confirmPassword', {
-                  required: true,
-                  validate: (val: string) => {
-                    if (watch('password') != val) {
-                      return 'Your passwords do no match';
-                    }
-                  },
-                })}
-              /> */}
-              {/* <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                New Password
-              </label>
-              <FloatingLabel
-                id="email"
-                type="text"
-                {...register('password', { required: true })}
-                variant="outlined"
-                label=""
-                className="focus:border-2"
-                helperText={errorMessage}
-                color={floatingLabelColor()}
-              />
-            </div> */}
             <div>
               <label
                 htmlFor="password"
                 className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
               >
-                Password
+                New Password
               </label>
               <FloatingLabel
                 id="password"
-                type="text"
+                type="password"
                 {...register('password', { required: true })}
+                variant="outlined"
+                label=""
+                className="focus:border-2"
+                color={floatingLabelColor()}
+              />
+              <label
+                htmlFor="password"
+                className="mb-2 mt-6 block text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Confirm Password
+              </label>
+              <FloatingLabel
+                id="password"
+                type="password"
+                {...register('confirmPassword', { required: true })}
                 variant="outlined"
                 label=""
                 className="focus:border-2"

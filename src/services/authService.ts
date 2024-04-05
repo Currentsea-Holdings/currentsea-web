@@ -13,6 +13,17 @@ export interface LoginResponse {
     email: string;
     emailVerified: boolean;
   };
+  userProfile: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    companyName?: string;
+    phoneNumber?: string;
+    profilePicture?: string;
+    shortBio?: string;
+    city: string;
+    state: string;
+  }
   message: string;
 }
 
@@ -41,7 +52,14 @@ export interface ConfirmEmailResponse {
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   try {
     const userData = await authApi.login(payload);
-    return userData;
+    return {
+      ...userData,
+      userProfile: {
+        id: '',
+        city: '',
+        state: ''
+      }
+    };
   } catch (err) {
     if (isAxiosError(err)) {
       if (err.response?.status === 401) {
