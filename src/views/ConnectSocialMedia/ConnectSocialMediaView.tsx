@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { socialLogoArray } from '@/assets/images/platform-logos/platform-logos-data.tsx';
 import { SocialMediaConnectLayout } from '@/layouts/SocialMediaConnectLayout';
-import { LeftArrowIconBlack } from '@/assets/icons.tsx';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { SocialMediaConnectContainer } from './components/SocialMediaConnectContainer';
 import { OnboardingView } from '../Onboarding/OnboardingView';
@@ -10,6 +9,7 @@ import { CSButton } from '@/components/common';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavigate } from 'react-router-dom';
 import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
+import { BackButton } from '@/components/common/BackButton';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -19,10 +19,6 @@ export const ConnectSocialMediaView = () => {
   if (!user) {
     navigate('/');
   }
-
-  const goBack = () => {
-    navigate('/onboarding');
-  };
 
   const handleSocialMediaConnect = (socialMediaId: string) => async () => {
     try {
@@ -75,9 +71,9 @@ export const ConnectSocialMediaView = () => {
     <div className="flex h-screen">
       <OnboardingBreadcrumbs stepNum={2} />
       <div className="flex h-full w-full flex-col">
-        <div className="flex items-center justify-between p-4">
-          <LeftArrowIconBlack onClick={goBack} />
-          <h1 className="mr-[15%] text-lg font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-xl lg:text-2xl">
+        <div className="flex items-center justify-between p-4 mt-20">
+          <BackButton route="/onboarding" className="ml-[15%]" />
+          <h1 className="mr-[15%] font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
             Connect Social Media
           </h1>
           <div />
