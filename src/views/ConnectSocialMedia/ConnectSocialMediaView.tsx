@@ -6,11 +6,12 @@ import { SocialMediaConnectContainer } from './components/SocialMediaConnectCont
 import { OnboardingView } from '../Onboarding/OnboardingView';
 import { OnboardingBreadcrumbs } from '../Onboarding/components/OnboardingBreadcrumbs';
 import { CSButton } from '@/components/common';
+import { BackButton } from '@/components/common/BackButton';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
-import { BackButton } from '@/components/common/BackButton';
-import { youtubeApi } from './api/youtube/youtubeApi';
+import { youtubeApi } from '@/views/ConnectSocialMedia/api/youtube/youtubeApi';
+import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -23,9 +24,31 @@ export const ConnectSocialMediaView = () => {
 
   const handleSocialMediaConnect = (socialMediaId: string) => async () => {
     try {
-      if (socialMediaId === 'tiktok') {
+      if (socialMediaId === 'tiktok') { // ==========================================> TIKTOK *************
         console.log('Connect Tiktok Account executed');
         const authorizationResponse = await tikTokApi.authorize();
+        console.log('Authorization response:', authorizationResponse);
+        window.location.href = authorizationResponse;
+        if (authorizationResponse) {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
+          console.log(`${socialMediaId} successfully authorized`);
+        } else {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
+        }
+      } else if (socialMediaId === 'youtube') { // ===================================> YOUTUBE *************
+        console.log('Connect Youtube Account executed');
+        const authorizationResponse = await youtubeApi.authorize();
+        console.log('Authorization response:', authorizationResponse);
+        window.location.href = authorizationResponse;
+        if (authorizationResponse) {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
+          console.log(`${socialMediaId} successfully authorized`);
+        } else {
+          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
+        }
+      } else if (socialMediaId === 'twitch') { // =====================================> TWITCH *************
+        console.log('Connect Twitch Account executed');
+        const authorizationResponse = await twitchApi.authorize();
         console.log('Authorization response:', authorizationResponse);
         window.location.href = authorizationResponse;
         if (authorizationResponse) {
@@ -44,21 +67,8 @@ export const ConnectSocialMediaView = () => {
         console.log('Connect Pinterest Account executed');
       } else if (socialMediaId === 'snapchat') {
         console.log('Connect Snapchat Account executed');
-      } else if (socialMediaId === 'twitch') {
-        console.log('Connect Twitch Account executed');
       } else if (socialMediaId === 'x') {
         console.log('Connect X Account executed');
-      } else if (socialMediaId === 'youtube') {
-        console.log('Connect Youtube Account executed');
-        const authorizationResponse = await youtubeApi.authorize();
-        console.log('Authorization response:', authorizationResponse);
-        window.location.href = authorizationResponse;
-        if (authorizationResponse) {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
-          console.log(`${socialMediaId} successfully authorized`);
-        } else {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
-        }
       }
     } catch (error) {
       console.error('Failed to initiate connection:', error);

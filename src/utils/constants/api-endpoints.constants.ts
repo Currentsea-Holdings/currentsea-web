@@ -16,4 +16,10 @@ export const API_ENDPOINTS = {
   YOUTUBE_HANDLE_ACCESS_TOKEN: '/youtube/auth/api/handle-access-token',
   YOUTUBE_CONNECT_ACCOUNT: '/youtube/auth/api/connect-youtube-account',
   YOUTUBE_FETCH_ANALYTICS: '/youtube/auth/api/fetch-analytics',
+  TWITCH_AUTHORIZE: '/twitch/auth/api/authorize',
+  TWITCH_EXCHANGE_CODE: '/twitch/auth/api/exchange-code',
+  TWITCH_HANDLE_ACCESS_TOKEN: '/twitch/auth/api/handle-access-token',
+  TWITCH_CONNECT_ACCOUNT: '/twitch/auth/api/connect-twitch-account',
+  TWITCH_FETCH_ANALYTICS: '/twitch/auth/api/fetch-analytics',
+  TWITCH_FETCH_CHANNEL_ANALYTICS: '/twitch/auth/api/fetch-channel-analytics',
 };
