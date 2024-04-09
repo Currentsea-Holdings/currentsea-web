@@ -12,10 +12,10 @@ const LoadingScreen = () => {
           clearInterval(interval);
           return 100;
         }
-        const newProgress = oldProgress + 20; 
+        const newProgress = oldProgress + 20; // increment loading
         return newProgress;
       });
-    }, 1000); 
+    }, 1000); // Updating progress every second
 
     return () => {
       clearInterval(interval);
