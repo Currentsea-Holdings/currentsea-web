@@ -1,17 +1,6 @@
-import { LeftArrowIcon } from '@/assets/icons';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import logo from '@/assets/logo-title-black.png';
-import {
-    IconFacebook,
-    IconInstagram,
-    IconLinkedin,
-    IconPinterest,
-    IconSnapchat,
-    IconTikTok,
-    IconTwitch,
-    IconX,
-    IconYoutube,
-} from '@/assets/socialMediaIcons';
+import { IconPayPal } from '@/assets/socialMediaIcons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -20,28 +9,15 @@ interface SocialMedia {
   name: string;
   icon: JSX.Element;
 }
-const socialMediaList = [
-  { name: 'Facebook', icon: <IconFacebook /> },
-  { name: 'Instagram', icon: <IconInstagram /> },
-  { name: 'Linkedin', icon: <IconLinkedin /> },
-  { name: 'Pinterest', icon: <IconPinterest /> },
-  { name: 'Snapchat', icon: <IconSnapchat /> },
-  { name: 'TikTok', icon: <IconTikTok /> },
-  { name: 'Twitch', icon: <IconTwitch /> },
-  { name: 'YouTube', icon: <IconYoutube /> },
-  { name: 'X (Twitter)', icon: <IconX /> },
-];
 
-export const ConnectSocialMediaView: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(2);
+export const EarningsSetupView: React.FC = () => {
+  const [currentStep, setCurrentStep] = useState(3);
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
 
   const onSubmit = () => {
     // handle your submit
-    setCurrentStep(3);
-    navigate('/earnings-setup')
   };
 
   return (
@@ -114,54 +90,51 @@ export const ConnectSocialMediaView: React.FC = () => {
       </div>
 
       {/* Right Panel */}
-      <div className="flex w-3/4 flex-col items-center justify-center p-8">
-        <div className="flex w-full max-w-4xl items-center justify-between">
-          <button
-            className="flex items-center text-blue-600 hover:text-blue-800"
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            <LeftArrowIcon className="mr-2 h-6 w-6" /> {/* Adjust size as needed */}
-          </button>
-          {/* <h3 className="text-2xl font-bold text-center mb-8">Connect Social Media</h3> */}
-        </div>
-        <h3 className="mb-8 text-center text-2xl font-bold">Connect Social Media</h3>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-2/3 max-w-4xl"
-        >
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {socialMediaList.map((media) => (
-              <div
-                key={media.name}
-                className="flex flex-col items-center rounded-lg border p-4 shadow-md"
-              >
-                <div className="w-15 mb-4 h-12">{media.icon}</div>
-                <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                  {media.name}
-                </h5>
-                <button
-                  type="button"
-                  className="rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
-                >
-                  Connect account
-                </button>
+      <div className="flex h-2/3 w-3/4 flex-col items-center justify-center p-8">
+        <div className="flex flex-col items-center justify-center p-8">
+          <h2 className="mb-20 text-2xl font-bold leading-tight text-gray-900">Earnings Set up</h2>
+
+          <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-md">
+            <div className=" flex items-center space-x-4 mb-6">
+              {/* Icon for PayPal - replace with actual icon */}
+              <div className=" text-white">
+                <IconPayPal className=""></IconPayPal>
               </div>
-            ))}
-          </div>
-          <div className="mt-6 text-center">
+              <div className="flex-grow">
+                <h3 className="text-lg font-medium text-gray-900">PayPal</h3>
+              </div>
+            </div>
+            <div className="flex  mb-6">
+              <p className="text-xs text-gray-600">
+                PayPal is the faster, safer way to send and receive money or make an online
+                payment.
+              </p>
+            </div>
+            
             <button
-              type="submit"
-              className="w-full rounded-xl border-gray-300 bg-gray-300 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              type="button"
+              className="w-half flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+              onClick={() => {
+                /* Trigger PayPal Connect Logic */
+              }}
             >
-              Next: Earnings
+              Connect account
             </button>
           </div>
-        </form>
+          <div className="mt-6 w-full  text-center">
+            {' '}
+            {/* Ensure the container is full-width and account for any padding */}
+            <button
+              type="submit"
+              className="w-full rounded-xl bg-gray-300 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            >
+              Home
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ConnectSocialMediaView;
+export default EarningsSetupView;

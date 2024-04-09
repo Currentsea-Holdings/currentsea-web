@@ -3,12 +3,14 @@ import { RequireAuth } from '@/routes/RequireAuth';
 import { RootRoute } from '@/routes/RootRoute';
 import { AccountSetupInstructionsView } from '@/views/AccountSetup/AccountSetupInstructionsView';
 import { ConnectSocialMediaView } from '@/views/AccountSetup/ConnectSocialMediaView';
+import EarningsSetupView from '@/views/AccountSetup/EarningsSetupView';
 import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
 import { LoginView } from '@/views/Auth/LoginView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';
 import { SignupView } from '@/views/Auth/SignupView';
 import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
 import { Home } from '@/views/Home/Home';
+import LoadingScreenView from '@/views/LoadingScreen/LoadingScreenView';
 import { ThemeProvider } from '@emotion/react';
 import type { ReactNode } from 'react';
 import type { RouteObject } from 'react-router-dom';
@@ -65,6 +67,14 @@ export const Routes = () => {
     {
       path: '/connect-social-media',
       element: <ConnectSocialMediaView />
+    },
+    {
+      path: '/earnings-setup',
+      element: <EarningsSetupView />
+    },
+    {
+      path: '/loading-screen',
+      element: <LoadingScreenView />
     },
     {
       path: '/dashboard/*',
