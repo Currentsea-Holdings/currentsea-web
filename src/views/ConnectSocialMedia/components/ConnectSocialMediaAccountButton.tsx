@@ -3,11 +3,14 @@ export const ConnectSocialMediaAccountButton = ({
   onClick,
   isConnected,
   setIsConnected,
+  codeParams,
 }: {
   text: string;
+  codeParams: string;
   onClick: () => void;
   isConnected: boolean;
   setIsConnected: (value: boolean) => void;
+  setCodeParams: (value: string) => void;
 }) => {
   return (
     <>
@@ -19,9 +22,7 @@ export const ConnectSocialMediaAccountButton = ({
           {text}
         </button>
       ) : (
-        <h2 style={{color: 'green', fontSize: '14px'}}>
-          Connected!
-        </h2>
+        <h2 style={{ color: 'green', fontSize: '14px' }}>Connected!</h2>
       )}
     </>
   );

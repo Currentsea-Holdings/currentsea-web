@@ -15,48 +15,169 @@ import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
+  const [codeParams, setCodeParams] = useState<string>('');
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
   const [isConnected, setIsConnected] = useState<Record<string, boolean>>({});
+  const [currentSocialMediaId, setCurrentSocialMediaId] = useState<string | null>(null);
   const navigate = useNavigate();
+
   if (!user) {
     navigate('/');
   }
 
+  /* TODO: NEED TO FIGURE OUT HOW TO PASS URL AND PARAMS FROM POP
+  UP WINDOW TO ORIGINAL BROWSER USER IS CONNECTING FROM 
+  
+  
+  PLEASE SCROLL TO BOTTOM FOR CURRENT CODE
+  
+  */
+
+  // interface PopupMessageData {
+  //   code?: string;
+  //   source: string;
+  // }
+
+  //   useEffect(() => {
+  //     const queryParams = new URLSearchParams(window.location.search);
+  //     const code = queryParams.get('code');
+  //     const openerWindow = window.opener as Window;
+
+  //     if (code && window.opener) {
+  //       openerWindow.postMessage(
+  //         { code: code, source: 'social-auth-popup' },
+  //         '*',
+  //       );
+  //         window.close();
+  //     }
+  // }, []);
+
+  //   const handlePopup = (url: string) => {
+  //     return new Promise<string | null>((resolve, reject) => {
+  //         const popup = window.open(url, 'social-auth-popup', 'width=600,height=700,scrollbars=no');
+
+  //         if (!popup) {
+  //             reject(new Error('Unable to open popup'));
+  //             return;
+  //         }
+
+  //         const messageHandler = (event: MessageEvent<PopupMessageData>) => {
+  //             if (event.origin === '*' && event.data.source === 'social-auth-popup' && event.data.code) {
+  //                 resolve(event.data.code);
+  //                 window.removeEventListener('message', messageHandler);
+  //                 popup.close();
+  //             }
+  //         };
+
+  //         window.addEventListener('message', messageHandler, false);
+  //     });
+  // };
+
+  // const handleSocialMediaConnect = (socialMediaId: string) => async () => {
+  //   try {
+  //     if (socialMediaId === 'youtube') {
+  //       console.log('Connect Youtube Account executed');
+  //       const authorizationUrl = await youtubeApi.authorize();
+  //       await handlePopup(authorizationUrl);
+  //       // const code = new URLSearchParams(window.location.search).get('code');
+  //       // console.log('code in handleSocialMediaConnect:', code);
+  //       if (codeParams) {
+  //         console.log('codeParams in handleSocialMediaConnect:', codeParams);
+  //         setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
+  //         console.log(`${socialMediaId} successfully authorized with code:`, codeParams);
+  //       } else {
+  //         setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
+  //         console.log(`${socialMediaId} authorization failed or cancelled.`);
+  //       }
+  //     }
+  //     // ...
+  //   } catch (error) {
+  //     console.error('Failed to initiate connection:', error);
+  //   }
+
+  // submitCreateUserProfile(
+  //   { userId: id as string, ...socialData },
+  //   {
+  //     onSuccess: (data) => {
+  //       console.log('User Profile created successfully.');
+  //       navigate('/earnings');
+  //     },
+  //     onError: (error) => {
+  //       console.error('error:', error);
+  //     },
+  //   },
+  // );
+  // };
+
+  interface SocialMediaConnections {
+    [key: string]: boolean;
+  }
+
+  interface SocialMediaConnections {
+    tiktok: boolean;
+    youtube: boolean;
+    twitch: boolean;
+    facebook: boolean;
+    instagram: boolean;
+    linkedin: boolean;
+    pinterest: boolean;
+    snapchat: boolean;
+    x: boolean;
+  }
+
+  const getInitialConnections = (): SocialMediaConnections => {
+    const storedConnections = sessionStorage.getItem('connections');
+    return storedConnections
+      ? (JSON.parse(storedConnections) as SocialMediaConnections)
+      : {
+          tiktok: false,
+          youtube: false,
+          twitch: false,
+          facebook: false,
+          instagram: false,
+          linkedin: false,
+          pinterest: false,
+          snapchat: false,
+          x: false,
+        };
+  };
+
+  const [connections, setConnections] = useState(getInitialConnections());
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const socialMediaId = sessionStorage.getItem('currentSocialMediaId');
+    const code = searchParams.get('code');
+
+    if (code && socialMediaId) {
+      console.log(`Code found for ${socialMediaId}:`, code);
+      const updatedConnections = {
+        ...connections,
+        [socialMediaId]: true,
+      };
+
+      setConnections(updatedConnections);
+      sessionStorage.setItem('connections', JSON.stringify(updatedConnections));
+      sessionStorage.removeItem('currentSocialMediaId');
+    }
+  }, [searchParams, connections]);
+
   const handleSocialMediaConnect = (socialMediaId: string) => async () => {
+    setCurrentSocialMediaId(socialMediaId);
+    sessionStorage.setItem('currentSocialMediaId', socialMediaId);
     try {
-      if (socialMediaId === 'tiktok') { // ==========================================> TIKTOK *************
-        console.log('Connect Tiktok Account executed');
-        const authorizationResponse = await tikTokApi.authorize();
-        console.log('Authorization response:', authorizationResponse);
+      let authorizationResponse;
+      if (socialMediaId === 'tiktok') {
+        // ********************************************************** TIKTOK ********************************* //
+        authorizationResponse = await tikTokApi.authorize();
         window.location.href = authorizationResponse;
-        if (authorizationResponse) {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
-          console.log(`${socialMediaId} successfully authorized`);
-        } else {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
-        }
-      } else if (socialMediaId === 'youtube') { // ===================================> YOUTUBE *************
-        console.log('Connect Youtube Account executed');
-        const authorizationResponse = await youtubeApi.authorize();
-        console.log('Authorization response:', authorizationResponse);
+      } else if (socialMediaId === 'youtube') {
+        // ********************************************************** YOUTUBE ********************************* //
+        authorizationResponse = await youtubeApi.authorize();
         window.location.href = authorizationResponse;
-        if (authorizationResponse) {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
-          console.log(`${socialMediaId} successfully authorized`);
-        } else {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
-        }
-      } else if (socialMediaId === 'twitch') { // =====================================> TWITCH *************
-        console.log('Connect Twitch Account executed');
-        const authorizationResponse = await twitchApi.authorize();
-        console.log('Authorization response:', authorizationResponse);
+      } else if (socialMediaId === 'twitch') {
+        // ********************************************************** TWITCH ********************************* //
+        authorizationResponse = await twitchApi.authorize();
         window.location.href = authorizationResponse;
-        if (authorizationResponse) {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: true }));
-          console.log(`${socialMediaId} successfully authorized`);
-        } else {
-          setIsConnected((prevState) => ({ ...prevState, [socialMediaId]: false }));
-        }
       } else if (socialMediaId === 'facebook') {
         console.log('Connect Facebook Account executed');
       } else if (socialMediaId === 'instagram') {
@@ -78,33 +199,7 @@ export const ConnectSocialMediaView = () => {
   const onSubmit = (data: string) => {
     const socialData = data;
     navigate('/earnings');
-
-    // submitCreateUserProfile(
-    //   { userId: id as string, ...socialData },
-    //   {
-    //     onSuccess: (data) => {
-    //       console.log('User Profile created successfully.');
-    //       navigate('/earnings');
-    //     },
-    //     onError: (error) => {
-    //       console.error('error:', error);
-    //     },
-    //   },
-    // );
   };
-
-  /* FOR DEMO */
-  const [tiktokCode, setTiktokCode] = useState<string>();
-
-  const [searchParams] = useSearchParams();
-  useEffect(() => {
-    const code = searchParams.get('code');
-    if (code) {
-      setTiktokCode(code);
-    }
-  }, [searchParams]);
-
-  /* FOR DEMO */
 
   return (
     <div className="flex h-screen">
@@ -128,7 +223,9 @@ export const ConnectSocialMediaView = () => {
                 name={name}
                 Icon={Icon}
                 onClick={handleSocialMediaConnect(id)}
-                isConnected={isConnected[id] || false}
+                codeParams={codeParams}
+                setCodeParams={setCodeParams}
+                isConnected={connections[id]}
                 // isConnected={id === 'tiktok' && !!tiktokCode}
                 setIsConnected={() => {
                   setIsConnected((prev) => ({ ...prev, [id]: true }));

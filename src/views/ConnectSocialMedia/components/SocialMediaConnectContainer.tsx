@@ -6,14 +6,18 @@ type SocialMediaConnectContainerProps = {
   onClick: () => void; 
   isConnected: boolean;
   setIsConnected: (value: boolean) => void;
+  codeParams: string;
+  setCodeParams: (vaue: string) => void;
 };
 
 export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerProps> = ({
   Icon,
   name,
+  codeParams,
   onClick,
   isConnected,
   setIsConnected,
+  setCodeParams,
 }: SocialMediaConnectContainerProps) => {
 
   return (
@@ -26,6 +30,8 @@ export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerPr
       <ConnectSocialMediaAccountButton
         text="Connect account"
         onClick={onClick}
+        codeParams={codeParams}
+        setCodeParams={setCodeParams}
         isConnected={isConnected}
         setIsConnected={setIsConnected}
       />
