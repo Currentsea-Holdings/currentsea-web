@@ -109,6 +109,13 @@ export const ConnectSocialMediaView = () => {
   // );
   // };
 
+  /**
+    Frontend (User clicks connect) → 
+    Social Platform (User authorizes) → 
+    Backend (/callback endpoint processes the authorization) →
+    Frontend (User sees the result of the connection attempt).
+   */
+
   interface SocialMediaConnections {
     [key: string]: boolean;
   }
@@ -144,12 +151,28 @@ export const ConnectSocialMediaView = () => {
 
   const [connections, setConnections] = useState(getInitialConnections());
   const [searchParams] = useSearchParams();
+  
+  const saveAccessToken = (platform: string, accessToken: string) => {
+    console.log('platform and accessToken in saveAccessToken:', {
+      platform: platform,
+      accessToken: accessToken,
+    });
+    localStorage.setItem(`${platform}_accessToken`, accessToken);
+  };
+
+  // const getAccessToken = (platform) => {
+  //   return localStorage.getItem(`${platform}_accessToken`);
+  // };
+
+
   useEffect(() => {
     const status = searchParams.get('status');
+    const accessToken = searchParams.get('token');
     const socialMediaId = sessionStorage.getItem('currentSocialMediaId');
 
-    if (status === 'success' && socialMediaId) {
+    if (status === 'success' && accessToken && socialMediaId) {
       console.log(`${socialMediaId} connection successful`);
+      saveAccessToken(socialMediaId, accessToken);
       setConnections((prev) => ({
         ...prev,
         [socialMediaId]: true,
@@ -163,14 +186,6 @@ export const ConnectSocialMediaView = () => {
 
     sessionStorage.setItem('connections', JSON.stringify(connections));
   }, [searchParams, connections]);
-
-
-  /**
-    Frontend (User clicks connect) → 
-    Social Platform (User authorizes) → 
-    Backend (/callback endpoint processes the authorization) →
-    Frontend (User sees the result of the connection attempt).
-   */
 
   const handleSocialMediaConnect = (socialMediaId: string) => async () => {
     setCurrentSocialMediaId(socialMediaId);
