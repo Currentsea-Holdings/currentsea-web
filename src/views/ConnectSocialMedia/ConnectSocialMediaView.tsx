@@ -12,6 +12,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
 import { youtubeApi } from '@/views/ConnectSocialMedia/api/youtube/youtubeApi';
 import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
+import { snapChatApi } from './api/snapchat/snapchatApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -151,7 +152,7 @@ export const ConnectSocialMediaView = () => {
 
   const [connections, setConnections] = useState(getInitialConnections());
   const [searchParams] = useSearchParams();
-  
+
   const saveAccessToken = (platform: string, accessToken: string) => {
     console.log('platform and accessToken in saveAccessToken:', {
       platform: platform,
@@ -213,6 +214,8 @@ export const ConnectSocialMediaView = () => {
       } else if (socialMediaId === 'pinterest') {
         console.log('Connect Pinterest Account executed');
       } else if (socialMediaId === 'snapchat') {
+        authorizationResponse = await snapChatApi.authorize();
+        window.location.href = authorizationResponse;
         console.log('Connect Snapchat Account executed');
       } else if (socialMediaId === 'x') {
         console.log('Connect X Account executed');
