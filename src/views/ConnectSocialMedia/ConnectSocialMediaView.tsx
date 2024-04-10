@@ -13,6 +13,7 @@ import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
 import { youtubeApi } from '@/views/ConnectSocialMedia/api/youtube/youtubeApi';
 import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
+import { xApi } from './api/x/xApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -208,6 +209,11 @@ export const ConnectSocialMediaView = () => {
         // ********************************************************** SNAPCHAT ********************************* //
         authorizationResponse = await snapChatApi.authorize();
         window.location.href = authorizationResponse;
+      } else if (socialMediaId === 'x') {
+        // ********************************************************** X TWITTER ********************************* //
+        console.log('Connect Twitter Account executed');
+        authorizationResponse = await xApi.authorize();
+        window.location.href = authorizationResponse;
       } else if (socialMediaId === 'facebook') {
         console.log('Connect Facebook Account executed');
       } else if (socialMediaId === 'instagram') {
@@ -216,8 +222,6 @@ export const ConnectSocialMediaView = () => {
         console.log('Connect LinkedIn Account executed');
       } else if (socialMediaId === 'pinterest') {
         console.log('Connect Pinterest Account executed');
-      } else if (socialMediaId === 'x') {
-        console.log('Connect X Account executed');
       }
     } catch (error) {
       console.error('Failed to initiate connection:', error);
