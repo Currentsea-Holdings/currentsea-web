@@ -13,7 +13,7 @@ import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
 import { youtubeApi } from '@/views/ConnectSocialMedia/api/youtube/youtubeApi';
 import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
-import { xApi } from './api/x/xApi';
+import { xApi } from '@/views/ConnectSocialMedia/api/x/xApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
