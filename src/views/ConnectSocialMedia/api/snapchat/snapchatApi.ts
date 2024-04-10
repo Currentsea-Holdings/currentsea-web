@@ -1,6 +1,5 @@
 import { axiosClient as api } from '@/api/axiosClient';
 import { API_ENDPOINTS } from '@/utils/constants';
-import { codeChallenge } from '@/views/ConnectSocialMedia/api/code-challenge.ts';
 
 export interface SnapChatAuthorizationResponse {
   url: string;

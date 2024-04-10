@@ -12,7 +12,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
 import { youtubeApi } from '@/views/ConnectSocialMedia/api/youtube/youtubeApi';
 import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
-import { snapChatApi } from './api/snapchat/snapchatApi';
+import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -165,7 +165,6 @@ export const ConnectSocialMediaView = () => {
   //   return localStorage.getItem(`${platform}_accessToken`);
   // };
 
-
   useEffect(() => {
     const status = searchParams.get('status');
     const accessToken = searchParams.get('token');
@@ -205,6 +204,10 @@ export const ConnectSocialMediaView = () => {
         // ********************************************************** TWITCH ********************************* //
         authorizationResponse = await twitchApi.authorize();
         window.location.href = authorizationResponse;
+      } else if (socialMediaId === 'snapchat') {
+        // ********************************************************** SNAPCHAT ********************************* //
+        authorizationResponse = await snapChatApi.authorize();
+        window.location.href = authorizationResponse;
       } else if (socialMediaId === 'facebook') {
         console.log('Connect Facebook Account executed');
       } else if (socialMediaId === 'instagram') {
@@ -213,10 +216,6 @@ export const ConnectSocialMediaView = () => {
         console.log('Connect LinkedIn Account executed');
       } else if (socialMediaId === 'pinterest') {
         console.log('Connect Pinterest Account executed');
-      } else if (socialMediaId === 'snapchat') {
-        authorizationResponse = await snapChatApi.authorize();
-        window.location.href = authorizationResponse;
-        console.log('Connect Snapchat Account executed');
       } else if (socialMediaId === 'x') {
         console.log('Connect X Account executed');
       }
