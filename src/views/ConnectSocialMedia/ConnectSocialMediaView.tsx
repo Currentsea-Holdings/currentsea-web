@@ -145,21 +145,32 @@ export const ConnectSocialMediaView = () => {
   const [connections, setConnections] = useState(getInitialConnections());
   const [searchParams] = useSearchParams();
   useEffect(() => {
+    const status = searchParams.get('status');
     const socialMediaId = sessionStorage.getItem('currentSocialMediaId');
-    const code = searchParams.get('code');
 
-    if (code && socialMediaId) {
-      console.log(`Code found for ${socialMediaId}:`, code);
-      const updatedConnections = {
-        ...connections,
+    if (status === 'success' && socialMediaId) {
+      console.log(`${socialMediaId} connection successful`);
+      setConnections((prev) => ({
+        ...prev,
         [socialMediaId]: true,
-      };
-
-      setConnections(updatedConnections);
-      sessionStorage.setItem('connections', JSON.stringify(updatedConnections));
+      }));
       sessionStorage.removeItem('currentSocialMediaId');
     }
+
+    if (status === 'error') {
+      console.error(`${socialMediaId} connection failed`);
+    }
+
+    sessionStorage.setItem('connections', JSON.stringify(connections));
   }, [searchParams, connections]);
+
+
+  /**
+    Frontend (User clicks connect) → 
+    Social Platform (User authorizes) → 
+    Backend (/callback endpoint processes the authorization) →
+    Frontend (User sees the result of the connection attempt).
+   */
 
   const handleSocialMediaConnect = (socialMediaId: string) => async () => {
     setCurrentSocialMediaId(socialMediaId);
