@@ -154,6 +154,8 @@ export const ConnectSocialMediaView = () => {
   const [connections, setConnections] = useState(getInitialConnections());
   const [searchParams] = useSearchParams();
 
+  // WILL REMOVE ALL CONSOLE LOGS WITH SENSITIVE INFO WHEN TEST AND DEV IS DONE
+
   const saveAccessToken = (platform: string, accessToken: string) => {
     console.log('platform and accessToken in saveAccessToken:', {
       platform: platform,
