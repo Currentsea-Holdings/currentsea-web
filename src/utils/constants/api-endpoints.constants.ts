@@ -22,4 +22,5 @@ export const API_ENDPOINTS = {
   TWITCH_CONNECT_ACCOUNT: '/twitch/auth/api/connect-twitch-account',
   TWITCH_FETCH_ANALYTICS: '/twitch/auth/api/fetch-analytics',
   TWITCH_FETCH_CHANNEL_ANALYTICS: '/twitch/auth/api/fetch-channel-analytics',
+  SNAPCHAT_AUTHORIZE: '/snapchat/auth/api/authorize',
 };
