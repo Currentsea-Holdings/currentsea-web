@@ -22,7 +22,7 @@ export const Earnings = ({ onNext, onBack }: EarningsProps) => {
         </h1>
         <div />
       </div>
-      <div className="flex flex-1 flex-col items-center w-[50%] justify-start self-center overflow-y-auto p-4">
+      <div className="flex w-[50%] flex-1 flex-col items-center justify-start self-center overflow-y-auto p-4">
         <div className="IntegrationCards mt-10 inline-flex h-48 w-full flex-col items-start justify-between rounded-lg bg-white p-4 shadow">
           <div className="Header inline-flex items-center justify-start gap-5 self-stretch">
             <div className="LogoName flex h-7 shrink grow basis-0 items-center justify-start gap-4 pr-72">
@@ -40,12 +40,12 @@ export const Earnings = ({ onNext, onBack }: EarningsProps) => {
           </div>
           <div className="Buttons inline-flex items-start justify-start gap-2 self-stretch">
             <div className="CurrentseaButton flex h-9 shrink grow basis-0 items-start justify-start gap-2">
-              <button
+              <CSButton
                 // onClick={onClick}
-                className="w-50 flex h-9 cursor-pointer items-center justify-center rounded-lg bg-primary px-4 text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
+                className="w-50 flex h-9 cursor-pointer items-center justify-center rounded-lg bg-primary text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
               >
                 Connect account <ArrowRight className="pl-2" />
-              </button>
+              </CSButton>
               <div className="ArrowRight relative h-3 w-3" />
             </div>
           </div>

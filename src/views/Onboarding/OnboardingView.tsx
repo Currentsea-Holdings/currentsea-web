@@ -9,6 +9,7 @@ import { ConnectSocialMediaView } from '../ConnectSocialMedia/ConnectSocialMedia
 export const OnboardingView = () => {
   const user = useAuthStore((state) => state.user);
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
+  const userProfile = useAuthStore((state) => state.userProfile);
 
   const navigate = useNavigate();
   const { step } = useParams();
@@ -62,6 +63,22 @@ export const OnboardingView = () => {
               onNext={goToNextStep}
             />
           );
+        case 4:
+          if (userProfile) {
+            return (
+              <Navigate
+              to="/"
+              replace={true}
+              />
+            );
+          } else {
+            return (
+              <Navigate
+                to="/onboarding/1"
+                replace={true}
+              />
+            );
+          }
         default:
           return (
             <Navigate
