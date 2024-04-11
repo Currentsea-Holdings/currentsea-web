@@ -1,6 +1,8 @@
 import { usersApi } from '@/api/usersApi';
 import { isAxiosError } from 'axios';
 import { ERROR_MESSAGES } from '@/utils/constants';
+import type { UserProfileResponse } from './userProfileService';
+import { userProfileApi } from '@/api/userProfileApi';
 
 export interface CreateUserPayload {
   email: string;
@@ -78,5 +80,16 @@ export const deleteUser = async (id: string): Promise<void> => {
   } catch (err) {
     console.error('Delete User Error:', err);
     throw err;
+  }
+};
+
+export const getUserUserProfile = async (id?: string): Promise<UserProfileResponse | undefined> => {
+  if (!id) {
+    throw new Error('No user id provided');
+  }
+  try {
+    return await usersApi.getUserUserProfile(id);
+  } catch (err) {
+    return undefined;
   }
 };

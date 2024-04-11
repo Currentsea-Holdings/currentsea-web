@@ -1,4 +1,5 @@
 import { axiosClient as api } from '@/api/axiosClient';
+import type { UserProfileResponse } from '@/services/userProfileService';
 import { API_ENDPOINTS } from '@/utils/constants';
 
 export interface CreateUserPayload {
@@ -37,14 +38,15 @@ export const usersApi = {
     return await api.get(`${API_ENDPOINTS.USERS}/${id}`);
   },
 
-  updateUser: async (
-    id: string,
-    payload: UpdateUserPayload
-  ): Promise<UserResponse> => {
+  updateUser: async (id: string, payload: UpdateUserPayload): Promise<UserResponse> => {
     return await api.patch(`${API_ENDPOINTS.USERS}/${id}`, payload);
   },
 
   deleteUser: async (id: string): Promise<void> => {
     await api.delete(`${API_ENDPOINTS.USERS}/${id}`);
+  },
+
+  getUserUserProfile: async (id: string): Promise<UserProfileResponse> => {
+    return await api.get(`${API_ENDPOINTS.USERS}/${id}/profile`);
   },
 };

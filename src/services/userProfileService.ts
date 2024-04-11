@@ -15,6 +15,7 @@ export interface CreateUserProfilePayload {
 }
 
 export interface UpdateUserProfilePayload {
+  id: string;
   userId?: string;
   firstName?: string;
   lastName?: string;
@@ -46,7 +47,7 @@ export const createUserProfile = async (payload: CreateUserProfilePayload): Prom
   }
 };
 
-export const updateUserProfile = async (id: string, payload: UpdateUserProfilePayload): Promise<UserProfileResponse> => {
+export const updateUserProfile = async ({ id, ...payload }: UpdateUserProfilePayload): Promise<UserProfileResponse> => {
   try {
     return await userProfileApi.updateUserProfile(id, payload);
   } catch (err) {
@@ -58,7 +59,10 @@ export const updateUserProfile = async (id: string, payload: UpdateUserProfilePa
   }
 };
 
-export const fetchUserProfileById = async (id: string): Promise<UserProfileResponse> => {
+export const fetchUserProfileById = async (id?: string): Promise<UserProfileResponse> => {
+  if (!id) {
+    throw new Error('No user id provided');
+  }
   try {
     return await userProfileApi.getUserProfileById(id);
   } catch (err) {

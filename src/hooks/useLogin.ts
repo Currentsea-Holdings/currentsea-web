@@ -13,11 +13,10 @@ export const useLogin = () => {
     User
   >({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: ({ user, userProfile}) => {
       console.log('Login successful.');
-      console.log(data);
-      setUser(data.user);
-      setUserProfile(data.userProfile);
+      setUser(user);
+      setUserProfile(userProfile);
     },
   });
 

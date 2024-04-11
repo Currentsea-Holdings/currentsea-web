@@ -12,7 +12,6 @@ import { PasswordResetView } from '@/views/Auth/PasswordResetView';
 import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
 import { ConnectSocialMediaView } from '@/views/ConnectSocialMedia/ConnectSocialMediaView';
-import { EarningsView } from '@/views/Onboarding/EarningsView';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -26,14 +25,6 @@ export const Routes = () => {
         </RequireAuth>
       ),
       children: [
-        // {
-        //   path: '/onboarding',
-        //   element: <AccountSetupInstructionsView />,
-        // },
-        // {
-        //   path: '/connect-social-media',
-        //   element: <ConnectSocialMediaView />,
-        // },
         {
           path: '/',
           element: (
@@ -47,6 +38,14 @@ export const Routes = () => {
           element: <VerifyEmailView />,
         },
         { path: '/email-verified', element: <EmailVerifiedView /> },
+        {
+          path: '/onboarding',
+          element: <OnboardingView />,
+        },
+        {
+          path: '/onboarding/:step',
+          element: <OnboardingView />,
+        },
         {
           path: '*',
           element: (
@@ -75,16 +74,8 @@ export const Routes = () => {
       element: <PasswordResetView />,
     },
     {
-      path: '/onboarding',
-      element: <OnboardingView />,
-    },
-    {
       path: '/connect-social-media',
       element: <ConnectSocialMediaView />,
-    },
-    {
-      path: '/earnings',
-      element: <EarningsView />,
     },
   ];
 

@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode} from 'react';
-import type { CustomFlowbiteTheme} from 'flowbite-react';
+import type { ButtonSizes, CustomFlowbiteTheme } from 'flowbite-react';
 import { getTheme, Button } from 'flowbite-react';
 import { CSSpinner } from '@/components/common/CSSpinner';
 
@@ -11,6 +11,7 @@ export type CSButtonProps<T extends ElementType = 'button'> = {
   disabled?: boolean;
   className?: string;
   children?: ReactNode;
+  size?: keyof ButtonSizes;
 } & ComponentPropsWithoutRef<T>;
 
 export const CSButton = (props: CSButtonProps) => {

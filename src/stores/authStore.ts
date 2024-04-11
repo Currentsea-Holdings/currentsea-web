@@ -7,6 +7,7 @@ export interface User {
   email: string;
   emailVerified: boolean;
   userType?: 'Creator' | 'Agency' | 'Brand';
+  userProfile?: UserProfile
 }
 
 export interface UserProfile {
@@ -26,7 +27,7 @@ interface AuthStore {
   user: User | null;
   userProfile: UserProfile | null;
   setUser: (user: User) => void;
-  setUserProfile: (profile: UserProfile) => void;
+  setUserProfile: (profile: UserProfile | undefined) => void;
   logOut: () => void;
   confirmUserEmail: () => void;
   updateUserType: (userType: 'Creator' | 'Agency' | 'Brand') => void;
@@ -43,7 +44,11 @@ export const useAuthStore = create<AuthStore>()(
           set({ user });
         },
         setUserProfile: (userProfile) => {
-          set({ userProfile });
+          if (userProfile) {
+            set({ userProfile });
+          } else {
+            set({ userProfile: null });
+          }
         },
         logOut: () => {
           set({ user: null });
