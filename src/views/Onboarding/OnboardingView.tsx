@@ -1,27 +1,88 @@
-
 import { OnboardingBreadcrumbs } from './components/OnboardingBreadcrumbs';
 import { useAuthStore } from '@/stores/authStore';
-import { useNavigate } from 'react-router-dom';
-import { AccountDetailsForm } from './components/AccountDetailsForm';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { AccountSetupForm, Earnings } from './';
 import { useEffect } from 'react';
+import { getUserUserProfile } from '@/services/usersService';
+import { ConnectSocialMediaView } from '../ConnectSocialMedia/ConnectSocialMediaView';
 
 export const OnboardingView = () => {
   const user = useAuthStore((state) => state.user);
+  const setUserProfile = useAuthStore((state) => state.setUserProfile);
+
   const navigate = useNavigate();
-  
+  const { step } = useParams();
+  const stepNumber = Number(step);
+
   useEffect(() => {
     if (!user) {
       navigate('/');
     }
   }, [user, navigate]);
 
+  // Fetch User Profile data on step 1
+  useEffect(() => {
+    if (stepNumber === 1) {
+      const fetchUserProfileData = async () => {
+        const userProfileData = await getUserUserProfile(user?.id);
+        setUserProfile(userProfileData);
+      };
+
+      fetchUserProfileData().catch((error) => {
+        console.error(error);
+      });
+    }
+  }, [setUserProfile, stepNumber, user?.id]);
+
+  // Callbacks for navigating through steps
+  const goToPreviousStep = () => {
+    navigate(`/onboarding/${stepNumber - 1}`);
+  };
+  const goToNextStep = () => {
+    navigate(`/onboarding/${stepNumber + 1}`);
+  };
+
+  // Render current step component based on step number
+  const getCurrentStepComponent = () => {
+    if (user) {
+      switch (stepNumber) {
+        case 1:
+          return (
+            <AccountSetupForm
+              user={user}
+              onNext={goToNextStep}
+            />
+          );
+        case 2:
+          return <ConnectSocialMediaView />;
+        case 3:
+          return (
+            <Earnings
+              onBack={goToPreviousStep}
+              onNext={goToNextStep}
+            />
+          );
+        default:
+          return (
+            <Navigate
+              to="/onboarding/1"
+              replace={true}
+            />
+          );
+      }
+    }
+    return (
+      <Navigate
+        to="/login"
+        replace={true}
+      />
+    );
+  };
+
   return (
     <div className="flex h-screen">
-      <OnboardingBreadcrumbs stepNum={1} />
-      <div className="flex h-full w-full flex-col">
-        {user && <AccountDetailsForm user={user} />}
-      </div>
+      <OnboardingBreadcrumbs stepNum={stepNumber} />
+      <div className="flex h-full w-full flex-col">{getCurrentStepComponent()}</div>
     </div>
   );
 };
-

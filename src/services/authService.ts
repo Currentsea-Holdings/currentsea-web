@@ -13,7 +13,7 @@ export interface LoginResponse {
     email: string;
     emailVerified: boolean;
   };
-  userProfile: {
+  userProfile?: {
     id: string;
     firstName?: string;
     lastName?: string;
@@ -54,11 +54,6 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
     const userData = await authApi.login(payload);
     return {
       ...userData,
-      userProfile: {
-        id: '',
-        city: '',
-        state: ''
-      }
     };
   } catch (err) {
     if (isAxiosError(err)) {

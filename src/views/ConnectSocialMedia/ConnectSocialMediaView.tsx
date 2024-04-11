@@ -236,52 +236,47 @@ export const ConnectSocialMediaView = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <OnboardingBreadcrumbs stepNum={2} />
-      <div className="flex h-full w-full flex-col">
-        <div className="mt-20 flex items-center justify-between p-4">
-          <BackButton
-            route="/onboarding"
-            className="ml-[15%]"
-          />
-          <h1 className="mr-[15%] font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-            Connect Social Media
-          </h1>
-          <div />
-        </div>
-        <div className="flex flex-1 flex-col items-center justify-start overflow-y-auto p-4">
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-            {socialLogoArray.map(({ id, name, Icon }) => (
-              <SocialMediaConnectContainer
-                key={id}
-                name={name}
-                Icon={Icon}
-                onClick={handleSocialMediaConnect(id)}
-                codeParams={codeParams}
-                setCodeParams={setCodeParams}
-                isConnected={connections[id]}
-                // isConnected={id === 'tiktok' && !!tiktokCode}
-                setIsConnected={() => {
-                  setIsConnected((prev) => ({ ...prev, [id]: true }));
-                }}
-              />
-            ))}
-          </div>
-          <form
-            onSubmit={() => {
-              navigate('/earnings');
-            }}
-            className="flex w-full flex-col items-center justify-center p-5"
-          >
-            <CSButton
-              type="submit"
-              className="flex h-12 w-[73%] items-center justify-center rounded-lg border bg-primary px-5"
-            >
-              Next: Earnings
-            </CSButton>
-          </form>
-        </div>
+    <>
+      <div className="mx-[15%] mt-20 flex items-center justify-between p-4">
+        <BackButton route="/onboarding/1" />
+        <h1 className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+          Connect Social Media
+        </h1>
+        <div />
       </div>
-    </div>
+      <div className="flex flex-1 flex-col items-center justify-start overflow-y-auto p-4">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+          {socialLogoArray.map(({ id, name, Icon }) => (
+            <SocialMediaConnectContainer
+              key={id}
+              name={name}
+              Icon={Icon}
+              onClick={handleSocialMediaConnect(id)}
+              codeParams={codeParams}
+              setCodeParams={setCodeParams}
+              isConnected={connections[id]}
+              // isConnected={id === 'tiktok' && !!tiktokCode}
+              setIsConnected={() => {
+                setIsConnected((prev) => ({ ...prev, [id]: true }));
+              }}
+            />
+          ))}
+        </div>
+        <form
+          onSubmit={() => {
+            navigate('/onboarding/3');
+          }}
+          className="flex w-full flex-col items-center justify-center p-5"
+        >
+          <CSButton
+            type="submit"
+            size={'lg'}
+            className="flex h-12 w-[73%] items-center justify-center rounded-lg border bg-primary px-5"
+          >
+            Next: Earnings
+          </CSButton>
+        </form>
+      </div>
+    </>
   );
 };
