@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { socialLogoArray } from '@/assets/images/platform-logos/platform-logos-data.tsx';
-import { SocialMediaConnectLayout } from '@/layouts/SocialMediaConnectLayout';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { SocialMediaConnectContainer } from './components/SocialMediaConnectContainer';
-import { OnboardingView } from '../Onboarding/OnboardingView';
-import { OnboardingBreadcrumbs } from '../Onboarding/components/OnboardingBreadcrumbs';
 import { CSButton } from '@/components/common';
 import { BackButton } from '@/components/common/BackButton';
 import { useAuthStore } from '@/stores/authStore';

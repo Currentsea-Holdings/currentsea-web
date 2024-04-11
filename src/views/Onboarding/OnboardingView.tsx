@@ -1,4 +1,4 @@
-import { OnboardingBreadcrumbs } from './components/OnboardingBreadcrumbs';
+import { OnboardingSteps } from './components/OnboardingSteps';
 import { useAuthStore } from '@/stores/authStore';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { AccountSetupForm, Earnings } from './';
@@ -81,7 +81,7 @@ export const OnboardingView = () => {
 
   return (
     <div className="flex h-screen">
-      <OnboardingBreadcrumbs stepNum={stepNumber} />
+      <OnboardingSteps stepNum={stepNumber} />
       <div className="flex h-full w-full flex-col">{getCurrentStepComponent()}</div>
     </div>
   );

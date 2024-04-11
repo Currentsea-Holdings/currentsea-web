@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 
 const steps = ['Creator Info', 'Social Media', 'Earnings Set up'];
 
-export const OnboardingBreadcrumbs = ({ stepNum }: { stepNum: number }) => {
+export const OnboardingSteps = ({ stepNum }: { stepNum: number }) => {
   return (
     <div
       className="w-full bg-cover bg-center bg-no-repeat p-4 md:w-1/2"
