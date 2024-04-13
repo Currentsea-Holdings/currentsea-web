@@ -192,9 +192,9 @@ export const ConnectSocialMediaView = () => {
     sessionStorage.setItem('currentSocialMediaId', socialMediaId);
     try {
       let authorizationResponse;
-      if (socialMediaId === 'tiktok') {
+      if (socialMediaId === 'tiktok' && user) {
         // ********************************************************** TIKTOK ********************************* //
-        authorizationResponse = await tikTokApi.authorize();
+        authorizationResponse = await tikTokApi.authorize(user.id);
         window.location.href = authorizationResponse;
       } else if (socialMediaId === 'youtube') {
         // ********************************************************** YOUTUBE ********************************* //
