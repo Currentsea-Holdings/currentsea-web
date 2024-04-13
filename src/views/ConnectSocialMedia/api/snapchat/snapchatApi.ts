@@ -21,10 +21,18 @@ export interface SnapChatUserInfo {
 }
 
 export const snapChatApi = {
-  authorize: async (): Promise<string> => {
-    const response = await api.get<string>(API_ENDPOINTS.SNAPCHAT_AUTHORIZE, {
-      responseType: 'text',
-    });
+  authorize: async (loggedId: string): Promise<string> => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'text' as const,
+    };
+    const body = {
+      userId: loggedId,
+    };
+    const response = await api.post<string>(API_ENDPOINTS.SNAPCHAT_AUTHORIZE, body, config);
     return response;
-  },
+  }
 };

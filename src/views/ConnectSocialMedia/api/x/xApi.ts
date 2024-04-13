@@ -2,7 +2,7 @@ import { axiosClient as api } from '@/api/axiosClient';
 import { API_ENDPOINTS } from '@/utils/constants';
 
 export interface xTwitterAuthorizationResponse {
-  url: string;
+  authorizationUrl: string;
 }
 
 export interface xTwitterAccessTokenResponse {
@@ -12,10 +12,15 @@ export interface xTwitterAccessTokenResponse {
 }
 
 export const xApi = {
-  authorize: async (): Promise<string> => {
-    const response = await api.get<string>(API_ENDPOINTS.X_AUTHORIZE, {
-      responseType: 'text',
-    });
-    return response;
+  authorize: async (loggedId: string): Promise<string> => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'text' as const,
+    };
+    const body = { userId: loggedId };
+    return await api.post(API_ENDPOINTS.X_AUTHORIZE, body, config);
   },
 };
