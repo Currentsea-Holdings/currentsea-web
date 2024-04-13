@@ -23,8 +23,8 @@ export interface TikTokUserInfo {
 }
 
 export const tikTokApi = {
-  authorize: async (): Promise<string> => {
-    return await api.get<string>(`${API_ENDPOINTS.TIKTOK_AUTHORIZE}`, {
+  authorize: async (userId: string): Promise<string> => {
+    return await api.get<string>(`${API_ENDPOINTS.TIKTOK_AUTHORIZE}/${userId}`, {
       responseType: 'text',
     });
   },
