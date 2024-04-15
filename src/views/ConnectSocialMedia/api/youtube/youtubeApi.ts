@@ -16,11 +16,18 @@ export interface YouTubeUserInfo {
 }
 
 export const youtubeApi = {
-  authorize: async (): Promise<string> => {
-    const response = await api.get<string>(API_ENDPOINTS.YOUTUBE_AUTHORIZE, {
-      responseType: 'text',
-    });
-    return response;
+  authorize: async (loggedId: string): Promise<string> => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'text' as const,
+    };
+    const body = {
+      userId: loggedId,
+    };
+    return await api.post<string>(API_ENDPOINTS.LINKEDIN_AUTHORIZE, body, config);
   },
 
   exchangeCode: async (code: string): Promise<YouTubeAccessTokenResponse> => {

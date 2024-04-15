@@ -12,6 +12,8 @@ import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
 import { xApi } from '@/views/ConnectSocialMedia/api/x/xApi';
 import { getUserUserProfile } from '@/services/usersService';
+import { pinterestApi } from './api/pinterest/pinterestApi';
+import { linkedInApi } from './api/linkedin/linkedInApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -184,40 +186,46 @@ export const ConnectSocialMediaView = () => {
     sessionStorage.setItem('connections', JSON.stringify(connections));
   }, [searchParams, connections]);
 
-  const handleSocialMediaConnect = (socialMediaId: string) => async () => {
+  const handleSocialMediaConnect = (socialMediaId: string, loggedId: string) => async () => {
     setCurrentSocialMediaId(socialMediaId);
     sessionStorage.setItem('currentSocialMediaId', socialMediaId);
     try {
       let authorizationResponse;
-      if (socialMediaId === 'tiktok' && user) {
+      if (socialMediaId === 'tiktok') {
         // ********************************************************** TIKTOK ********************************* //
-        authorizationResponse = await tikTokApi.authorize(user.id);
+        authorizationResponse = await tikTokApi.authorize(loggedId);
         window.location.href = authorizationResponse;
       } else if (socialMediaId === 'youtube') {
         // ********************************************************** YOUTUBE ********************************* //
-        authorizationResponse = await youtubeApi.authorize();
+        authorizationResponse = await youtubeApi.authorize(loggedId);
         window.location.href = authorizationResponse;
       } else if (socialMediaId === 'twitch') {
         // ********************************************************** TWITCH ********************************* //
-        authorizationResponse = await twitchApi.authorize();
+        authorizationResponse = await twitchApi.authorize(loggedId);
         window.location.href = authorizationResponse;
       } else if (socialMediaId === 'snapchat') {
         // ********************************************************** SNAPCHAT ********************************* //
-        authorizationResponse = await snapChatApi.authorize();
+        authorizationResponse = await snapChatApi.authorize(loggedId);
         window.location.href = authorizationResponse;
       } else if (socialMediaId === 'x') {
         // ********************************************************** X TWITTER ********************************* //
         console.log('Connect Twitter Account executed');
-        authorizationResponse = await xApi.authorize();
+        authorizationResponse = await xApi.authorize(loggedId);
+        window.location.href = authorizationResponse;
+      } else if (socialMediaId === 'pinterest') {
+        // ********************************************************** PINTEREST********************************* //
+        console.log('Connect Pinterest Account executed');
+        authorizationResponse = await pinterestApi.authorize(loggedId);
+        window.location.href = authorizationResponse;
+      } else if (socialMediaId === 'linkedin') {
+        // ********************************************************** LINKEDIN ********************************* //
+        console.log('Connect LinkedIn Account executed');
+        authorizationResponse = await linkedInApi.authorize(loggedId);
         window.location.href = authorizationResponse;
       } else if (socialMediaId === 'facebook') {
         console.log('Connect Facebook Account executed');
       } else if (socialMediaId === 'instagram') {
         console.log('Connect Instagram Account executed');
-      } else if (socialMediaId === 'linkedin') {
-        console.log('Connect LinkedIn Account executed');
-      } else if (socialMediaId === 'pinterest') {
-        console.log('Connect Pinterest Account executed');
       }
     } catch (error) {
       console.error('Failed to initiate connection:', error);
@@ -245,11 +253,10 @@ export const ConnectSocialMediaView = () => {
               key={id}
               name={name}
               Icon={Icon}
-              onClick={handleSocialMediaConnect(id)}
+              onClick={handleSocialMediaConnect(id, loggedId)}
               codeParams={codeParams}
               setCodeParams={setCodeParams}
               isConnected={connections[id]}
-              // isConnected={id === 'tiktok' && !!tiktokCode}
               setIsConnected={() => {
                 setIsConnected((prev) => ({ ...prev, [id]: true }));
               }}
