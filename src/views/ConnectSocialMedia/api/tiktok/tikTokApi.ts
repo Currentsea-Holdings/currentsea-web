@@ -23,11 +23,23 @@ export interface TikTokUserInfo {
 }
 
 export const tikTokApi = {
-  authorize: async (userId: string): Promise<string> => {
-    return await api.get<string>(`${API_ENDPOINTS.TIKTOK_AUTHORIZE}/${userId}`, {
-      responseType: 'text',
-    });
+  authorize: async (loggedId: string): Promise<string> => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'text' as const,
+    };
+    const body = { userId: loggedId };
+    return await api.post<string>(API_ENDPOINTS.TIKTOK_AUTHORIZE, body, config);
   },
+
+  // authorize: async (userId: string): Promise<string> => {
+  //   return await api.get<string>(`${API_ENDPOINTS.TIKTOK_AUTHORIZE}/${userId}`, {
+  //     responseType: 'text',
+  //   });
+  // },
 
   exchangeCode: async (code: string): Promise<TikTokAccessTokenResponse> => {
     const response = await api.get<TikTokAccessTokenResponse>(

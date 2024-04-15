@@ -11,6 +11,7 @@ import { youtubeApi } from '@/views/ConnectSocialMedia/api/youtube/youtubeApi';
 import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
 import { xApi } from '@/views/ConnectSocialMedia/api/x/xApi';
+import { getUserUserProfile } from '@/services/usersService';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -115,6 +116,18 @@ export const ConnectSocialMediaView = () => {
     Frontend (User sees the result of the connection attempt).
    */
 
+  const [loggedId, setLoggedId] = useState<string>('');
+  useEffect(() => {
+    const fetchUserProfileData = async () => {
+      await getUserUserProfile(user?.id);
+      setLoggedId(user?.id as string);
+    };
+
+    fetchUserProfileData().catch((error) => {
+      console.error(error);
+    });
+  }, [user?.id]);
+
   interface SocialMediaConnections {
     [key: string]: boolean;
   }
@@ -151,28 +164,12 @@ export const ConnectSocialMediaView = () => {
   const [connections, setConnections] = useState(getInitialConnections());
   const [searchParams] = useSearchParams();
 
-  // WILL REMOVE ALL CONSOLE LOGS WITH SENSITIVE INFO WHEN TEST AND DEV IS DONE
-
-  const saveAccessToken = (platform: string, accessToken: string) => {
-    console.log('platform and accessToken in saveAccessToken:', {
-      platform: platform,
-      accessToken: accessToken,
-    });
-    localStorage.setItem(`${platform}_accessToken`, accessToken);
-  };
-
-  // const getAccessToken = (platform) => {
-  //   return localStorage.getItem(`${platform}_accessToken`);
-  // };
-
   useEffect(() => {
     const status = searchParams.get('status');
-    const accessToken = searchParams.get('token');
     const socialMediaId = sessionStorage.getItem('currentSocialMediaId');
 
-    if (status === 'success' && accessToken && socialMediaId) {
+    if (status === 'success' && socialMediaId) {
       console.log(`${socialMediaId} connection successful`);
-      saveAccessToken(socialMediaId, accessToken);
       setConnections((prev) => ({
         ...prev,
         [socialMediaId]: true,
