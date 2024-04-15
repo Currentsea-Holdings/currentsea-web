@@ -142,7 +142,25 @@ export const SignupView = function () {
             >
               Sign Up
             </CSButton>
-            <p className="text-sm font-light text-gray-500 dark:text-gray-300">
+            <p className="text-sm font-light text-gray-900 dark:text-gray-300">
+              By signing up you agree to CurrentSea&apos;s{' '}
+              <Link
+                to={`/policies/terms`}
+                target="_blank"
+                className="text-primary-600 dark:text-primary-500 font-medium hover:underline"
+              >
+                Terms of Use
+              </Link>{' '}
+              and{' '}
+              <Link
+                to={`/policies/privacy`}
+                target="_blank"
+                className="text-primary-600 dark:text-primary-500 font-medium hover:underline"
+              >
+                Privacy Policy
+              </Link>
+            </p>
+            <p className="text-sm font-normal text-dark">
               Already have an account?{' '}
               <Link
                 to={`/login`}
