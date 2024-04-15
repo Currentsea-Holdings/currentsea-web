@@ -24,4 +24,5 @@ export const API_ENDPOINTS = {
   TWITCH_FETCH_CHANNEL_ANALYTICS: '/twitch/auth/api/fetch-channel-analytics',
   SNAPCHAT_AUTHORIZE: '/snapchat/auth/api/authorize',
   X_AUTHORIZE: '/x-twitter/auth/api/authorize',
+  PINTEREST_AUTHORIZE: '/pinterest/auth/api/authorize'
 };

@@ -12,6 +12,7 @@ import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
 import { xApi } from '@/views/ConnectSocialMedia/api/x/xApi';
 import { getUserUserProfile } from '@/services/usersService';
+import { pinterestApi } from './api/pinterest/pinterestApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -116,19 +117,17 @@ export const ConnectSocialMediaView = () => {
     Frontend (User sees the result of the connection attempt).
    */
 
+  const [loggedId, setLoggedId] = useState<string>('');
+  useEffect(() => {
+    const fetchUserProfileData = async () => {
+      await getUserUserProfile(user?.id);
+      setLoggedId(user?.id as string);
+    };
 
-    const [loggedId, setLoggedId] = useState<string>("");
-    useEffect(() => {
-        const fetchUserProfileData = async () => {
-          await getUserUserProfile(user?.id);
-          setLoggedId(user?.id as string);
-        };
-  
-        fetchUserProfileData().catch((error) => {
-          console.error(error);
-        });
-
-    }, [user?.id]);
+    fetchUserProfileData().catch((error) => {
+      console.error(error);
+    });
+  }, [user?.id]);
 
   interface SocialMediaConnections {
     [key: string]: boolean;
@@ -214,12 +213,15 @@ export const ConnectSocialMediaView = () => {
         window.location.href = authorizationResponse;
       } else if (socialMediaId === 'facebook') {
         console.log('Connect Facebook Account executed');
+      } else if (socialMediaId === 'pinterest') {
+        // ********************************************************** X TWITTER ********************************* //
+        console.log('Connect Pinterest Account executed');
+        authorizationResponse = await pinterestApi.authorize(loggedId);
+        window.location.href = authorizationResponse;
       } else if (socialMediaId === 'instagram') {
         console.log('Connect Instagram Account executed');
       } else if (socialMediaId === 'linkedin') {
         console.log('Connect LinkedIn Account executed');
-      } else if (socialMediaId === 'pinterest') {
-        console.log('Connect Pinterest Account executed');
       }
     } catch (error) {
       console.error('Failed to initiate connection:', error);
