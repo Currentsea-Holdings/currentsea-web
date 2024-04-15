@@ -12,6 +12,8 @@ import { PasswordResetView } from '@/views/Auth/PasswordResetView';
 import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
 import { ConnectSocialMediaView } from '@/views/ConnectSocialMedia/ConnectSocialMediaView';
+import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
+import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -77,6 +79,33 @@ export const Routes = () => {
       path: '/connect-social-media',
       element: <ConnectSocialMediaView />,
     },
+    {
+      path: 'policies',
+      element: (
+        <ThemeProvider theme={theme.value}>
+          <Outlet />
+        </ThemeProvider>
+      ),
+      children: [
+        {
+          path: 'privacy',
+          element: <PrivacyPolicyView />,
+        },
+        {
+          path: 'terms',
+          element: <TermsOfServiceView />,
+        },
+        {
+          path: '*',
+          element: (
+            <Navigate
+              to="/"
+              replace
+            />
+          ),
+        },
+      ],
+    }
   ];
 
   return routes;
