@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
   FORGOT_PASSWORD: '/auth/forgot-password',
   RESET_PASSWORD: '/auth/reset-password',
   USERS: '/users',
+  ALL_ACCESS_TOKENS: 'users/social-media/access-tokens',
   USER_PROFILE: '/user-profile',
   TIKTOK_AUTHORIZE: '/tiktok/auth/api/authorize',
   TIKTOK_EXCHANGE_CODE: '/tiktok/auth/api/exchange-code',
