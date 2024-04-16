@@ -20,7 +20,7 @@ export interface SnapChatUserInfo {
   likesCount: number;
 }
 
-export const snapChatApi = {
+export const linkedInApi = {
   authorize: async (loggedId: string): Promise<string> => {
     const config = {
       headers: {
@@ -32,6 +32,7 @@ export const snapChatApi = {
     const body = {
       userId: loggedId,
     };
-    return await api.post<string>(API_ENDPOINTS.SNAPCHAT_AUTHORIZE, body, config);
+    const response = await api.post<string>(API_ENDPOINTS.LINKEDIN_AUTHORIZE, body, config);
+    return response;
   },
 };

@@ -1,17 +1,7 @@
 import { axiosClient as api } from '@/api/axiosClient';
 import { API_ENDPOINTS } from '@/utils/constants';
 
-export interface xTwitterAuthorizationResponse {
-  url: string;
-}
-
-export interface xTwitterAccessTokenResponse {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-}
-
-export const xApi = {
+export const pinterestApi = {
   authorize: async (loggedId: string): Promise<string> => {
     const config = {
       headers: {
@@ -20,7 +10,9 @@ export const xApi = {
       withCredentials: true,
       responseType: 'text' as const,
     };
-    const body = { userId: loggedId };
-    return await api.post(API_ENDPOINTS.X_AUTHORIZE, body, config);
+    const body = {
+      userId: loggedId,
+    };
+    return await api.post<string>(API_ENDPOINTS.PINTEREST_AUTHORIZE, body, config);
   },
 };

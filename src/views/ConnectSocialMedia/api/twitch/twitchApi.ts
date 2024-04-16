@@ -17,10 +17,18 @@ export interface TwitchUserInfo {
 }
 
 export const twitchApi = {
-  authorize: async (): Promise<string> => {
-    return await api.get<string>(API_ENDPOINTS.TWITCH_AUTHORIZE, {
-      responseType: 'text',
-    });
+  authorize: async (loggedId: string): Promise<string> => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'text' as const,
+    };
+    const body = {
+      userId: loggedId,
+    };
+    return await api.post<string>(API_ENDPOINTS.TWITCH_AUTHORIZE, body, config);
   },
 
   exchangeCode: async (code: string): Promise<TwitchAccessTokenResponse> => {
