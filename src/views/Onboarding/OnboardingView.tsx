@@ -67,8 +67,8 @@ export const OnboardingView = () => {
           if (userProfile) {
             return (
               <Navigate
-              to="/"
-              replace={true}
+                to="/"
+                replace={true}
               />
             );
           } else {

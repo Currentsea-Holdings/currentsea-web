@@ -27,7 +27,7 @@ export const youtubeApi = {
     const body = {
       userId: loggedId,
     };
-    return await api.post<string>(API_ENDPOINTS.LINKEDIN_AUTHORIZE, body, config);
+    return await api.post<string>(API_ENDPOINTS.YOUTUBE_AUTHORIZE, body, config);
   },
 
   exchangeCode: async (code: string): Promise<YouTubeAccessTokenResponse> => {

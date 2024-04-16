@@ -165,30 +165,13 @@ export const ConnectSocialMediaView = () => {
         };
   };
 
-  // const getInitialConnections = (): SocialMediaConnectionsAccessTokenTypes => {
-  //   const storedConnections = sessionStorage.getItem('connections');
-  //   return storedConnections
-  //     ? JSON.parse(storedConnections)
-  //     : {
-  //         tiktok: false,
-  //         youtube: false,
-  //         twitch: false,
-  //         facebook: false,
-  //         instagram: false,
-  //         linkedin: false,
-  //         pinterest: false,
-  //         snapchat: false,
-  //         x: false,
-  //       };
-  // };
-
   const [connections, setConnections] =
     useState<SocialMediaConnectionsAccessTokenTypes>(getInitialConnections());
   const [searchParams] = useSearchParams();
 
   useEffect(() => { // this will check for current accessTokens the particular userId has already
     if (user?.id) {
-      const listOfAccessTokens = accessTokensApi
+      accessTokensApi
         .getConnectedAccessTokens(user.id)
         .then((connectionStatuses: SocialMediaConnectionsAccessTokenTypes) => {
           setConnections(connectionStatuses);
@@ -281,11 +264,12 @@ export const ConnectSocialMediaView = () => {
       </div>
       <div className="flex flex-1 flex-col items-center justify-start overflow-y-auto p-4">
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {socialLogoArray.map(({ id, name, Icon }) => (
+          {socialLogoArray.map(({ id, name, Icon, isAvailable }) => (
             <SocialMediaConnectContainer
               key={id}
               name={name}
               Icon={Icon}
+              isAvailable={isAvailable}
               onClick={handleSocialMediaConnect(id, loggedId)}
               codeParams={codeParams}
               setCodeParams={setCodeParams}

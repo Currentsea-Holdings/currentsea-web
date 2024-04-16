@@ -3,11 +3,12 @@ import { ConnectSocialMediaAccountButton } from './ConnectSocialMediaAccountButt
 type SocialMediaConnectContainerProps = {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   name: string;
-  onClick: () => void; 
+  onClick: () => void;
   isConnected: boolean;
   setIsConnected: (value: boolean) => void;
   codeParams: string;
   setCodeParams: (vaue: string) => void;
+  isAvailable: boolean;
 };
 
 export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerProps> = ({
@@ -18,17 +19,24 @@ export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerPr
   isConnected,
   setIsConnected,
   setCodeParams,
+  isAvailable,
 }: SocialMediaConnectContainerProps) => {
-
   return (
     <div
-      className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-4 m-2"
+      className={`m-2 flex flex-col items-center justify-center rounded-lg border border-gray-200 p-4 ${
+        !isAvailable ? 'opacity-50' : 'opacity-100'
+      }`}
       style={{ width: '195px', height: '165px' }}
     >
-      <Icon className="w-10 h-10 mb-2" />
-      <div className="text-sm mb-4" style={{fontWeight: '700'}}>{name}</div>
+      <Icon className="mb-2 h-10 w-10" />
+      <div
+        className="mb-4 text-sm"
+        style={{ fontWeight: '700' }}
+      >
+        {name}
+      </div>
       <ConnectSocialMediaAccountButton
-        text="Connect account"
+        text={isAvailable ? 'Connect account' : 'Unavailable'}
         onClick={onClick}
         codeParams={codeParams}
         setCodeParams={setCodeParams}
