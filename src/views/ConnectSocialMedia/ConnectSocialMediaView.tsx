@@ -12,8 +12,8 @@ import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
 import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
 import { xApi } from '@/views/ConnectSocialMedia/api/x/xApi';
 import { getUserUserProfile } from '@/services/usersService';
-import { pinterestApi } from './api/pinterest/pinterestApi';
-import { linkedInApi } from './api/linkedin/linkedInApi';
+import { pinterestApi } from '@/views/ConnectSocialMedia/api/pinterest/pinterestApi';
+import { linkedInApi } from '@/views/ConnectSocialMedia/api/linkedin/linkedInApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
