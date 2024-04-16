@@ -14,6 +14,8 @@ import { xApi } from '@/views/ConnectSocialMedia/api/x/xApi';
 import { getUserUserProfile } from '@/services/usersService';
 import { pinterestApi } from '@/views/ConnectSocialMedia/api/pinterest/pinterestApi';
 import { linkedInApi } from '@/views/ConnectSocialMedia/api/linkedin/linkedInApi';
+import { accessTokensApi } from '@/views/ConnectSocialMedia/api/shared/accessTokensApi';
+import type { SocialMediaConnectionsAccessTokenTypes } from '@/views/ConnectSocialMedia/api/shared/accessTokensApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -163,8 +165,42 @@ export const ConnectSocialMediaView = () => {
         };
   };
 
-  const [connections, setConnections] = useState(getInitialConnections());
+  // const getInitialConnections = (): SocialMediaConnectionsAccessTokenTypes => {
+  //   const storedConnections = sessionStorage.getItem('connections');
+  //   return storedConnections
+  //     ? JSON.parse(storedConnections)
+  //     : {
+  //         tiktok: false,
+  //         youtube: false,
+  //         twitch: false,
+  //         facebook: false,
+  //         instagram: false,
+  //         linkedin: false,
+  //         pinterest: false,
+  //         snapchat: false,
+  //         x: false,
+  //       };
+  // };
+
+  const [connections, setConnections] =
+    useState<SocialMediaConnectionsAccessTokenTypes>(getInitialConnections());
   const [searchParams] = useSearchParams();
+
+  useEffect(() => { // this will check for current accessTokens the particular userId has already
+    if (user?.id) {
+      const listOfAccessTokens = accessTokensApi
+        .getConnectedAccessTokens(user.id)
+        .then((connectionStatuses: SocialMediaConnectionsAccessTokenTypes) => {
+          setConnections(connectionStatuses);
+        })
+        .catch((error) => {
+          console.error('Error fetching social media connections:', error);
+        });
+    } else {
+      console.log('User is not logged in');
+      navigate('/');
+    }
+  }, [user?.id, navigate]);
 
   useEffect(() => {
     const status = searchParams.get('status');
@@ -172,10 +208,7 @@ export const ConnectSocialMediaView = () => {
 
     if (status === 'success' && socialMediaId) {
       console.log(`${socialMediaId} connection successful`);
-      setConnections((prev) => ({
-        ...prev,
-        [socialMediaId]: true,
-      }));
+      setConnections((prev) => ({ ...prev, [socialMediaId]: true }));
       sessionStorage.removeItem('currentSocialMediaId');
     }
 
