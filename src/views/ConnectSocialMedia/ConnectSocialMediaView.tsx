@@ -264,12 +264,13 @@ export const ConnectSocialMediaView = () => {
       </div>
       <div className="flex flex-1 flex-col items-center justify-start overflow-y-auto p-4">
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {socialLogoArray.map(({ id, name, Icon, isAvailable }) => (
+          {socialLogoArray.map(({ id, name, Icon, isAvailable, isDisabled }) => (
             <SocialMediaConnectContainer
               key={id}
               name={name}
               Icon={Icon}
               isAvailable={isAvailable}
+              isDisabled={isDisabled}
               onClick={handleSocialMediaConnect(id, loggedId)}
               codeParams={codeParams}
               setCodeParams={setCodeParams}

@@ -9,6 +9,7 @@ type SocialMediaConnectContainerProps = {
   codeParams: string;
   setCodeParams: (vaue: string) => void;
   isAvailable: boolean;
+  isDisabled: boolean;
 };
 
 export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerProps> = ({
@@ -20,6 +21,7 @@ export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerPr
   setIsConnected,
   setCodeParams,
   isAvailable,
+  isDisabled,
 }: SocialMediaConnectContainerProps) => {
   return (
     <div
@@ -42,6 +44,8 @@ export const SocialMediaConnectContainer: React.FC<SocialMediaConnectContainerPr
         setCodeParams={setCodeParams}
         isConnected={isConnected}
         setIsConnected={setIsConnected}
+        isAvailable={isAvailable}
+        isDisabled={isDisabled}
       />
     </div>
   );

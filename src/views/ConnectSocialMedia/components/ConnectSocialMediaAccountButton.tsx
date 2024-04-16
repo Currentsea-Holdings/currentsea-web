@@ -4,6 +4,8 @@ export const ConnectSocialMediaAccountButton = ({
   isConnected,
   setIsConnected,
   codeParams,
+  isAvailable,
+  isDisabled,
 }: {
   text: string;
   codeParams: string;
@@ -11,12 +13,15 @@ export const ConnectSocialMediaAccountButton = ({
   isConnected: boolean;
   setIsConnected: (value: boolean) => void;
   setCodeParams: (value: string) => void;
+  isAvailable: boolean;
+  isDisabled: boolean;
 }) => {
   return (
     <>
       {!isConnected ? (
         <button
           onClick={onClick}
+          disabled={!isAvailable && isDisabled}
           className="h-9 w-40 cursor-pointer rounded-lg bg-primary text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
         >
           {text}
