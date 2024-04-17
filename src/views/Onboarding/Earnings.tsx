@@ -4,6 +4,9 @@ import Paypal from '@/assets/images/platform-logos/Paypal.svg';
 import { BackButton } from '@/components/common/BackButton';
 import { CSButton } from '@/components/common';
 import { ArrowRight } from 'flowbite-react-icons/outline';
+import { useEffect, useState } from 'react';
+import { getUserUserProfile } from '@/services/usersService';
+import { paypalApi } from '@/views/Onboarding/EarningsApi/paypalApi';
 
 interface EarningsProps {
   onBack: () => void;
@@ -11,7 +14,34 @@ interface EarningsProps {
 }
 
 export const Earnings = ({ onNext, onBack }: EarningsProps) => {
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
+
+  const [loggedId, setLoggedId] = useState<string>('');
+  useEffect(() => {
+    const fetchUserProfileData = async () => {
+      await getUserUserProfile(user?.id);
+      setLoggedId(user?.id as string);
+    };
+
+    fetchUserProfileData().catch((error) => {
+      console.error(error);
+    });
+  }, [user?.id]);
+
+  const authorizePaypal = (userId: string) => async () => {
+    console.log('Paypal Authorization Has Started for user:', userId);
+    try {
+      const authUrl = await paypalApi.getAuthUrl(userId);
+      window.location.href = authUrl;
+    } catch (error) {
+      if (error) {
+        console.error('Error onboarding PayPal account:', error);
+      } else {
+        console.error('Unexpected error onboarding PayPal account:', error);
+      }
+    }
+  };
 
   return (
     <>
@@ -41,7 +71,7 @@ export const Earnings = ({ onNext, onBack }: EarningsProps) => {
           <div className="Buttons inline-flex items-start justify-start gap-2 self-stretch">
             <div className="CurrentseaButton flex h-9 shrink grow basis-0 items-start justify-start gap-2">
               <CSButton
-                // onClick={onClick}
+                onClick={authorizePaypal(loggedId)}
                 className="w-50 flex h-9 cursor-pointer items-center justify-center rounded-lg bg-primary text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
               >
                 Connect account <ArrowRight className="pl-2" />

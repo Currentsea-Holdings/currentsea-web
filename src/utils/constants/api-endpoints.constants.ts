@@ -26,5 +26,6 @@ export const API_ENDPOINTS = {
   SNAPCHAT_AUTHORIZE: '/snapchat/auth/api/authorize',
   X_AUTHORIZE: '/x-twitter/auth/api/authorize',
   PINTEREST_AUTHORIZE: '/pinterest/auth/api/authorize',
-  LINKEDIN_AUTHORIZE: '/linkedin/auth/api/authorize'
+  LINKEDIN_AUTHORIZE: '/linkedin/auth/api/authorize',
+  PAYPAL_AUTHORIZE: 'paypal/auth/api/authorize'
 };

@@ -30,6 +30,7 @@ module.exports = {
     'react-refresh/only-export-components': 'warn',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
+    "@typescript-eslint/no-unsafe-call": "off",
     '@typescript-eslint/no-misused-promises': [
       'error', // or 'warn'
       { checksVoidReturn: false },
