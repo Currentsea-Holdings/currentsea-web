@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/stores/authStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Paypal from '@/assets/images/platform-logos/Paypal.svg';
 import { BackButton } from '@/components/common/BackButton';
 import { CSButton } from '@/components/common';
@@ -7,6 +7,7 @@ import { ArrowRight } from 'flowbite-react-icons/outline';
 import { useEffect, useState } from 'react';
 import { getUserUserProfile } from '@/services/usersService';
 import { paypalApi } from '@/views/Onboarding/EarningsApi/paypalApi';
+import { accessTokensApi } from '../ConnectSocialMedia/api/shared/accessTokensApi';
 
 interface EarningsProps {
   onBack: () => void;
@@ -15,6 +16,8 @@ interface EarningsProps {
 
 export const Earnings = ({ onNext, onBack }: EarningsProps) => {
   const user = useAuthStore((state) => state.user);
+  const [currentEarningsId, setCurrentEarningsId] = useState<string | null>(null);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const [loggedId, setLoggedId] = useState<string>('');
@@ -43,6 +46,62 @@ export const Earnings = ({ onNext, onBack }: EarningsProps) => {
     }
   };
 
+  interface EarningsConnections {
+    [key: string]: boolean;
+    paypal: boolean;
+  }
+
+  interface EarningsAccessTokenTypes {
+    [key: string]: boolean;
+    paypal: boolean;
+  }
+
+  const getInitialConnections = (): EarningsConnections => {
+    const storedConnections = sessionStorage.getItem('connections');
+    return storedConnections
+      ? (JSON.parse(storedConnections) as EarningsConnections)
+      : {
+          paypal: false,
+        };
+  };
+
+  const [connections, setConnections] = useState<EarningsAccessTokenTypes>(getInitialConnections());
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    // this will check for current accessTokens the particular userId has already
+    if (user?.id) {
+      accessTokensApi
+        .getConnectedAccessTokens(user.id)
+        .then((connectionStatuses: EarningsAccessTokenTypes) => {
+          setConnections(connectionStatuses);
+        })
+        .catch((error) => {
+          console.error('Error fetching social media connections:', error);
+        });
+    } else {
+      console.log('User is not logged in');
+      navigate('/');
+    }
+  }, [user?.id, navigate]);
+
+  useEffect(() => {
+    const status = searchParams.get('status');
+    const currentEarningsId = sessionStorage.getItem('currentEarningsId');
+
+    if (status === 'success' && currentEarningsId) {
+      console.log(`${currentEarningsId} connection successful`);
+      setConnections((prev) => ({ ...prev, [currentEarningsId]: true }));
+      sessionStorage.removeItem('currentEarningsId');
+    }
+
+    if (status === 'error') {
+      console.error(`${currentEarningsId} connection failed`);
+    }
+
+    sessionStorage.setItem('connections', JSON.stringify(connections));
+  }, [searchParams, connections]);
+
   return (
     <>
       <div className="mx-[15%] mt-20 flex items-center justify-between p-4">
@@ -70,12 +129,16 @@ export const Earnings = ({ onNext, onBack }: EarningsProps) => {
           </div>
           <div className="Buttons inline-flex items-start justify-start gap-2 self-stretch">
             <div className="CurrentseaButton flex h-9 shrink grow basis-0 items-start justify-start gap-2">
-              <CSButton
-                onClick={authorizePaypal(loggedId)}
-                className="w-50 flex h-9 cursor-pointer items-center justify-center rounded-lg bg-primary text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
-              >
-                Connect account <ArrowRight className="pl-2" />
-              </CSButton>
+              {isConnected ? (
+                <CSButton
+                  onClick={authorizePaypal(loggedId)}
+                  className="w-50 flex h-9 cursor-pointer items-center justify-center rounded-lg bg-primary text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
+                >
+                  Connect account <ArrowRight className="pl-2" />
+                </CSButton>
+              ) : (
+                <h2 style={{ color: 'green', fontSize: '14px' }}>Connected!</h2>
+              )}
               <div className="ArrowRight relative h-3 w-3" />
             </div>
           </div>

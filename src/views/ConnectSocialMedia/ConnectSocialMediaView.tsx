@@ -15,7 +15,7 @@ import { getUserUserProfile } from '@/services/usersService';
 import { pinterestApi } from '@/views/ConnectSocialMedia/api/pinterest/pinterestApi';
 import { linkedInApi } from '@/views/ConnectSocialMedia/api/linkedin/linkedInApi';
 import { accessTokensApi } from '@/views/ConnectSocialMedia/api/shared/accessTokensApi';
-import type { SocialMediaConnectionsAccessTokenTypes } from '@/views/ConnectSocialMedia/api/shared/accessTokensApi';
+import type { ConnectedAccessTokenTypes } from '@/views/ConnectSocialMedia/api/shared/accessTokensApi';
 
 export const ConnectSocialMediaView = () => {
   const user = useAuthStore((state) => state.user);
@@ -146,6 +146,7 @@ export const ConnectSocialMediaView = () => {
     pinterest: boolean;
     snapchat: boolean;
     x: boolean;
+    paypal: false;
   }
 
   const getInitialConnections = (): SocialMediaConnections => {
@@ -162,18 +163,19 @@ export const ConnectSocialMediaView = () => {
           pinterest: false,
           snapchat: false,
           x: false,
+          paypal: false,
         };
   };
 
   const [connections, setConnections] =
-    useState<SocialMediaConnectionsAccessTokenTypes>(getInitialConnections());
+    useState<ConnectedAccessTokenTypes>(getInitialConnections());
   const [searchParams] = useSearchParams();
 
   useEffect(() => { // this will check for current accessTokens the particular userId has already
     if (user?.id) {
       accessTokensApi
         .getConnectedAccessTokens(user.id)
-        .then((connectionStatuses: SocialMediaConnectionsAccessTokenTypes) => {
+        .then((connectionStatuses: ConnectedAccessTokenTypes) => {
           setConnections(connectionStatuses);
         })
         .catch((error) => {
