@@ -20,6 +20,22 @@ interface HomeProps {
   className?: string;
 }
 
+interface Event {
+  id: number;
+  name: string;
+  time: string;
+}
+
+interface Task {
+  id: number;
+  description: string;
+}
+
+interface Campaign {
+  id: number;
+  title: string;
+}
+
 export const Home = ({ className, ...props }: HomeProps) => {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
