@@ -64,6 +64,7 @@ export const OnboardingView = () => {
         case 3:
           return (
             <Earnings
+              user={user}
               onBack={goToPreviousStep}
               onNext={goToNextStep}
             />
