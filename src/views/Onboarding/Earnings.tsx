@@ -1,3 +1,4 @@
+import type { User} from '@/stores/authStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Paypal from '@/assets/images/platform-logos/Paypal.svg';
@@ -10,27 +11,17 @@ import { paypalApi } from '@/api/platforms/paypalApi';
 import { accessTokensApi } from '../../api/platforms/accessTokensApi';
 
 interface EarningsProps {
+  user: User;
   onBack: () => void;
   onNext: () => void;
 }
 
-export const Earnings = ({ onNext, onBack }: EarningsProps) => {
-  const user = useAuthStore((state) => state.user);
+export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
   const [currentEarningsId, setCurrentEarningsId] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const [loggedId, setLoggedId] = useState<string>('');
-  useEffect(() => {
-    const fetchUserProfileData = async () => {
-      await getUserUserProfile(user?.id);
-      setLoggedId(user?.id as string);
-    };
-
-    fetchUserProfileData().catch((error) => {
-      console.error(error);
-    });
-  }, [user?.id]);
+  const { id: loggedId } = user;
 
   const authorizePaypal = (userId: string) => async () => {
     console.log('Paypal Authorization Has Started for user:', userId);
@@ -70,7 +61,7 @@ export const Earnings = ({ onNext, onBack }: EarningsProps) => {
 
   useEffect(() => {
     // this will check for current accessTokens the particular userId has already
-    if (user?.id) {
+    if (user.id) {
       accessTokensApi
         .getConnectedAccessTokens(user.id)
         .then((connectionStatuses: EarningsAccessTokenTypes) => {
@@ -83,7 +74,7 @@ export const Earnings = ({ onNext, onBack }: EarningsProps) => {
       console.log('User is not logged in');
       navigate('/');
     }
-  }, [user?.id, navigate]);
+  }, [user.id, navigate]);
 
   useEffect(() => {
     const status = searchParams.get('status');
