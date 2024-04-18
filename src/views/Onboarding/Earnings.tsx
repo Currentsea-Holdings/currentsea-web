@@ -66,6 +66,7 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
         .getConnectedAccessTokens(user.id)
         .then((connectionStatuses: EarningsAccessTokenTypes) => {
           setConnections(connectionStatuses);
+          setIsConnected(true);
         })
         .catch((error) => {
           console.error('Error fetching social media connections:', error);
@@ -84,7 +85,6 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
       console.log(`${currentEarningsId} connection successful`);
       setConnections((prev) => ({ ...prev, [currentEarningsId]: true }));
       sessionStorage.removeItem('currentEarningsId');
-      setIsConnected(true);
     }
 
     if (status === 'error') {
