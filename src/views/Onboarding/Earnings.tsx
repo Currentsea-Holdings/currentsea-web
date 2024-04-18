@@ -84,6 +84,7 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
       console.log(`${currentEarningsId} connection successful`);
       setConnections((prev) => ({ ...prev, [currentEarningsId]: true }));
       sessionStorage.removeItem('currentEarningsId');
+      setIsConnected(true);
     }
 
     if (status === 'error') {
@@ -120,7 +121,7 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
           </div>
           <div className="Buttons inline-flex items-start justify-start gap-2 self-stretch">
             <div className="CurrentseaButton flex h-9 shrink grow basis-0 items-start justify-start gap-2">
-              {isConnected ? (
+              {!isConnected ? (
                 <CSButton
                   onClick={authorizePaypal(loggedId)}
                   className="w-50 flex h-9 cursor-pointer items-center justify-center rounded-lg bg-primary text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
