@@ -48,6 +48,7 @@ const config: Config = {
           50: 'var(--gray-color-50)',
           60: 'var(--gray-color-60)',
         },
+        'custom-blue': '#2b4398',     
       },
     },
   },
