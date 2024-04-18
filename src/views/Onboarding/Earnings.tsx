@@ -6,8 +6,8 @@ import { CSButton } from '@/components/common';
 import { ArrowRight } from 'flowbite-react-icons/outline';
 import { useEffect, useState } from 'react';
 import { getUserUserProfile } from '@/services/usersService';
-import { paypalApi } from '@/views/Onboarding/EarningsApi/paypalApi';
-import { accessTokensApi } from '../ConnectSocialMedia/api/shared/accessTokensApi';
+import { paypalApi } from '@/api/platforms/paypalApi';
+import { accessTokensApi } from '../../api/platforms/accessTokensApi';
 
 interface EarningsProps {
   onBack: () => void;

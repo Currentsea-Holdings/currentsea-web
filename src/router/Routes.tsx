@@ -11,7 +11,6 @@ import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
 import { PasswordResetView } from '@/views/Auth/PasswordResetView';
 import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
-import { ConnectSocialMediaView } from '@/views/ConnectSocialMedia/ConnectSocialMediaView';
 import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
 import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
 
@@ -74,10 +73,6 @@ export const Routes = () => {
     {
       path: '/reset-password',
       element: <PasswordResetView />,
-    },
-    {
-      path: '/connect-social-media',
-      element: <ConnectSocialMediaView />,
     },
     {
       path: 'policies',

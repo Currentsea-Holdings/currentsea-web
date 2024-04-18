@@ -1,10 +1,9 @@
 import { OnboardingSteps } from './components/OnboardingSteps';
 import { useAuthStore } from '@/stores/authStore';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { AccountSetupForm, Earnings } from './';
+import { AccountSetupForm, ConnectSocialMedia, Earnings } from '.';
 import { useEffect } from 'react';
 import { getUserUserProfile } from '@/services/usersService';
-import { ConnectSocialMediaView } from '../ConnectSocialMedia/ConnectSocialMediaView';
 
 export const OnboardingView = () => {
   const user = useAuthStore((state) => state.user);
@@ -55,7 +54,13 @@ export const OnboardingView = () => {
             />
           );
         case 2:
-          return <ConnectSocialMediaView />;
+          return (
+            <ConnectSocialMedia
+              user={user}
+              onBack={goToPreviousStep}
+              onNext={goToNextStep}
+            />
+          );
         case 3:
           return (
             <Earnings

@@ -41,23 +41,23 @@ export const tikTokApi = {
   //   });
   // },
 
-  exchangeCode: async (code: string): Promise<TikTokAccessTokenResponse> => {
-    const response = await api.get<TikTokAccessTokenResponse>(
-      `${API_ENDPOINTS.TIKTOK_EXCHANGE_CODE}?code=${code}`,
-    );
-    return response;
-  },
+  // exchangeCode: async (code: string): Promise<TikTokAccessTokenResponse> => {
+  //   const response = await api.get<TikTokAccessTokenResponse>(
+  //     `${API_ENDPOINTS.TIKTOK_EXCHANGE_CODE}?code=${code}`,
+  //   );
+  //   return response;
+  // },
 
-  handleAccessToken: async (accessToken: string): Promise<void> => {
-    await api.post(`${API_ENDPOINTS.TIKTOK_HANDLE_ACCESS_TOKEN}`, { accessToken });
-  },
+  // handleAccessToken: async (accessToken: string): Promise<void> => {
+  //   await api.post(`${API_ENDPOINTS.TIKTOK_HANDLE_ACCESS_TOKEN}`, { accessToken });
+  // },
 
-  connectTikTokAccount: async (email: string, code: string): Promise<string> => {
-    const response = await api.post<string>(
-      `${API_ENDPOINTS.TIKTOK_CONNECT_ACCOUNT}?email=${email}&code=${code}`,
-    );
-    return response;
-  },
+  // connectTikTokAccount: async (email: string, code: string): Promise<string> => {
+  //   const response = await api.post<string>(
+  //     `${API_ENDPOINTS.TIKTOK_CONNECT_ACCOUNT}?email=${email}&code=${code}`,
+  //   );
+  //   return response;
+  // },
 
   getUserInfo: async (accessToken: string): Promise<TikTokUserInfo> => {
     const response = await api.get<TikTokUserInfo>(
