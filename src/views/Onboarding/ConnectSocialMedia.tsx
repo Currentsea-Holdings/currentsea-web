@@ -4,30 +4,32 @@ import loginBackground from '@/assets/images/authentication/login-background.png
 import { SocialMediaConnectContainer } from './components/SocialMediaConnectContainer';
 import { CSButton } from '@/components/common';
 import { BackButton } from '@/components/common/BackButton';
+import type { User} from '@/stores/authStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { tikTokApi } from '@/views/ConnectSocialMedia/api/tiktok/tikTokApi';
-import { youtubeApi } from '@/views/ConnectSocialMedia/api/youtube/youtubeApi';
-import { twitchApi } from '@/views/ConnectSocialMedia/api/twitch/twitchApi';
-import { snapChatApi } from '@/views/ConnectSocialMedia/api/snapchat/snapchatApi';
-import { xApi } from '@/views/ConnectSocialMedia/api/x/xApi';
+import { tikTokApi } from '@/api/platforms/tikTokApi';
+import { youtubeApi } from '@/api/platforms/youtubeApi';
+import { twitchApi } from '@/api/platforms/twitchApi';
+import { snapChatApi } from '@/api/platforms/snapchatApi';
+import { xApi } from '@/api/platforms/xApi';
 import { getUserUserProfile } from '@/services/usersService';
-import { pinterestApi } from '@/views/ConnectSocialMedia/api/pinterest/pinterestApi';
-import { linkedInApi } from '@/views/ConnectSocialMedia/api/linkedin/linkedInApi';
-import { accessTokensApi } from '@/views/ConnectSocialMedia/api/shared/accessTokensApi';
-import type { ConnectedAccessTokenTypes } from '@/views/ConnectSocialMedia/api/shared/accessTokensApi';
+import { pinterestApi } from '@/api/platforms/pinterestApi';
+import { linkedInApi } from '@/api/platforms/linkedInApi';
+import { accessTokensApi } from '@/api/platforms/accessTokensApi';
+import type { ConnectedAccessTokenTypes } from '@/api/platforms/accessTokensApi';
 
-export const ConnectSocialMediaView = () => {
-  const user = useAuthStore((state) => state.user);
+interface ConnectSocialMediaProps {
+  user: User;
+  onBack: () => void;
+  onNext: () => void;
+}
+
+export const ConnectSocialMedia = ({ user, onNext, onBack }: ConnectSocialMediaProps) => {
   const [codeParams, setCodeParams] = useState<string>('');
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
   const [isConnected, setIsConnected] = useState<Record<string, boolean>>({});
   const [currentSocialMediaId, setCurrentSocialMediaId] = useState<string | null>(null);
   const navigate = useNavigate();
-
-  if (!user) {
-    navigate('/');
-  }
 
   /* TODO: NEED TO FIGURE OUT HOW TO PASS URL AND PARAMS FROM POP
   UP WINDOW TO ORIGINAL BROWSER USER IS CONNECTING FROM 
@@ -120,17 +122,18 @@ export const ConnectSocialMediaView = () => {
     Frontend (User sees the result of the connection attempt).
    */
 
-  const [loggedId, setLoggedId] = useState<string>('');
-  useEffect(() => {
-    const fetchUserProfileData = async () => {
-      await getUserUserProfile(user?.id);
-      setLoggedId(user?.id as string);
-    };
+  const { id: loggedId } = user;
+  // const [loggedId, setLoggedId] = useState<string>('');
+  // useEffect(() => {
+  //   const fetchUserProfileData = async () => {
+  //     await getUserUserProfile(user?.id);
+  //     setLoggedId(user?.id as string);
+  //   };
 
-    fetchUserProfileData().catch((error) => {
-      console.error(error);
-    });
-  }, [user?.id]);
+  //   fetchUserProfileData().catch((error) => {
+  //     console.error(error);
+  //   });
+  // }, [user?.id]);
 
   interface SocialMediaConnections {
     [key: string]: boolean;
@@ -172,7 +175,7 @@ export const ConnectSocialMediaView = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => { // this will check for current accessTokens the particular userId has already
-    if (user?.id) {
+    if (user.id) {
       accessTokensApi
         .getConnectedAccessTokens(user.id)
         .then((connectionStatuses: ConnectedAccessTokenTypes) => {
@@ -185,7 +188,7 @@ export const ConnectSocialMediaView = () => {
       console.log('User is not logged in');
       navigate('/');
     }
-  }, [user?.id, navigate]);
+  }, [user.id, navigate]);
 
   useEffect(() => {
     const status = searchParams.get('status');
@@ -250,15 +253,10 @@ export const ConnectSocialMediaView = () => {
     }
   };
 
-  const onSubmit = (data: string) => {
-    const socialData = data;
-    navigate('/earnings');
-  };
-
   return (
     <>
       <div className="mx-[15%] mt-20 flex items-center justify-between p-4">
-        <BackButton route="/onboarding/1" />
+        <BackButton route={onBack} />
         <h1 className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
           Connect Social Media
         </h1>
@@ -285,7 +283,7 @@ export const ConnectSocialMediaView = () => {
         </div>
         <form
           onSubmit={() => {
-            navigate('/onboarding/3');
+            onNext();
           }}
           className="flex w-full flex-col items-center justify-center p-5"
         >
