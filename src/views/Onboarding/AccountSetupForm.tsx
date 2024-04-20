@@ -9,7 +9,8 @@ import type {
   UpdateUserProfilePayload,
 } from '@/services/userProfileService';
 import { useAuthStore, type User } from '@/stores/authStore';
-import { formatPhoneNumber } from '@/utils';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 
 interface AccountSetupFormProps {
   user: User;
@@ -47,7 +48,6 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   });
 
   const phoneNumber = watch('phoneNumber');
-  const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
 
   const { mutate: submitCreateUserProfile, isPending: isCreateProfilePending } = useMutation<
     UserProfileResponse,
@@ -63,7 +63,6 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
 
   const onSubmit = (data: AccountSetupFormFields) => {
     const formData = data;
-    formData.phoneNumber = formData.phoneNumber.replace(/[^0-9]/g, '');
 
     if (userProfile) {
       submitUpdateUserProfile(
@@ -172,13 +171,15 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
             >
               Phone
             </label>
-            <input
-              type="tel"
-              id="Phone"
-              className="block w-full rounded-xl border border-gray-300 p-2"
-              value={formattedPhoneNumber}
-              onChange={(e) => {
-                setValue('phoneNumber', e.target.value);
+            <PhoneInput
+              defaultCountry="US"
+              value={phoneNumber}
+              inputClassName="w-full"
+              countrySelectorStyleProps={{
+                flagClassName: 'p-1',
+              }}
+              onChange={(num) => {
+                num && setValue('phoneNumber', num);
               }}
               required
             />
