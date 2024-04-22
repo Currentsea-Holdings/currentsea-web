@@ -11,6 +11,9 @@ import type {
 import { useAuthStore, type User } from '@/stores/authStore';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
+import type { IState } from 'country-state-city';
+import { Country, State } from 'country-state-city';
+import { useEffect, useState } from 'react';
 
 interface AccountSetupFormProps {
   user: User;
@@ -23,6 +26,7 @@ interface AccountSetupFormFields {
   phoneNumber: string;
   city: string;
   state: string;
+  country: string;
   profilePhoto: FileList;
 }
 
@@ -44,10 +48,41 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
       phoneNumber: userProfile?.phoneNumber ?? '',
       city: userProfile?.city ?? '',
       state: userProfile?.state ?? '',
+      country: userProfile?.country ?? 'US',
     },
   });
 
   const phoneNumber = watch('phoneNumber');
+
+  const countries = Country.getAllCountries();
+  const selectedCountry = watch('country');
+
+  const [states, setStates] = useState<IState[]>([]);
+
+  // triggers based on new selected country
+  useEffect(() => {
+    if (selectedCountry) {
+      const fetchedStates = State.getStatesOfCountry(selectedCountry);
+      setStates(fetchedStates);
+
+      const userProfileState = userProfile?.state || '';
+      if (fetchedStates.find((state) => state.isoCode === userProfileState)) {
+        setValue('state', userProfileState);
+      } else {
+        setValue('state', '');
+      }
+    }
+  }, [selectedCountry, userProfile?.state, setValue]);
+
+  // trigers when state list is updated
+  useEffect(() => {
+    const userProfileState = userProfile?.state || '';
+    if (states.find((state) => state.isoCode === userProfileState)) {
+      setValue('state', userProfileState);
+    } else {
+      setValue('state', '');
+    }
+  }, [states, userProfile?.state, setValue]);
 
   const { mutate: submitCreateUserProfile, isPending: isCreateProfilePending } = useMutation<
     UserProfileResponse,
@@ -172,7 +207,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
               Phone
             </label>
             <PhoneInput
-              defaultCountry="US"
+              defaultCountry="us"
               value={phoneNumber}
               inputClassName="w-full"
               countrySelectorStyleProps={{
@@ -183,6 +218,29 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
               }}
               required
             />
+          </div>
+          <div>
+            <label
+              htmlFor="Phone"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              Country
+            </label>
+            <select
+              id="country"
+              {...register('country')}
+              className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
+            >
+              <option value="">Select</option>
+              {Object.entries(countries).map(([id, country]) => (
+                <option
+                  key={id}
+                  value={country.isoCode}
+                >
+                  {country.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-6 flex gap-4">
             <div className="flex-1">
@@ -213,12 +271,12 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
                 className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
               >
                 <option value="">Select</option>
-                {Object.entries(STATES).map(([value, name]) => (
+                {states.map((state) => (
                   <option
-                    key={value}
-                    value={value}
+                    key={state.isoCode}
+                    value={state.isoCode}
                   >
-                    {name}
+                    {state.name}
                   </option>
                 ))}
               </select>

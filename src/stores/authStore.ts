@@ -20,6 +20,7 @@ export interface UserProfile {
   shortBio?: string;
   city: string;
   state: string;
+  country: string;
 }
 
 interface AuthStore {

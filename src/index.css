@@ -52,6 +52,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --react-international-phone-border-radius: 0.75rem;
+  --react-international-phone-height: 42px;
 }
 
 #root {
