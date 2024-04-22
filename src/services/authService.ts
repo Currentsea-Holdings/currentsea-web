@@ -23,6 +23,7 @@ export interface LoginResponse {
     shortBio?: string;
     city: string;
     state: string;
+    country: string;
   }
   message: string;
 }

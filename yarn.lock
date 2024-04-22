@@ -6780,6 +6780,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"country-state-city@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "country-state-city@npm:3.2.1"
+  checksum: 2545a000c207345514de31c20ed8a331bba9796f36ab1e6e4019ebb319bca37894180e4ade40eef9d7f2443aa60045ec3f317bfdb3f4c7b99b9c711e4688d8cb
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
@@ -6851,6 +6858,7 @@ __metadata:
     axios-mock-adapter: "npm:^1.22.0"
     chromatic: "npm:^10.1.0"
     classnames: "npm:^2.5.1"
+    country-state-city: "npm:^3.2.1"
     eslint: "npm:^8.55.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-jsx-a11y: "npm:^6.8.0"
@@ -6870,6 +6878,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.50.1"
+    react-international-phone: "npm:^4.2.7"
     react-router-dom: "npm:^6.21.3"
     react-toastify: "npm:^10.0.5"
     simple-zustand-devtools: "npm:^1.1.0"
@@ -13311,6 +13320,15 @@ __metadata:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 2c337ec8b2cf0628ac4f17df3c84d4a24b5357f8f93d5a4cfc74c4d104cc1bc32c3e0eeb33ed5ffd505d74bc345a30615a0b0b4f6a761767db57378f45e8d87b
+  languageName: node
+  linkType: hard
+
+"react-international-phone@npm:^4.2.7":
+  version: 4.2.7
+  resolution: "react-international-phone@npm:4.2.7"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: a26c476fb64d890c2f9eea2c444e438f02e7645828451ddbc8043a21b0ac53ea0d591299e2c1ce85f85958e7d36713adba590fbac44d7dc0eb8784cfcf06751e
   languageName: node
   linkType: hard
 
