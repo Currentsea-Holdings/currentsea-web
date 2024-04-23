@@ -8,6 +8,7 @@ import type {
   CreateUserProfilePayload,
   UpdateUserProfilePayload,
 } from '@/services/userProfileService';
+import type { UserProfile} from '@/stores/authStore';
 import { useAuthStore, type User } from '@/stores/authStore';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
@@ -103,7 +104,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
       submitUpdateUserProfile(
         { id: userProfile.id, userId: user.id, ...formData },
         {
-          onSuccess: (data) => {
+          onSuccess: (data: UserProfile) => {
             console.log('User Profile updated successfully.');
             setUserProfile(data);
             onNext();
@@ -117,7 +118,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
       submitCreateUserProfile(
         { userId: id, ...formData },
         {
-          onSuccess: (data) => {
+          onSuccess: (data: UserProfile) => {
             console.log('User Profile created successfully.');
             setUserProfile(data);
             onNext();

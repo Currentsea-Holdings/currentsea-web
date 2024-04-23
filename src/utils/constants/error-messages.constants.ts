@@ -1,4 +1,4 @@
-export const ERROR_MESSAGES = {
+export const ERROR_MESSAGES: Record<string, string> = {
   INVALID_CREDENTIALS: 'Incorrect email or password. Please try again.',
   EMAIL_ALREADY_EXISTS:
     'This email is already in use. If this is your email, please log in or reset your password.',

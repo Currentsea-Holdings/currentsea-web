@@ -44,7 +44,7 @@ export const Home = ({ className, ...props }: HomeProps) => {
     fetchCurrentUserProfileData().catch((error) => {
       console.error(error);
     });
-  }, [user?.id, hasFullUserProfile]);
+  }, [user?.id, hasFullUserProfile, navigate]);
 
   const viewCalendar = () => {
     console.log('viewCalendar clicked');
