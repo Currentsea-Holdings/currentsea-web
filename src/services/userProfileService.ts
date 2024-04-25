@@ -24,7 +24,7 @@ export interface CreateUserProfilePayload {
   state: string;
   industries?: string[];
   rates?: RateDetail[];
-  showcaseContent?: ContentDetail[];
+  country: string;
 }
 
 export interface UpdateUserProfilePayload {
@@ -38,10 +38,12 @@ export interface UpdateUserProfilePayload {
   shortBio?: string;
   city?: string;
   state?: string;
+
   industries?: string[];
   rates?: RateDetail[];
   showcaseContent?: ContentDetail[];
   hasFullProfile?: boolean;
+  country?: string;
 }
 
 export interface UserProfileResponse {
@@ -54,6 +56,8 @@ export interface UserProfileResponse {
   rates?: RateDetail[];
   showcaseContent?: ContentDetail[];
   hasFullProfile?: boolean;
+  country: string;
+
 }
 
 export const createUserProfile = async (

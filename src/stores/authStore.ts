@@ -22,6 +22,7 @@ export interface UserProfile {
   city: string;
   state: string;
   industries?: string[];
+  country: string;
 }
 
 interface AuthStore {

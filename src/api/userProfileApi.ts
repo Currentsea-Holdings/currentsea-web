@@ -12,6 +12,7 @@ export interface CreateUserProfilePayload {
   shortBio?: string;
   city: string;
   state: string;
+  country: string;
 }
 
 export interface UpdateUserProfilePayload {
@@ -24,6 +25,7 @@ export interface UpdateUserProfilePayload {
   shortBio?: string;
   city?: string;
   state?: string;
+  country?: string;
 }
 
 export interface UserProfileResponse {
@@ -32,6 +34,7 @@ export interface UserProfileResponse {
   emailVerified: boolean;
   city: string;
   state: string;
+  country: string;
 }
 
 export interface GetShowCaseContentResponse {
