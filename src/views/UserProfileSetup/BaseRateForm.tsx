@@ -49,7 +49,7 @@ export type SocialMediaRatesFormFields = {
 const BaseRateForm = () => {
   const navigate = useNavigate();
   const userProfile = useAuthStore((state) => state.userProfile);
-  const { user, nextStep, setIsProfileCreationStepsOpen } = useUserProfile();
+  const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
   const {
     register,
     handleSubmit,
@@ -124,10 +124,6 @@ const BaseRateForm = () => {
 
   const onSubmit = (formData: SocialMediaRatesFormFields) => {
     mutate(formData);
-  };
-
-  const closeModal = () => {
-    setIsProfileCreationStepsOpen(false);
   };
 
   const renderInputForPlatform = (

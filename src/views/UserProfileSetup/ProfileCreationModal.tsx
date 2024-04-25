@@ -8,11 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import tooltip from '@/assets/tooltip.svg';
 
 const ProfileCreationModal = () => {
-  const { user, nextStep, setIsProfileCreationStepsOpen } = useUserProfile();
+  const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
 
-  const closeModal = () => {
-    setIsProfileCreationStepsOpen(false);
-  };
 
   return (
     <Modal
