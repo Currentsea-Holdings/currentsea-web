@@ -19,6 +19,7 @@ export interface UpdateUserPayload {
   userType?: 'Creator' | 'Agency' | 'Brand';
   refreshToken?: string;
   emailVerified?: boolean;
+  hasFullProfile?: boolean;
 }
 
 export interface UserResponse {

@@ -1,48 +1,23 @@
 import { CSButton } from '@/components/common';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { type User } from '@/stores/authStore';
 import { Modal } from 'flowbite-react';
 import { InfoCircle } from 'flowbite-react-icons/outline';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import tooltip from '@/assets/tooltip.svg';
 
-interface ProfileCreationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const ProfileCreationModal = () => {
+  const { user, nextStep, setIsProfileCreationStepsOpen } = useUserProfile();
 
-const ProfileCreationModal: React.FC<ProfileCreationModalProps> = ({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  const navigate = useNavigate();
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  const closeModalOnOutsideClick = (event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      onClose();
-    }
+  const closeModal = () => {
+    setIsProfileCreationStepsOpen(false);
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('mousedown', closeModalOnOutsideClick);
-    }
-    return () => {
-      document.removeEventListener('mousedown', closeModalOnOutsideClick);
-    };
-  }, [isOpen, onClose]);
-
-  const goToCreateUserProfile = () => {
-    navigate('/'); // TODO: ROUTE NEEDS TO CHANGE TO CORRECT ONE
-  }
 
   return (
     <Modal
-      show={isOpen}
-      onClose={onClose}
-      ref={modalRef}
+      show={true}
+      onClose={closeModal}
       className="border-none"
     >
       <Modal.Header
@@ -52,10 +27,11 @@ const ProfileCreationModal: React.FC<ProfileCreationModalProps> = ({
         }}
       >
         <div className="flex items-center space-x-2">
-          <InfoCircle
-            className="text-custom-blue mt-0"
+          <img src={tooltip} alt="tooltip" />
+          {/* <InfoCircle
+            className="mt-0 text-custom-blue"
             size={15}
-          />
+          /> */}
           <p
             className="text-custom-blue"
             style={{ fontWeight: '600' }}
@@ -64,7 +40,7 @@ const ProfileCreationModal: React.FC<ProfileCreationModalProps> = ({
           </p>
         </div>
       </Modal.Header>
-      <Modal.Body className="text-custom-blue border-none">
+      <Modal.Body className="border-none text-custom-blue">
         <p>
           Before you get started, you need a profile. Stand out from other creators with an epic
           profile.
@@ -75,7 +51,7 @@ const ProfileCreationModal: React.FC<ProfileCreationModalProps> = ({
         style={{ height: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
         <CSButton
-          onClick={goToCreateUserProfile}
+          onClick={nextStep}
           className="w-50 mb-8 flex h-9 cursor-pointer items-center justify-center rounded-lg bg-primary text-sm text-white transition-colors duration-200 ease-in-out enabled:hover:opacity-90"
         >
           Create Profile

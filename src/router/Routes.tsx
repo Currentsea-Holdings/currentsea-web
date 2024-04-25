@@ -13,6 +13,8 @@ import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
 import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
 import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
+import ProfileCreationSteps from '@/views/Home/UserProfileSetup/ProfileCreationSteps';
+import { UserProfileProvider } from '@/context/UserProfileContext';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -30,7 +32,9 @@ export const Routes = () => {
           path: '/',
           element: (
             <ThemeProvider theme={theme.value}>
-              <Home />
+              <UserProfileProvider>
+                <Home />
+              </UserProfileProvider>
             </ThemeProvider>
           ),
         },
@@ -46,6 +50,14 @@ export const Routes = () => {
         {
           path: '/onboarding/:step',
           element: <OnboardingView />,
+        },
+        {
+          path: 'create-user-profile/:step',
+          element: (
+            <UserProfileProvider>
+              <ProfileCreationSteps />
+            </UserProfileProvider>
+          ),
         },
         {
           path: '*',
@@ -100,7 +112,7 @@ export const Routes = () => {
           ),
         },
       ],
-    }
+    },
   ];
 
   return routes;

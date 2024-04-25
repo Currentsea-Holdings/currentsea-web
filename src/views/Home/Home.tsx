@@ -9,56 +9,64 @@ import { Footer } from 'flowbite-react';
 import { Modal } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { usersApi } from '@/api/usersApi';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore, type User } from '@/stores/authStore';
 import { getUserUserProfile } from '@/services/usersService';
-import ProfileCreationModal from '@/views/Home/ProfileCreationModal';
+import ProfileCreationModal from '@/views/Home/UserProfileSetup/ProfileCreationModal';
 import { useNavigate } from 'react-router-dom';
 import { LuWaves } from 'react-icons/lu';
 import { ArrowRight } from 'flowbite-react-icons/outline';
+import CreatorInfoForm from './UserProfileSetup/CreatorInfoForm';
+import ProfileCreationSteps from './UserProfileSetup/ProfileCreationSteps';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 interface HomeProps {
   className?: string;
+  hasFullProfile?: boolean;
 }
 
-export const Home = ({ className, ...props }: HomeProps) => {
+export const Home = ({ className, hasFullProfile, ...props }: HomeProps) => {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [hasFullUserProfile, setHasFullUserProfile] = useState<boolean>(false);
   const [showEmptyState, setShowEmptyState] = useState<boolean>(true);
+  const [currentStep, setCurrentStep] = useState(1);
+  const { profileCompleted, isProfileCreationStepsOpen, setIsProfileCreationStepsOpen } = useUserProfile();
 
   // Will check for current user that's logged in but will check it against hasFullUserProfile submitted
   useEffect(() => {
-    const fetchCurrentUserProfileData = async () => {
-      const userLoggedId = await getUserUserProfile(user?.id);
-      if (userLoggedId && !hasFullUserProfile) {
-        setShowEmptyState(true);
-        setIsModalOpen(true);
-      } else if (userLoggedId && hasFullUserProfile) {
-        setShowEmptyState(false);
-        setIsModalOpen(false);
-      } else if (!userLoggedId) {
-        navigate('/login');
-      }
-    };
-    fetchCurrentUserProfileData().catch((error) => {
-      console.error(error);
-    });
-  }, [user?.id, hasFullUserProfile, navigate]);
+    if (!user) {
+      navigate('/login');
+    } else {
+      const fetchProfileData = async () => {
+        const profile = await getUserUserProfile(user.id);
+        if (profile && profileCompleted) {
+          setIsProfileCreationStepsOpen(false);
+          setShowEmptyState(false);
+        } else if (!profileCompleted) {
+          setIsProfileCreationStepsOpen(true);
+          setShowEmptyState(true);
+        } else {
+          navigate('/login');
+        }
+      };
+      fetchProfileData().catch((error) => {
+        console.error('Failed to fetch user profile:', error);
+      });
+    }
+  }, [user, profileCompleted]);
 
   const viewCalendar = () => {
     console.log('viewCalendar clicked');
     // navigate('/calendar'); //TODO: This route/view/screen or api call etc still has to be made.
+  };
+
+  if (!user) {
+    return <p>Loading user data...</p>;
   }
 
   return (
     <DashboardLayout>
-      <ProfileCreationModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-      ></ProfileCreationModal>
+      {isProfileCreationStepsOpen && !profileCompleted && <ProfileCreationSteps />}
       <h1 className="my-2">Home</h1>
       <div
         className={classNames('mt-4 grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3')}
@@ -155,7 +163,8 @@ export const Home = ({ className, ...props }: HomeProps) => {
             </CSCard>
             <CSCard
               title="Upcoming Task"
-              style={{ width: '760px' }}
+              className="flex w-full flex-col xl:max-w-full"
+              // style={{ width: '54vw' }}
             >
               <div className="flex w-full flex-col items-center justify-center gap-1 rounded-lg">
                 <LuWaves

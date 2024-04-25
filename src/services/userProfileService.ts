@@ -2,6 +2,16 @@ import { userProfileApi } from '@/api/userProfileApi';
 import { isAxiosError } from 'axios';
 import { ERROR_MESSAGES } from '@/utils/constants';
 
+export interface RateDetail {
+  platform: string;
+  type: string;
+  rate: string;
+}
+
+export interface ContentDetail {
+  file: File[];
+}
+
 export interface CreateUserProfilePayload {
   userId: string;
   firstName?: string;
@@ -12,6 +22,8 @@ export interface CreateUserProfilePayload {
   shortBio?: string;
   city: string;
   state: string;
+  industries?: string[];
+  rates?: RateDetail[];
   country: string;
 }
 
@@ -26,6 +38,11 @@ export interface UpdateUserProfilePayload {
   shortBio?: string;
   city?: string;
   state?: string;
+
+  industries?: string[];
+  rates?: RateDetail[];
+  showcaseContent?: ContentDetail[];
+  hasFullProfile?: boolean;
   country?: string;
 }
 
@@ -35,10 +52,17 @@ export interface UserProfileResponse {
   emailVerified: boolean;
   city: string;
   state: string;
+  industries?: string[];
+  rates?: RateDetail[];
+  showcaseContent?: ContentDetail[];
+  hasFullProfile?: boolean;
   country: string;
+
 }
 
-export const createUserProfile = async (payload: CreateUserProfilePayload): Promise<UserProfileResponse> => {
+export const createUserProfile = async (
+  payload: CreateUserProfilePayload,
+): Promise<UserProfileResponse> => {
   try {
     return await userProfileApi.createUserProfile(payload);
   } catch (err) {
@@ -50,7 +74,10 @@ export const createUserProfile = async (payload: CreateUserProfilePayload): Prom
   }
 };
 
-export const updateUserProfile = async ({ id, ...payload }: UpdateUserProfilePayload): Promise<UserProfileResponse> => {
+export const updateUserProfile = async ({
+  id,
+  ...payload
+}: UpdateUserProfilePayload): Promise<UserProfileResponse> => {
   try {
     return await userProfileApi.updateUserProfile(id, payload);
   } catch (err) {
@@ -93,5 +120,20 @@ export const deleteUserProfile = async (id: string): Promise<void> => {
   } catch (err) {
     console.error('Delete UserProfile Error:', err);
     throw err;
+  }
+};
+
+/* USER PROFILE CREATION UPLOADING FOR SHOWCASE CONTENT */
+export const uploadShowCaseContent = async (
+  formData: FormData,
+): Promise<UserProfileResponse> => {
+  try {
+    return await userProfileApi.uploadShowCaseContent(formData);
+  } catch (err) {
+    if (isAxiosError(err)) {
+      throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
+    } else {
+      throw err;
+    }
   }
 };
