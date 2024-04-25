@@ -8,6 +8,7 @@ export interface User {
   emailVerified: boolean;
   userType?: 'Creator' | 'Agency' | 'Brand';
   userProfile?: UserProfile
+  industries?: string[];
 }
 
 export interface UserProfile {
@@ -20,6 +21,7 @@ export interface UserProfile {
   shortBio?: string;
   city: string;
   state: string;
+  industries?: string[];
 }
 
 interface AuthStore {

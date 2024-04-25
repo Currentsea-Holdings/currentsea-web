@@ -85,7 +85,7 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
                 className="text-left"
                 key={item.label}
                 href={item.href}
-                icon={item.icon as IconType}
+                icon={item.icon}
               >
                 {item.label}
               </Sidebar.Item>
