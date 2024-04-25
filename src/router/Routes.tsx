@@ -13,7 +13,7 @@ import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
 import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
 import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
-import ProfileCreationSteps from '@/views/Home/UserProfileSetup/ProfileCreationSteps';
+import ProfileCreationSteps from '@/views/UserProfileSetup/ProfileCreationSteps';
 import { UserProfileProvider } from '@/context/UserProfileContext';
 
 export const Routes = () => {

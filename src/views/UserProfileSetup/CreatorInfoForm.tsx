@@ -16,7 +16,7 @@ const industryOptions = ['Food', 'Gaming', 'Hair', 'Health', 'Home'];
 
 const CreatorInfoForm = () => {
   const userProfile = useAuthStore((state) => state.userProfile);
-  const { user, nextStep, setIsProfileCreationStepsOpen } = useUserProfile();
+  const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
   const {
     register,
     handleSubmit,
@@ -75,10 +75,6 @@ const CreatorInfoForm = () => {
 
   const onSubmit = (formData: FormFields) => {
     mutate(formData);
-  };
-
-  const closeModal = () => {
-    setIsProfileCreationStepsOpen(false);
   };
 
   return (

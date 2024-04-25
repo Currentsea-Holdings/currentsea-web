@@ -21,7 +21,7 @@ interface GetShowCaseContentResponse {
 const Showcase = () => {
   const navigate = useNavigate();
   const userProfile = useAuthStore((state) => state.userProfile);
-  const { user, nextStep, setIsProfileCreationStepsOpen } = useUserProfile();
+  const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
   const {
     register,
     handleSubmit,
@@ -162,10 +162,6 @@ const Showcase = () => {
       }
       return updatedPreviews;
     });
-  };
-
-  const closeModal = () => {
-    setIsProfileCreationStepsOpen(false);
   };
 
   const skip = () => {

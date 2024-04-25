@@ -1,3 +1,4 @@
+import { userProfileApi } from '@/api/userProfileApi';
 import { useAuthStore, type User } from '@/stores/authStore';
 import { type ReactNode, createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +11,7 @@ interface UserProfileContextType {
   nextStep: () => void;
   completeProfile: () => void;
   setIsProfileCreationStepsOpen: (isOpen: boolean) => void;
+  closeModal: () => void;
 }
 
 const defaultContextValue: UserProfileContextType = {
@@ -20,6 +22,7 @@ const defaultContextValue: UserProfileContextType = {
   nextStep: () => {},
   completeProfile: () => {},
   setIsProfileCreationStepsOpen: () => {},
+  closeModal: () => {},
 };
 
 export const UserProfileContext = createContext<UserProfileContextType>(defaultContextValue);
@@ -33,6 +36,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
 }: UserProfileProviderProps) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
+  const userProfile = useAuthStore((state) => state.userProfile);
   const [currentStep, setCurrentStep] = useState(0);
   const [profileCompleted, setProfileCompleted] = useState(false);
   const [isProfileCreationStepsOpen, setIsProfileCreationStepsOpen] = useState(false);
@@ -47,15 +51,32 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
       navigate('/login');
     }
   }, [authUser, navigate]);
-  
 
   const nextStep = () => {
     setCurrentStep((current) => current + 1);
   };
 
-  const completeProfile = () => {
-    setProfileCompleted(true);
+  const closeModal = () => {
+    console.log('closeModal triggered');
+    setIsProfileCreationStepsOpen(false);
+    setProfileCompleted(false);
     navigate('/');
+  };
+
+  const completeProfile = () => {
+    if (!userProfile || !user) throw new Error('User profile is not available.');
+    userProfileApi
+      .setUserProfileStatus(userProfile.id, true)
+      .then(() => {
+        setProfileCompleted(true);
+        setIsProfileCreationStepsOpen(false);
+        navigate('/');
+      })
+      .catch((error) => {
+        setIsProfileCreationStepsOpen(true);
+        setProfileCompleted(false);
+        console.error('Failed to mark profile as completed:', error);
+      });
   };
 
   return (
@@ -68,6 +89,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
         nextStep,
         completeProfile,
         profileCompleted,
+        closeModal,
       }}
     >
       {children}

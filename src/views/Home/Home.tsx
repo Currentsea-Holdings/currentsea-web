@@ -11,13 +11,14 @@ import { useEffect, useState } from 'react';
 import { usersApi } from '@/api/usersApi';
 import { useAuthStore, type User } from '@/stores/authStore';
 import { getUserUserProfile } from '@/services/usersService';
-import ProfileCreationModal from '@/views/Home/UserProfileSetup/ProfileCreationModal';
+import ProfileCreationModal from '@/views/UserProfileSetup/ProfileCreationModal';
 import { useNavigate } from 'react-router-dom';
 import { LuWaves } from 'react-icons/lu';
 import { ArrowRight } from 'flowbite-react-icons/outline';
-import CreatorInfoForm from './UserProfileSetup/CreatorInfoForm';
-import ProfileCreationSteps from './UserProfileSetup/ProfileCreationSteps';
+import CreatorInfoForm from '../UserProfileSetup/CreatorInfoForm';
+import ProfileCreationSteps from '../UserProfileSetup/ProfileCreationSteps';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { userProfileApi } from '@/api/userProfileApi';
 
 interface HomeProps {
   className?: string;
@@ -26,27 +27,28 @@ interface HomeProps {
 
 export const Home = ({ className, hasFullProfile, ...props }: HomeProps) => {
   const user = useAuthStore((state) => state.user);
+  const userProfile = useAuthStore((state) => state.userProfile);
   const navigate = useNavigate();
   const [hasFullUserProfile, setHasFullUserProfile] = useState<boolean>(false);
   const [showEmptyState, setShowEmptyState] = useState<boolean>(true);
   const [currentStep, setCurrentStep] = useState(1);
-  const { profileCompleted, isProfileCreationStepsOpen, setIsProfileCreationStepsOpen } = useUserProfile();
+  const { profileCompleted, isProfileCreationStepsOpen, setIsProfileCreationStepsOpen } =
+    useUserProfile();
 
   // Will check for current user that's logged in but will check it against hasFullUserProfile submitted
   useEffect(() => {
-    if (!user) {
+    if (!userProfile || !user) {
       navigate('/login');
     } else {
       const fetchProfileData = async () => {
         const profile = await getUserUserProfile(user.id);
-        if (profile && profileCompleted) {
-          setIsProfileCreationStepsOpen(false);
+        const userProfileStatus = await userProfileApi.getUserProfileStatus(userProfile.id);
+        const userProfileComplete = userProfileStatus.profileCompleted;
+        if (profile && userProfileComplete) {
           setShowEmptyState(false);
-        } else if (!profileCompleted) {
+        } else if (profile && !userProfileComplete) {
           setIsProfileCreationStepsOpen(true);
           setShowEmptyState(true);
-        } else {
-          navigate('/login');
         }
       };
       fetchProfileData().catch((error) => {

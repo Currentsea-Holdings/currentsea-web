@@ -8,14 +8,12 @@ import check from '@/assets/check.svg';
 
 const CompletetionModal = () => {
   const navigate = useNavigate();
-  const { user, nextStep, setIsProfileCreationStepsOpen, completeProfile } = useUserProfile();
+  const { user, nextStep, setIsProfileCreationStepsOpen, completeProfile, closeModal } = useUserProfile();
 
-  const closeModal = () => {
-    setIsProfileCreationStepsOpen(false);
-  };
 
   const goToCompletedProfile = () => {
     completeProfile();
+    closeModal();
     setIsProfileCreationStepsOpen(false);
   };
 

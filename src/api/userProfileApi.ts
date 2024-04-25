@@ -35,6 +35,7 @@ export interface UserProfileResponse {
   city: string;
   state: string;
   country: string;
+  profileCompleted: boolean;
 }
 
 export interface GetShowCaseContentResponse {
@@ -65,9 +66,7 @@ export const userProfileApi = {
     await api.delete(`${API_ENDPOINTS.USER_PROFILE}/${id}`);
   },
 
-
-/* USER PROFILE UPLOADING SHOWCASE CONTENT */
-
+  /* USER PROFILE UPLOADING SHOWCASE CONTENT */
 
   // upload showcase content
   uploadShowCaseContent: async (formData: FormData): Promise<UserProfileResponse> => {
@@ -94,7 +93,6 @@ export const userProfileApi = {
     const cleanedUrls = response.showcaseContent.map((url) =>
       url.replace(/\\/g, '').replace(/"/g, ''),
     );
-    // const transformedContent = cleanedUrls.map((path) => `${BASE_API_URL}${path}`);
     return { showcaseContent: cleanedUrls };
   },
 
@@ -104,5 +102,14 @@ export const userProfileApi = {
     await api.delete(
       `${API_ENDPOINTS.USER_PROFILE}/${id}/delete-showcase-content?${queryParams.toString()}`,
     );
+  },
+
+  setUserProfileStatus: async (id: string, status: boolean): Promise<UserProfileResponse> => {
+    const body = { profileCompleted: status };
+    return await api.put(`${API_ENDPOINTS.USER_PROFILE}/${id}/set-user-profile-status`, body);
+  },
+
+  getUserProfileStatus: async (id: string): Promise<UserProfileResponse> => {
+    return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}/get-user-profile-status`);
   },
 };
