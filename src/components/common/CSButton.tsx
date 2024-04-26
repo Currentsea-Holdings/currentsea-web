@@ -1,7 +1,8 @@
-import type { ComponentPropsWithoutRef, ElementType, ReactNode} from 'react';
+import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 import type { ButtonSizes, CustomFlowbiteTheme } from 'flowbite-react';
 import { getTheme, Button } from 'flowbite-react';
 import { CSSpinner } from '@/components/common/CSSpinner';
+import classNames from 'classnames';
 
 type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';
 
@@ -12,6 +13,7 @@ export type CSButtonProps<T extends ElementType = 'button'> = {
   className?: string;
   children?: ReactNode;
   size?: keyof ButtonSizes;
+  outline?: boolean;
 } & ComponentPropsWithoutRef<T>;
 
 export const CSButton = (props: CSButtonProps) => {
@@ -33,6 +35,7 @@ const FlowbiteButton = ({
   color = 'primary',
   isProcessing,
   disabled,
+  outline,
   className,
   children,
   ...props
@@ -57,7 +60,11 @@ const FlowbiteButton = ({
     <Button
       theme={componentTheme}
       color="primary"
-      className={`rounded text-sm font-medium text-white outline-none focus:outline-none enabled:hover:opacity-90 ${className}`}
+      className={classNames(
+        'rounded text-sm font-medium text-white outline-none focus:outline-none enabled:hover:opacity-90',
+        { 'border border-primary bg-transparent': outline },
+        className,
+      )}
       {...props}
       disabled={disabled}
       isProcessing={isProcessing}
