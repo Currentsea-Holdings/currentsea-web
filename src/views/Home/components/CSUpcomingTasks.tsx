@@ -3,10 +3,11 @@ import { Carousel, getTheme } from 'flowbite-react';
 
 import Icons from '@/assets/icons';
 import emptyState from '@/assets/images/common/empy-state.svg';
-import { CSCard } from '@/components/common';
-import { CSUpcomingTasksCard } from '@/views/Home/components/CSUpcomingTasksCard';
+import { CSCard } from '@/components';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { CSUpcomingTasksCard } from './CSUpcomingTasksCard';
 
 interface CSUpcomingTasksProps {
   title: string;

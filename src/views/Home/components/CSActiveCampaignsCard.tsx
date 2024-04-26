@@ -1,4 +1,4 @@
-import { CSCard } from '@/components/common';
+import { CSCard } from '@/components';
 
 interface CSActiveCampaignsCardProps {
   title: string;

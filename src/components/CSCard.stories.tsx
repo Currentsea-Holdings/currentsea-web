@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import { CSCard, type CSCardProps } from '@/components/common/CSCard';
+import { CSCard, type CSCardProps } from '@/components/CSCard';
 
 export default {
   title: 'Components/CSCard',

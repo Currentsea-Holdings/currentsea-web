@@ -1,4 +1,4 @@
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { type User } from '@/stores/authStore';
 import { Modal } from 'flowbite-react';

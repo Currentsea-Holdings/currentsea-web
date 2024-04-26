@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 import type { ButtonSizes, CustomFlowbiteTheme } from 'flowbite-react';
 import { getTheme, Button } from 'flowbite-react';
-import { CSSpinner } from '@/components/common/CSSpinner';
+import { CSSpinner } from '@/components/CSSpinner';
 import classNames from 'classnames';
 
 type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';

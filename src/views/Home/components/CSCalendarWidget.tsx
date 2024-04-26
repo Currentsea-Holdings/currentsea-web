@@ -1,7 +1,7 @@
 import { ArrowRight } from 'flowbite-react-icons/outline';
 
 import emptyState from '@/assets/images/common/empy-state.svg';
-import { CSButton, CSCard } from '@/components/common';
+import { CSButton, CSCard } from '@/components';
 
 interface CSCalendarWidgetProps {
   calendarItems?: {

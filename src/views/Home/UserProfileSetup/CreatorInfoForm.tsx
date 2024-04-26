@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { Dropdown, Modal, Textarea, Button, Tooltip } from 'flowbite-react';
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import { updateUserProfile } from '@/services/userProfileService';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useAuthStore } from '@/stores/authStore';

@@ -3,10 +3,11 @@ import { getTheme } from 'flowbite-react';
 import { ArrowRight } from 'flowbite-react-icons/outline';
 
 import emptyState from '@/assets/images/common/empy-state.svg';
-import { CSButton, CSCard } from '@/components/common';
-import { CSActiveCampaignsCard } from '@/views/Home/components/CSActiveCampaignsCard';
+import { CSButton, CSCard } from '@/components';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { CSActiveCampaignsCard } from './CSActiveCampaignsCard';
 
 interface CSActiveCampaignsProps {
   title: string;
