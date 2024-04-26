@@ -58,7 +58,7 @@ const Showcase = () => {
   };
 
   useEffect(() => {
-    fetchShowcaseContent().catch((error) => {
+    fetchShowcaseContent().catch((error: unknown) => {
       console.error('Error in fetchShowcaseContent:', error);
     });
   }, [user, userProfile]);
@@ -115,7 +115,7 @@ const Showcase = () => {
           setUploadSuccess(true);
           setUploadError('');
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error('An error occurred while fetching updated content:', error);
         });
     },

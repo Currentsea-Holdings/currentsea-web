@@ -51,7 +51,7 @@ export const Home = ({ className, hasFullProfile, ...props }: HomeProps) => {
           setShowEmptyState(true);
         }
       };
-      fetchProfileData().catch((error) => {
+      fetchProfileData().catch((error: unknown) => {
         console.error('Failed to fetch user profile:', error);
       });
     }

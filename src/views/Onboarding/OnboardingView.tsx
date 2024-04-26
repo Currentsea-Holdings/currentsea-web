@@ -28,7 +28,7 @@ export const OnboardingView = () => {
         setUserProfile(userProfileData);
       };
 
-      fetchUserProfileData().catch((error) => {
+      fetchUserProfileData().catch((error: unknown) => {
         console.error(error);
       });
     }

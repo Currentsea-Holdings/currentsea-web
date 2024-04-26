@@ -50,7 +50,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
       // Handle case where there is no user logged in
       navigate('/login');
     }
-  }, [authUser, navigate]);
+  }, [authUser, navigate, user]);
 
   const nextStep = () => {
     setCurrentStep((current) => current + 1);
@@ -72,7 +72,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
         setIsProfileCreationStepsOpen(false);
         navigate('/');
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         setIsProfileCreationStepsOpen(true);
         setProfileCompleted(false);
         console.error('Failed to mark profile as completed:', error);
