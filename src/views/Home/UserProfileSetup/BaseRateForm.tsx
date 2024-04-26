@@ -16,7 +16,7 @@ import {
 } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { updateUserProfile } from '@/services/userProfileService';
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import '@/styles/rate-form.styles.css';
 
 type PlatformFieldNames =

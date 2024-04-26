@@ -1,4 +1,4 @@
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import { useToast } from '@/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
 import { usePasswordResetContext } from '@/hooks/usePasswordResetContext';

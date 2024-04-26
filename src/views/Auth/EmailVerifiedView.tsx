@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useRegister } from '@/hooks/useRegister';
@@ -13,7 +13,7 @@ import {
   type ConfirmEmailResponse,
   confirmEmail,
 } from '@/services/authService';
-import { CSCard } from '@/components/common';
+import { CSCard } from '@/components';
 import { Card } from 'flowbite-react';
 import agencyImg from '@/assets/images/authentication/agency.png';
 import creatorImg from '@/assets/images/authentication/creator.png';

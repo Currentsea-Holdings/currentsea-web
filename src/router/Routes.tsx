@@ -2,7 +2,7 @@ import type { RouteObject } from 'react-router-dom';
 import { Navigate, Outlet } from 'react-router-dom';
 import { RequireAuth } from '@/router/RequireAuth';
 import { ThemeProvider } from '@emotion/react';
-import { Home } from '@/views/Home/Home';
+import { HomeView } from '@/views/Home/HomeView';
 import { LoginView } from '@/views/Auth/LoginView';
 import { SignupView } from '@/views/Auth/SignupView';
 import { useTheme } from '@/hooks/useTheme';
@@ -13,7 +13,7 @@ import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
 import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
 import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
-import ProfileCreationSteps from '@/views/UserProfileSetup/ProfileCreationSteps';
+import ProfileCreationSteps from '@/views/Home/UserProfileSetup/ProfileCreationSteps';
 import { UserProfileProvider } from '@/context/UserProfileContext';
 
 export const Routes = () => {
@@ -33,7 +33,7 @@ export const Routes = () => {
           element: (
             <ThemeProvider theme={theme.value}>
               <UserProfileProvider>
-                <Home />
+                <HomeView />
               </UserProfileProvider>
             </ThemeProvider>
           ),

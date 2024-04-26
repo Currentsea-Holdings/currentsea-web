@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import Icons from '@/assets/icons';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';

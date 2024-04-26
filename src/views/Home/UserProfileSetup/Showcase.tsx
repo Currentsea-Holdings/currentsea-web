@@ -1,4 +1,4 @@
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { uploadShowCaseContent } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';

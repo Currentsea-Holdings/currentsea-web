@@ -1,4 +1,4 @@
-import { CSCard } from '@/components/common';
+import { CSCard } from '@/components';
 import Icons from '@/assets/icons';
 
 export const CSUpcomingTasksCard = ({ title }: { title: string }) => {

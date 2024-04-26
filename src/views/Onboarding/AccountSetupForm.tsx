@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { STATES } from '@/utils/constants';
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import { useMutation } from '@tanstack/react-query';
 import { createUserProfile, updateUserProfile } from '@/services/userProfileService';
 import type {
