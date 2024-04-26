@@ -1,11 +1,11 @@
-/* eslint-disable react/no-unescaped-entities */
-import { InstagramIcon } from '@/assets/icons';
-import profilePic from '@/assets/images/authentication/agency.png';
-import { DashboardLayout } from '@/layouts';
-import { Button } from 'flowbite-react';
 import { HiStar } from 'react-icons/hi';
 
-export const UserProfile: React.FC = () => {
+import { InstagramIcon } from '@/assets/icons';
+import profilePic from '@/assets/images/authentication/agency.png';
+import { CSButton } from '@/components';
+import { DashboardLayout } from '@/layouts';
+
+export const ProfileView = () => {
   const buttonStyle = {
     padding: '0px 6px',
   };
@@ -14,12 +14,12 @@ export const UserProfile: React.FC = () => {
       <div className="p-4">
         <div className="mb-20 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Profile</h1>
-          <Button
+          <CSButton
             style={buttonStyle}
-            className="rounded-half bg-blue-500 font-semibold text-white hover:bg-blue-200"
+            className="rounded-half bg-primary font-semibold text-white"
           >
             Edit profile
-          </Button>
+          </CSButton>
         </div>
         <div className=" overflow-hidden text-center sm:rounded-lg">
           <img
@@ -42,28 +42,28 @@ export const UserProfile: React.FC = () => {
           </div>
           <div className="mx-auto max-w-xl px-4 text-sm">
             <p>
-              I'm Maya, a creator on a mission to promote inclusive and clean products. I love
+              I&apos;m Maya, a creator on a mission to promote inclusive and clean products. I love
               sharing my passion for healthy living with my dedicated followers!
             </p>
             <div className="flex  w-full justify-center space-x-8 px-20 py-4">
-              <Button
+              <CSButton
                 style={buttonStyle}
-                className="rounded-half bg-sky-500 font-semibold text-white hover:bg-blue-200"
+                className="rounded-half bg-primary-light-20 font-semibold text-white"
               >
                 Beauty
-              </Button>
-              <Button
+              </CSButton>
+              <CSButton
                 style={buttonStyle}
-                className="rounded-half bg-sky-500 font-semibold text-white hover:bg-blue-200"
+                className="rounded-half bg-primary-light-20 font-semibold text-white"
               >
                 Hair
-              </Button>
-              <Button
+              </CSButton>
+              <CSButton
                 style={buttonStyle}
-                className="rounded-half bg-sky-500 font-semibold text-white hover:bg-blue-200"
+                className="rounded-half bg-primary-light-20 font-semibold text-white"
               >
                 Health
-              </Button>
+              </CSButton>
             </div>
           </div>
           <div className="mt-4 flex justify-center space-x-40">
@@ -84,7 +84,7 @@ export const UserProfile: React.FC = () => {
           {/* line */}
           <div className="mt-4 border-t border-gray-200"></div>
 
-          <div className="mt-4 ml-64 flex justify-center flex-col">
+          <div className="ml-64 mt-4 flex flex-col justify-center">
             <div className="mt-2 w-48">
               <h3 className="text-left text-sm font-semibold">Rates</h3>
               <select
@@ -101,27 +101,22 @@ export const UserProfile: React.FC = () => {
 
             <div className="flex flex-col items-start justify-center p-4">
               <div className="flex items-center space-x-2">
-                <InstagramIcon
-                  className="h-6 w-6"  
-                />
-                <div className='mr-4'>
-                <span className="font-semibold mr-12 text-blue-600">@mayathompson</span> 
+                <InstagramIcon className="h-6 w-6" />
+                <div className="mr-4">
+                  <span className="mr-12 font-semibold text-blue-600">@mayathompson</span>
                 </div>
                 <div className="mt-2 flex space-x-20">
                   <div className="text-center">
                     <div className="text-sm font-semibold text-gray-600">Post</div>
                     <div className="text-md font-bold text-gray-800">$750</div>{' '}
-                    
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-semibold text-gray-600">Story</div>
                     <div className="text-md font-bold text-gray-800">$400</div>{' '}
-                    
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-semibold text-gray-600">Reel</div>
                     <div className="text-md font-bold text-gray-800">$650</div>{' '}
-                    
                   </div>
                 </div>
               </div>
@@ -129,9 +124,6 @@ export const UserProfile: React.FC = () => {
           </div>
         </div>
       </div>
-      
     </DashboardLayout>
   );
 };
-
-export default UserProfile;
