@@ -130,7 +130,7 @@ export const ConnectSocialMedia = ({ user, onNext, onBack }: ConnectSocialMediaP
   //     setLoggedId(user?.id as string);
   //   };
 
-  //   fetchUserProfileData().catch((error) => {
+  //   fetchUserProfileData().catch((error: unknown) => {
   //     console.error(error);
   //   });
   // }, [user?.id]);
@@ -181,7 +181,7 @@ export const ConnectSocialMedia = ({ user, onNext, onBack }: ConnectSocialMediaP
         .then((connectionStatuses: ConnectedAccessTokenTypes) => {
           setConnections(connectionStatuses);
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error('Error fetching social media connections:', error);
         });
     } else {

@@ -81,7 +81,7 @@ const BaseRateForm = () => {
         .then((connectionStatuses: ConnectedAccessTokenTypes) => {
           setConnections(connectionStatuses);
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error('Error fetching social media connections:', error);
         });
     } else {

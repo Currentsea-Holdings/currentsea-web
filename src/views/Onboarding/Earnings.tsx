@@ -68,7 +68,7 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
           setConnections(connectionStatuses);
           setIsConnected(true);
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error('Error fetching social media connections:', error);
         });
     } else {
