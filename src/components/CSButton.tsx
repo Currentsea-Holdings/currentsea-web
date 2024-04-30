@@ -54,6 +54,10 @@ const FlowbiteButton = ({
       isProcessingPadding: { ...buttonTheme.inner?.isProcessingPadding, md: 'p-2' },
     },
     spinnerLeftPosition: { ...buttonTheme.spinnerLeftPosition, md: 'left-0' },
+    size: {
+      ...buttonTheme.size,
+      lg: 'px-5 text-lg',
+    },
   };
 
   return (

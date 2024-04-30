@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { useAuthStore } from '@/stores/authStore';
 import { Navigate, useLocation } from 'react-router-dom';
+
+import { useAuthStore } from '@/stores/authStore';
 
 interface Props {
   children: ReactNode;
@@ -15,7 +16,11 @@ const useRedirectInfo = () => {
   }
 
   const pathsRestrictedForVerifiedUsers = ['/verify-email', '/email-verified'];
-  if (user.emailVerified && user.userType && pathsRestrictedForVerifiedUsers.includes(location.pathname)) {
+  if (
+    user.emailVerified &&
+    user.userType &&
+    pathsRestrictedForVerifiedUsers.includes(location.pathname)
+  ) {
     return { shouldRedirect: true, redirectTo: '/' };
   }
 
@@ -28,8 +33,11 @@ const useRedirectInfo = () => {
     return { shouldRedirect: true, redirectTo: '/email-verified' };
   }
 
-  if (!userProfile && location.pathname == '/') {
-    return { shouldRedirect: true, redirectTo: '/onboarding' };
+  if (!userProfile) {
+    const pathsRequiringProfile = ['/', '/onboarding/2', '/onboarding/3'];
+    if (pathsRequiringProfile.includes(location.pathname)) {
+      return { shouldRedirect: true, redirectTo: '/onboarding' };
+    }
   }
 
   return { shouldRedirect: false };
@@ -40,7 +48,13 @@ export const RequireAuth = ({ children }: Props) => {
   const location = useLocation();
 
   if (shouldRedirect) {
-    return <Navigate to={redirectTo || '/'} state={{ from: location }} replace />;
+    return (
+      <Navigate
+        to={redirectTo || '/'}
+        state={{ from: location }}
+        replace
+      />
+    );
   }
 
   return children;

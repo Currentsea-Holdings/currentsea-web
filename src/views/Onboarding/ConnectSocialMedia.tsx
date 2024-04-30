@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
-import { socialLogoArray } from '@/assets/images/platform-logos/platform-logos-data.tsx';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { accessTokensApi } from '@/api/platforms/accessTokensApi';
+import { linkedInApi } from '@/api/platforms/linkedInApi';
+import { pinterestApi } from '@/api/platforms/pinterestApi';
+import { snapChatApi } from '@/api/platforms/snapchatApi';
+import { tikTokApi } from '@/api/platforms/tikTokApi';
+import { twitchApi } from '@/api/platforms/twitchApi';
+import { xApi } from '@/api/platforms/xApi';
+import { youtubeApi } from '@/api/platforms/youtubeApi';
 import loginBackground from '@/assets/images/authentication/login-background.png';
-import { SocialMediaConnectContainer } from './components/SocialMediaConnectContainer';
+import { socialLogoArray } from '@/assets/images/platform-logos/platform-logos-data.tsx';
 import { CSButton } from '@/components';
 import { BackButton } from '@/components/BackButton';
-import type { User} from '@/stores/authStore';
-import { useAuthStore } from '@/stores/authStore';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { tikTokApi } from '@/api/platforms/tikTokApi';
-import { youtubeApi } from '@/api/platforms/youtubeApi';
-import { twitchApi } from '@/api/platforms/twitchApi';
-import { snapChatApi } from '@/api/platforms/snapchatApi';
-import { xApi } from '@/api/platforms/xApi';
-import { getUserUserProfile } from '@/services/usersService';
-import { pinterestApi } from '@/api/platforms/pinterestApi';
-import { linkedInApi } from '@/api/platforms/linkedInApi';
-import { accessTokensApi } from '@/api/platforms/accessTokensApi';
+
+import { SocialMediaConnectContainer } from './components/SocialMediaConnectContainer';
+
+import type { User } from '@/stores/authStore';
 import type { ConnectedAccessTokenTypes } from '@/api/platforms/accessTokensApi';
 
 interface ConnectSocialMediaProps {
@@ -123,17 +124,6 @@ export const ConnectSocialMedia = ({ user, onNext, onBack }: ConnectSocialMediaP
    */
 
   const { id: loggedId } = user;
-  // const [loggedId, setLoggedId] = useState<string>('');
-  // useEffect(() => {
-  //   const fetchUserProfileData = async () => {
-  //     await getUserUserProfile(user?.id);
-  //     setLoggedId(user?.id as string);
-  //   };
-
-  //   fetchUserProfileData().catch((error: unknown) => {
-  //     console.error(error);
-  //   });
-  // }, [user?.id]);
 
   interface SocialMediaConnections {
     [key: string]: boolean;
@@ -174,7 +164,8 @@ export const ConnectSocialMedia = ({ user, onNext, onBack }: ConnectSocialMediaP
     useState<ConnectedAccessTokenTypes>(getInitialConnections());
   const [searchParams] = useSearchParams();
 
-  useEffect(() => { // this will check for current accessTokens the particular userId has already
+  useEffect(() => {
+    // this will check for current accessTokens the particular userId has already
     if (user.id) {
       accessTokensApi
         .getConnectedAccessTokens(user.id)
@@ -281,20 +272,16 @@ export const ConnectSocialMedia = ({ user, onNext, onBack }: ConnectSocialMediaP
             />
           ))}
         </div>
-        <form
-          onSubmit={() => {
-            onNext();
-          }}
-          className="flex w-full flex-col items-center justify-center p-5"
-        >
+        <div className="flex w-full flex-col items-center justify-center p-5">
           <CSButton
             type="submit"
             size={'lg'}
             className="flex h-12 w-[73%] items-center justify-center rounded-lg border bg-primary px-5"
+            onClick={onNext}
           >
             Next: Earnings
           </CSButton>
-        </form>
+        </div>
       </div>
     </>
   );
