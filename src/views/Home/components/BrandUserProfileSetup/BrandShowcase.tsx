@@ -18,7 +18,7 @@ interface GetShowCaseContentResponse {
   showcaseContent: string[];
 }
 
-const Showcase = () => {
+const BrandShowcase = () => {
   const navigate = useNavigate();
   const userProfile = useAuthStore((state) => state.userProfile);
   const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
@@ -175,7 +175,7 @@ const Showcase = () => {
       className="border-none"
     >
       <Modal.Header className="border-none">
-        <div className="flex items-center justify-between">Showcase your best content...</div>
+        <div className="flex items-center justify-between">Add content that best represents your brand...</div>
       </Modal.Header>
       <Modal.Body
         className="modal-body-custom border-none text-custom-blue"
@@ -329,4 +329,4 @@ const Showcase = () => {
   );
 };
 
-export default Showcase;
+export default BrandShowcase;

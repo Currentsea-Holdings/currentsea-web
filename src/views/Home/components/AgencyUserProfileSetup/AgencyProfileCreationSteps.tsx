@@ -1,23 +1,23 @@
 import { Modal } from 'flowbite-react';
 import { useState, useEffect } from 'react';
-import CreatorInfoForm from './CreatorInfoForm';
+import CreatorInfoForm from './AgencyInfoForm';
 import { type User, useAuthStore } from '@/stores/authStore';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import ProfileCreationModal from './ProfileCreationModal';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import BaseRateForm from './BaseRateForm';
-import Showcase from './Showcase';
-import CompletetionModal from './CompletionModal';
+import AgencyProfileCreationModal from './AgencyProfileCreationModal';
+import AgencyInfoForm from './AgencyInfoForm';
+import AgencyShowcase from './AgencyShowcase';
+import AgencyCompletetionModal from './AgencyCompletionModal';
+
 
 const steps = [
-  { title: 'One more thing...', component: ProfileCreationModal },
-  { title: 'Tell us a little more about yourself...', component: CreatorInfoForm },
-  { title: 'Set your base rates...', component: BaseRateForm },
-  { title: 'Showcase your best content...', component: Showcase },
-  { title: 'You\'re read to go!', component: CompletetionModal },
+  { title: 'One more thing...', component: AgencyProfileCreationModal },
+  { title: 'Tell us a little more about your agency...', component: AgencyInfoForm },
+  { title: 'Amplify some of your clients work...', component: AgencyShowcase },
+  { title: 'You\'re read to go!', component: AgencyCompletetionModal },
 ];
 
-const ProfileCreationSteps = () => {
+const AgencyProfileCreationSteps = () => {
   const { user, currentStep, nextStep, completeProfile, profileCompleted } = useUserProfile();
 
   if (profileCompleted) {
@@ -39,4 +39,4 @@ const ProfileCreationSteps = () => {
   );
 };
 
-export default ProfileCreationSteps;
+export default AgencyProfileCreationSteps;
