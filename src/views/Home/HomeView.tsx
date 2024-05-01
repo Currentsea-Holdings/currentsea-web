@@ -12,7 +12,9 @@ import { CSActiveCampaigns } from './components/CSActiveCampaigns';
 import { CSCalendarWidget } from './components/CSCalendarWidget';
 import { CSCardAnalytics } from './components/CSCardAnalytics';
 import { CSUpcomingTasks } from './components/CSUpcomingTasks';
-import ProfileCreationSteps from './UserProfileSetup/ProfileCreationSteps';
+import BrandProfileCreationSteps from './components/BrandUserProfileSetup/BrandProfileCreationSteps';
+import AgencyProfileCreationSteps from './components/AgencyUserProfileSetup/AgencyProfileCreationSteps';
+import CreatorProfileCreationSteps from './CreatorUserProfileSetup/CreatorProfileCreationSteps';
 
 interface HomeViewProps {
   hasFullProfile?: boolean;
@@ -21,6 +23,7 @@ interface HomeViewProps {
 export const HomeView = ({ hasFullProfile }: HomeViewProps) => {
   const user = useAuthStore((state) => state.user);
   const userProfile = useAuthStore((state) => state.userProfile);
+  const userType = useAuthStore((state) => state.user?.userType);
   const [hasFullUserProfile, setHasFullUserProfile] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState(1);
   const { profileCompleted, isProfileCreationStepsOpen, setIsProfileCreationStepsOpen } =
@@ -118,7 +121,15 @@ export const HomeView = ({ hasFullProfile }: HomeViewProps) => {
 
   return (
     <DashboardLayout>
-      {isProfileCreationStepsOpen && !profileCompleted && <ProfileCreationSteps />}
+      {userType === 'Creator' && isProfileCreationStepsOpen && !profileCompleted && (
+        <CreatorProfileCreationSteps />
+      )}
+      {userType === 'Brand' && isProfileCreationStepsOpen && !profileCompleted && (
+        <BrandProfileCreationSteps />
+      )}
+      {userType === 'Agency' && isProfileCreationStepsOpen && !profileCompleted && (
+        <AgencyProfileCreationSteps />
+      )}
       <h1 className="my-2">Home</h1>
       <div
         className={classNames('mt-4 grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3')}

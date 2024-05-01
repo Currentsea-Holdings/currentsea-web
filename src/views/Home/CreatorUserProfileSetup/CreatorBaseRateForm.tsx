@@ -46,7 +46,7 @@ export type SocialMediaRatesFormFields = {
   [key in PlatformFieldNames]: string;
 };
 
-const BaseRateForm = () => {
+const CreatorBaseRateForm = () => {
   const navigate = useNavigate();
   const userProfile = useAuthStore((state) => state.userProfile);
   const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
@@ -228,4 +228,4 @@ const BaseRateForm = () => {
     </Modal>
   );
 };
-export default BaseRateForm;
+export default CreatorBaseRateForm;
