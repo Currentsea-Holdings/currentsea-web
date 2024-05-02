@@ -1,14 +1,13 @@
-import type { User} from '@/stores/authStore';
-import { useAuthStore } from '@/stores/authStore';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import Paypal from '@/assets/images/platform-logos/Paypal.svg';
-import { BackButton } from '@/components/common/BackButton';
-import { CSButton } from '@/components/common';
+import type { User } from '@/stores/authStore';
 import { ArrowRight } from 'flowbite-react-icons/outline';
 import { useEffect, useState } from 'react';
-import { getUserUserProfile } from '@/services/usersService';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { accessTokensApi } from '@/api/platforms/accessTokensApi';
 import { paypalApi } from '@/api/platforms/paypalApi';
-import { accessTokensApi } from '../../api/platforms/accessTokensApi';
+import Paypal from '@/assets/images/platform-logos/Paypal.svg';
+import { CSButton } from '@/components';
+import { BackButton } from '@/components/BackButton';
 
 interface EarningsProps {
   user: User;
@@ -66,9 +65,8 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
         .getConnectedAccessTokens(user.id)
         .then((connectionStatuses: EarningsAccessTokenTypes) => {
           setConnections(connectionStatuses);
-          setIsConnected(true);
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error('Error fetching social media connections:', error);
         });
     } else {
@@ -85,6 +83,7 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
       console.log(`${currentEarningsId} connection successful`);
       setConnections((prev) => ({ ...prev, [currentEarningsId]: true }));
       sessionStorage.removeItem('currentEarningsId');
+      setIsConnected(true);
     }
 
     if (status === 'error') {
@@ -135,20 +134,16 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
             </div>
           </div>
         </div>
-        <form
-          onSubmit={() => {
-            onNext();
-          }}
-          className="mt-10 flex w-full flex-col items-center justify-center"
-        >
+        <div className="mt-10 flex w-full flex-col items-center justify-center">
           <CSButton
             type="submit"
             size="lg"
             className="flex h-12 w-full items-center justify-center rounded-lg border bg-primary px-5"
+            onClick={onNext}
           >
             Home
           </CSButton>
-        </form>
+        </div>
       </div>
     </>
   );

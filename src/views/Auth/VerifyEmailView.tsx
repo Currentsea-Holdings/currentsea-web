@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import type { KeyboardEvent } from 'react';
 import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import logo from '@/assets/logo-title-black.svg';
 import loginBackground from '@/assets/images/authentication/login-background.png';
 import { useAuthStore } from '@/stores/authStore';
@@ -12,7 +12,7 @@ import {
   type ConfirmEmailResponse,
   confirmEmail,
 } from '@/services/authService';
-import { BackButton } from '@/components/common/BackButton';
+import { BackButton } from '@/components/BackButton';
 
 type VerificationCodeFields = {
   [K in `code${number}`]: string;

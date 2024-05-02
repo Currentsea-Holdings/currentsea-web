@@ -1,10 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CSButton } from '@/components/common';
+import { CSButton } from '@/components';
 import { FloatingLabel } from 'flowbite-react';
 import { usePasswordResetContext } from '@/hooks/usePasswordResetContext';
-import { BackButton } from '@/components/common/BackButton';
+import { BackButton } from '@/components/BackButton';
 
 export const ForgotPasswordForm = ({
   setIsEmailSent,

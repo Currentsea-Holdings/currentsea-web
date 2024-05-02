@@ -2,7 +2,6 @@
 import Icons, { NotificationIcon, SettingsIcon } from '@/assets/icons';
 import profilePic from '@/assets/images/authentication/agency.png';
 import logo from '@/assets/logo-title-black.svg';
-
 import { Global, css, useTheme } from '@emotion/react';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import { Sidebar, getTheme } from 'flowbite-react';

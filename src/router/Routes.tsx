@@ -1,18 +1,21 @@
 import type { RouteObject } from 'react-router-dom';
 import { Navigate, Outlet } from 'react-router-dom';
-import { RequireAuth } from '@/router/RequireAuth';
-import { ThemeProvider } from '@emotion/react';
-import { Home } from '@/views/Home/Home';
-import { LoginView } from '@/views/Auth/LoginView';
-import { SignupView } from '@/views/Auth/SignupView';
+
+import { UserProfileProvider } from '@/context/UserProfileContext';
 import { useTheme } from '@/hooks/useTheme';
-import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
-import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
-import { PasswordResetView } from '@/views/Auth/PasswordResetView';
+import { RequireAuth } from '@/router/RequireAuth';
 import { EmailVerifiedView } from '@/views/Auth/EmailVerifiedView';
+import { ForgotPasswordView } from '@/views/Auth/ForgotPasswordView';
+import { LoginView } from '@/views/Auth/LoginView';
+import { PasswordResetView } from '@/views/Auth/PasswordResetView';
+import { SignupView } from '@/views/Auth/SignupView';
+import { VerifyEmailView } from '@/views/Auth/VerifyEmailView';
+import { HomeView } from '@/views/Home/HomeView';
 import { OnboardingView } from '@/views/Onboarding/OnboardingView';
-import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
 import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
+import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
+import { ProfileView } from '@/views/Profile/ProfileView';
+import { ThemeProvider } from '@emotion/react';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -22,23 +25,30 @@ export const Routes = () => {
       path: '/',
       element: (
         <RequireAuth>
-          <Outlet />
+          <ThemeProvider theme={theme.value}>
+            <UserProfileProvider>
+              <Outlet />
+            </UserProfileProvider>
+          </ThemeProvider>
         </RequireAuth>
       ),
       children: [
         {
           path: '/',
-          element: (
-            <ThemeProvider theme={theme.value}>
-              <Home />
-            </ThemeProvider>
-          ),
+          element: <HomeView />,
+        },
+        {
+          path: '/profile',
+          element: <ProfileView />,
         },
         {
           path: '/verify-email',
           element: <VerifyEmailView />,
         },
-        { path: '/email-verified', element: <EmailVerifiedView /> },
+        {
+          path: '/email-verified',
+          element: <EmailVerifiedView />,
+        },
         {
           path: '/onboarding',
           element: <OnboardingView />,
@@ -58,6 +68,7 @@ export const Routes = () => {
         },
       ],
     },
+    /* PUBLIC ROUTES */
     {
       path: '/signup',
       element: <SignupView />,
@@ -100,7 +111,7 @@ export const Routes = () => {
           ),
         },
       ],
-    }
+    },
   ];
 
   return routes;

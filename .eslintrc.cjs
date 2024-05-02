@@ -36,6 +36,10 @@ module.exports = {
       { checksVoidReturn: false },
     ],
     '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/restrict-template-expressions': [
+      'error', 
+      { allowNumber: true }
+    ],
   },
   root: true,
   settings: {
