@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+import { getTheme, Sidebar } from 'flowbite-react';
+import { HiInbox, HiOutlineHome } from 'react-icons/hi';
+
 import Icons, { NotificationIcon, SettingsIcon } from '@/assets/icons';
 import profilePic from '@/assets/images/authentication/agency.png';
 import logo from '@/assets/logo-title-black.svg';
-import { Global, css, useTheme } from '@emotion/react';
+import { css, Global, useTheme } from '@emotion/react';
+
 import type { CustomFlowbiteTheme } from 'flowbite-react';
-import { Sidebar, getTheme } from 'flowbite-react';
-import { HiInbox, HiOutlineHome } from 'react-icons/hi';
-import type { IconType } from 'react-icons/lib';
 interface CSSidebarProps {
   // theme: {
   //   colors: {
@@ -54,8 +54,8 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
     <>
       <Global
         styles={css`
-          .my-sidebar-class > div {
-            background-color: ${theme.colors};
+          .cs-sidebar > div {
+            background-color: ${theme.colors.white};
             width: 100%;
           }
         `}
@@ -66,7 +66,7 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
           theme={componentTheme}
           // aria-label="Sidebar - Main navigation"
           //----------------------
-          className="flex-grow"
+          className="cs-sidebar flex-grow"
           {...props}
         >
           <div className="mb-5 flex items-center">
@@ -89,7 +89,7 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
                   className="text-left"
                   key={item.label}
                   href={item.href}
-                  icon={item.icon as IconType}
+                  icon={item.icon}
                 >
                   {item.label}
                 </Sidebar.Item>
@@ -97,13 +97,19 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
-        <div className="mt-auto flex w-full justify-between p-4 items-center"> {/* Added items-center to align items vertically */}
-        <img src={profilePic} alt="User" className="h-10 w-10 rounded-full border-4 border-blue-500" />
-        <div className="flex">
-          <NotificationIcon className="h-6 w-6 text-gray-600" />
-          <SettingsIcon className="h-4 w-4 text-gray-600" />
+        <div className="mt-auto flex w-full items-center justify-between p-4">
+          {' '}
+          {/* Added items-center to align items vertically */}
+          <img
+            src={profilePic}
+            alt="User"
+            className="h-10 w-10 rounded-full border-4 border-blue-500"
+          />
+          <div className="flex">
+            <NotificationIcon className="h-6 w-6 text-gray-600" />
+            <SettingsIcon className="h-4 w-4 text-gray-600" />
+          </div>
         </div>
-      </div>
       </div>
     </>
   );
