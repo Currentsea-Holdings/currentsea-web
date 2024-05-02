@@ -1,10 +1,12 @@
-import Icons from '@/assets/icons';
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+import Icons, { NotificationIcon, SettingsIcon } from '@/assets/icons';
+import profilePic from '@/assets/images/authentication/agency.png';
 import logo from '@/assets/logo-title-black.svg';
 import { Global, css, useTheme } from '@emotion/react';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import { Sidebar, getTheme } from 'flowbite-react';
 import { HiInbox, HiOutlineHome } from 'react-icons/hi';
-
+import type { IconType } from 'react-icons/lib';
 interface CSSidebarProps {
   // theme: {
   //   colors: {
@@ -53,45 +55,56 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
       <Global
         styles={css`
           .my-sidebar-class > div {
-            background-color: ${theme.colors.white};
+            background-color: ${theme.colors};
             width: 100%;
           }
         `}
       />
-      <Sidebar
-        theme={componentTheme}
-        // aria-label="Sidebar - Main navigation"
-        className={`flex items-center my-sidebar-class h-auto ${className}`}
-        {...props}
-      >
-        <div className="flex items-center mb-5">
-          <a
-            className="flex items-center mb-5"
-            href="/"
-          >
-            <img
-              src={logo}
-              alt="Logo"
-              className="h-12 mr-3"
-            />
-            <span className="self-center text-xl font-semibold whitespace-nowrap align dark:text-white"></span>
-          </a>
+      {/*------------------- */}
+      <div className={`flex h-full flex-col ${className}`}>
+        <Sidebar
+          theme={componentTheme}
+          // aria-label="Sidebar - Main navigation"
+          //----------------------
+          className="flex-grow"
+          {...props}
+        >
+          <div className="mb-5 flex items-center">
+            <a
+              className="mb-5 flex items-center"
+              href="/"
+            >
+              <img
+                src={logo}
+                alt="Logo"
+                className="mr-3 h-12"
+              />
+              <span className="align self-center whitespace-nowrap text-xl font-semibold dark:text-white"></span>
+            </a>
+          </div>
+          <Sidebar.Items>
+            <Sidebar.ItemGroup>
+              {menuItems.map((item) => (
+                <Sidebar.Item
+                  className="text-left"
+                  key={item.label}
+                  href={item.href}
+                  icon={item.icon as IconType}
+                >
+                  {item.label}
+                </Sidebar.Item>
+              ))}
+            </Sidebar.ItemGroup>
+          </Sidebar.Items>
+        </Sidebar>
+        <div className="mt-auto flex w-full justify-between p-4 items-center"> {/* Added items-center to align items vertically */}
+        <img src={profilePic} alt="User" className="h-10 w-10 rounded-full border-4 border-blue-500" />
+        <div className="flex">
+          <NotificationIcon className="h-6 w-6 text-gray-600" />
+          <SettingsIcon className="h-4 w-4 text-gray-600" />
         </div>
-        <Sidebar.Items>
-          <Sidebar.ItemGroup>
-            {menuItems.map((item) => (
-              <Sidebar.Item
-                className="text-left"
-                key={item.label}
-                href={item.href}
-                icon={item.icon}
-              >
-                {item.label}
-              </Sidebar.Item>
-            ))}
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
-      </Sidebar>
+      </div>
+      </div>
     </>
   );
 };
