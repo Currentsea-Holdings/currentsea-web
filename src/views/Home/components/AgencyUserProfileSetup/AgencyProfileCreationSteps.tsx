@@ -7,14 +7,18 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import AgencyProfileCreationModal from './AgencyProfileCreationModal';
 import AgencyInfoForm from './AgencyInfoForm';
 import AgencyShowcase from './AgencyShowcase';
-import AgencyCompletetionModal from './AgencyCompletionModal';
-
+import AgencyCompletetionModal from './AgencySavedProgressModal';
+import InviteClientsForm from './InviteClientsForm';
+import AgencySavedProgressModal from './AgencySavedProgressModal';
+import AgencyEmailInviteConfirmation from './AgencyEmailInviteConfirmation';
 
 const steps = [
   { title: 'One more thing...', component: AgencyProfileCreationModal },
   { title: 'Tell us a little more about your agency...', component: AgencyInfoForm },
   { title: 'Amplify some of your clients work...', component: AgencyShowcase },
-  { title: 'You\'re read to go!', component: AgencyCompletetionModal },
+  { title: "You're read to go!", component: AgencySavedProgressModal },
+  { title: 'Invite Clients', component: InviteClientsForm },
+  { title: 'Invites have been sent!', component: AgencyEmailInviteConfirmation },
 ];
 
 const AgencyProfileCreationSteps = () => {
