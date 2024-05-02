@@ -36,7 +36,7 @@ export const HomeView = ({ hasFullProfile }: HomeViewProps) => {
         const profile = await getUserUserProfile(user.id);
         const userProfileStatus = await userProfileApi.getUserProfileStatus(userProfile.id);
         const userProfileComplete = userProfileStatus.profileCompleted;
-        if (profile && userProfileComplete) {
+        if (profile && !userProfileComplete) {
           setIsProfileCreationStepsOpen(true);
         }
       };

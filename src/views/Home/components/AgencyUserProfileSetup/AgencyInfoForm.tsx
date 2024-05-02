@@ -93,7 +93,7 @@ const AgencyInfoForm = () => {
         >
           <Textarea
             {...register('shortBio', { required: 'Biography is required' })}
-            placeholder="Let your personality shine..."
+            placeholder="Keep it short and sweet..."
             rows={4}
             className="bg-white"
           />
@@ -163,32 +163,34 @@ const AgencyInfoForm = () => {
                     </button>
                   </div>
                 ))}
-              <label
-                htmlFor="bio"
-                className="block flex text-sm font-medium text-gray-700"
-              >
-                Website
-              </label>
-              <input
-                id="website"
-                type="text"
-                placeholder="Paste link here"
-                {...register('website')}
-                className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700 mb-2"
-                style={{fontSize: '14px', paddingLeft: '10px'}}
-              />
               </div>
-            </div>
+              <div className="space-y-4">
+                <label
+                  htmlFor="website"
+                  className="block flex text-sm font-medium text-gray-700"
+                >
+                  Website
+                </label>
+                <input
+                  id="website"
+                  type="text"
+                  placeholder="Paste link here"
+                  {...register('website')}
+                  className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700"
+                  style={{ fontSize: '14px', paddingLeft: '10px' }}
+                />
+              </div>
 
-            <CSButton
-              type="submit"
-              disabled={!isValid || isPending}
-              isProcessing={isPending}
-              className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-              style={{ backgroundColor: '#a13232'}}
-            >
-              Next: Highlights
-            </CSButton>
+              <CSButton
+                type="submit"
+                disabled={!isValid || isPending}
+                isProcessing={isPending}
+                className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                style={{ backgroundColor: '#a13232' }}
+              >
+                Next: Highlights
+              </CSButton>
+            </div>
           </div>
         </form>
       </Modal.Body>

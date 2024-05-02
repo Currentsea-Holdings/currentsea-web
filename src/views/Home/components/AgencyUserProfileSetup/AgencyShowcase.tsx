@@ -179,7 +179,6 @@ const AgencyShowcase = () => {
       </Modal.Header>
       <Modal.Body
         className="modal-body-custom border-none text-custom-blue"
-        // style={{ height: '450px' }}
       >
         <div className="highlights-header">
           <b>Highlights</b>
@@ -305,7 +304,7 @@ const AgencyShowcase = () => {
             </CSButton>
           ) : (
             <CSButton
-              disabled // You can decide what should happen if there are no files selected and no previews
+              disabled
               className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
               Select Files

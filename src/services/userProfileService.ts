@@ -41,6 +41,7 @@ export interface UpdateUserProfilePayload {
 
   industries?: string[];
   rates?: RateDetail[];
+  emailInvites?: string[];
   showcaseContent?: ContentDetail[];
   hasFullProfile?: boolean;
   country?: string;
