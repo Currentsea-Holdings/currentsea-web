@@ -26,7 +26,6 @@ const AgencySavedProgressModal = () => {
       <Modal.Header
         className="border-none"
         style={{
-          height: '50px',
           backgroundColor: '#F3FAF7',
         }}
       >
@@ -52,7 +51,6 @@ const AgencySavedProgressModal = () => {
       <Modal.Footer
         className="border-none"
         style={{
-          height: '50px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
