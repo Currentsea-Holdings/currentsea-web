@@ -73,6 +73,7 @@ const CreatorBaseRateForm = () => {
     paypal: false,
   });
 
+  const [baseRateError, setBaseRateError] = useState('');
   useEffect(() => {
     // this will check for current accessTokens the particular userId has already
     if (user?.id) {
@@ -80,6 +81,14 @@ const CreatorBaseRateForm = () => {
         .getConnectedAccessTokens(user.id)
         .then((connectionStatuses: ConnectedAccessTokenTypes) => {
           setConnections(connectionStatuses);
+          const anyConnected = Object.values(connectionStatuses).some((status) => status);
+          if (!anyConnected) {
+            setBaseRateError(
+              'No connected platforms. Please connect at least one platform to set rates.',
+            );
+          } else {
+            setBaseRateError('');
+          }
         })
         .catch((error: unknown) => {
           console.error('Error fetching social media connections:', error);
@@ -166,6 +175,10 @@ const CreatorBaseRateForm = () => {
     );
   };
 
+  const goToConnectSocialMedia = () => {
+    navigate('/onboarding/2');
+  };
+
   return (
     <Modal
       show={true}
@@ -192,37 +205,58 @@ const CreatorBaseRateForm = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-6"
         >
-          {socialLogoArray.map((platform) => {
-            if (connections[platform.id]) {
-              const inputsToRender = inputTypes[platform.id];
-              return (
-                <div
-                  key={platform.id}
-                  className="platform-section"
+          {baseRateError && <p className="text-red-500">{baseRateError}</p>}
+          {Object.entries(connections).some(([_, connected]) => connected) ? (
+            socialLogoArray.map((platform) => {
+              if (connections[platform.id]) {
+                const inputsToRender = inputTypes[platform.id];
+                return (
+                  <div
+                    key={platform.id}
+                    className="platform-section"
+                  >
+                    <div className="platform-header">
+                      <platform.Icon className="platform-icon" />
+                      <span className="platform-name">{platform.name}</span>
+                    </div>
+                    <div className="platform-inputs">
+                      {inputsToRender.map((inputType) =>
+                        renderInputForPlatform(platform.id, inputType, register, watch),
+                      )}
+                    </div>
+                    <CSButton
+                      type="submit"
+                      disabled={!isValid || isPending}
+                      isProcessing={isPending}
+                      className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                    >
+                      Save Rates
+                    </CSButton>
+                  </div>
+                );
+              }
+              return null;
+            })
+          ) : (
+            <>
+              <CSButton
+                onClick={goToConnectSocialMedia}
+                className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              >
+                Connect Social Media
+              </CSButton>
+              <div
+                style={{ width: '100%', textAlign: 'center', marginTop: '10px', cursor: 'pointer' }}
+              >
+                <button
+                  onClick={nextStep}
+                  style={{ fontSize: '12px', background: 'none' }}
                 >
-                  <div className="platform-header">
-                    <platform.Icon className="platform-icon" />
-                    <span className="platform-name">{platform.name}</span>
-                  </div>
-                  <div className="platform-inputs">
-                    {inputsToRender.map((inputType, index) =>
-                      renderInputForPlatform(platform.id, inputType, register, watch),
-                    )}
-                  </div>
-                </div>
-              );
-            }
-            return null;
-          })}
-
-          <CSButton
-            type="submit"
-            disabled={!isValid || isPending}
-            isProcessing={isPending}
-            className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-          >
-            Save Rates
-          </CSButton>
+                  Skip for now
+                </button>
+              </div>
+            </>
+          )}
         </form>
       </Modal.Body>
     </Modal>
