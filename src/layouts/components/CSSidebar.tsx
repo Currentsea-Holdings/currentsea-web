@@ -1,9 +1,12 @@
 import { getTheme, Sidebar } from 'flowbite-react';
-import { HiInbox, HiOutlineHome } from 'react-icons/hi';
+import { Chart, Envelope, UsersGroup } from 'flowbite-react-icons/outline';
+import { HiOutlineHome } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
 
-import Icons, { NotificationIcon, SettingsIcon } from '@/assets/icons';
+import Icons, { CampaignIcon, NotificationIcon, SettingsIcon } from '@/assets/icons';
 import profilePic from '@/assets/images/authentication/agency.png';
 import logo from '@/assets/logo-title-black.svg';
+import { useAuthStore } from '@/stores/authStore';
 import { css, Global, useTheme } from '@emotion/react';
 
 import type { CustomFlowbiteTheme } from 'flowbite-react';
@@ -40,15 +43,21 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
 
   // const tw = (strings: TemplateStringsArray, ...values: string[]) => String.raw({ raw: strings }, ...values);
 
+  const userType = useAuthStore((state) => state.user?.userType);
+
   const menuItems = [
-    { href: '#', icon: HiOutlineHome, label: 'Home' },
+    { href: '/', icon: HiOutlineHome, label: 'Home' },
     { href: '#', icon: Icons.CompassIcon, label: 'Discover' },
-    { href: '#', icon: HiInbox, label: 'Campaigns' },
-    { href: '#', icon: Icons.InboxIcon, label: 'Inbox' },
+    { href: '#', icon: CampaignIcon, label: 'Campaigns' },
+    { href: '#', icon: Envelope, label: 'Inbox' },
     { href: '#', icon: Icons.CalendarIcon, label: 'Calendar' },
-    { href: '#', icon: Icons.ClipboardListIcon, label: 'Tasks' },
-    { href: '#', icon: Icons.AffiliateProgramIcon, label: 'Affiliate Program' },
-    { href: '#', icon: Icons.DollarIcon, label: 'Payments' },
+    userType === 'Agency'
+      ? { href: '#', icon: UsersGroup, label: 'Clients' }
+      : { href: '#', icon: Icons.ClipboardListIcon, label: 'Tasks' },
+    { href: '#', icon: Chart, label: 'Analytics' },
+    userType === 'Creator'
+      ? { href: '#', icon: Icons.DollarIcon, label: 'Earnings' }
+      : { href: '#', icon: Icons.DollarIcon, label: 'Payments' },
   ];
   return (
     <>
@@ -100,11 +109,13 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
         <div className="mt-auto flex w-full items-center justify-between p-4">
           {' '}
           {/* Added items-center to align items vertically */}
-          <img
-            src={profilePic}
-            alt="User"
-            className="h-10 w-10 rounded-full border-4 border-blue-500"
-          />
+          <Link to="/profile">
+            <img
+              src={profilePic}
+              alt="User"
+              className="h-10 w-10 rounded-full border-4 border-blue-500"
+            />
+          </Link>
           <div className="flex">
             <NotificationIcon className="h-6 w-6 text-gray-600" />
             <SettingsIcon className="h-4 w-4 text-gray-600" />

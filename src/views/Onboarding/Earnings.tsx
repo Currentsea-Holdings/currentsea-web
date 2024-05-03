@@ -20,7 +20,7 @@ export const Earnings = ({ user, onNext, onBack }: EarningsProps) => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const { id: loggedId } = user;
+  const { id: loggedId } = user as { id: string };
 
   const authorizePaypal = (userId: string) => async () => {
     console.log('Paypal Authorization Has Started for user:', userId);

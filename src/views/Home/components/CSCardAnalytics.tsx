@@ -1,6 +1,6 @@
-import type { ComponentPropsWithoutRef, ElementType, FC } from 'react';
-import { type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ElementType, FC, ReactNode, ReactElement } from 'react';
 import { Card as FlowbiteCard } from 'flowbite-react';
+
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import type { IconProps } from '@/assets/icons';
 
@@ -10,6 +10,7 @@ export type CardProps<T extends ElementType = 'div'> = {
   amount: string;
   label: string;
   icon?: FC<IconProps>;
+  iconComponent?: ReactElement;
   children?: ReactNode;
 } & ComponentPropsWithoutRef<T>;
 
@@ -19,7 +20,7 @@ const componentTheme: CustomFlowbiteTheme['card'] = {
   },
 };
 
-const Card = ({ amount, label, icon, children, ...props }: CardProps) => {
+const Card = ({ amount, label, icon, iconComponent: IconComponent, children, ...props }: CardProps) => {
   return (
     <>
       <FlowbiteCard
@@ -28,12 +29,13 @@ const Card = ({ amount, label, icon, children, ...props }: CardProps) => {
         {...props}
       >
         {children}
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg IconShapes bg-sky-100">
-            {icon && icon({})}
+        <div className="IconShapes flex h-8 w-8 items-center justify-center rounded-lg bg-sky-100">
+          {icon && icon({ className: 'text-primary'})}
+          {IconComponent && IconComponent}
         </div>
-        <div className="inline-flex flex-col items-start justify-start gap-1 HeadingDescription grow shrink basis-0">
+        <div className="HeadingDescription inline-flex shrink grow basis-0 flex-col items-start justify-start gap-1">
           <div className="self-stretch text-3xl font-bold leading-9 text-gray-900">{amount}</div>
-          <div className="inline-flex items-center self-stretch justify-between">
+          <div className="inline-flex items-center justify-between self-stretch">
             <div className="text-lg font-semibold leading-relaxed text-gray-500">{label}</div>
             <div className="text-sm font-normal leading-none text-zinc-600">Total</div>
           </div>

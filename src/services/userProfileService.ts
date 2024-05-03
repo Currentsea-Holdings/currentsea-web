@@ -1,6 +1,10 @@
-import { userProfileApi } from '@/api/userProfileApi';
 import { isAxiosError } from 'axios';
+import { serialize } from 'object-to-formdata';
+
+import { userProfileApi } from '@/api/userProfileApi';
 import { ERROR_MESSAGES } from '@/utils/constants';
+
+import type { UserProfile } from '@/stores/authStore';
 
 export interface RateDetail {
   platform: string;
@@ -12,13 +16,13 @@ export interface ContentDetail {
   file: File[];
 }
 
-export interface CreateUserProfilePayload {
+export interface CreateUserProfile {
   userId: string;
   firstName?: string;
   lastName?: string;
   companyName?: string;
   phoneNumber?: string;
-  profilePicture?: string;
+  profilePicture?: File | null;
   shortBio?: string;
   city: string;
   state: string;
@@ -27,18 +31,17 @@ export interface CreateUserProfilePayload {
   country: string;
 }
 
-export interface UpdateUserProfilePayload {
-  id: string;
+export interface UpdateUserProfile {
+  id?: string;
   userId?: string;
   firstName?: string;
   lastName?: string;
   companyName?: string;
   phoneNumber?: string;
-  profilePicture?: string;
+  profilePicture?: File | null;
   shortBio?: string;
   city?: string;
   state?: string;
-
   industries?: string[];
   rates?: RateDetail[];
   emailInvites?: string[];
@@ -47,25 +50,11 @@ export interface UpdateUserProfilePayload {
   country?: string;
 }
 
-export interface UserProfileResponse {
-  id: string;
-  email: string;
-  emailVerified: boolean;
-  city: string;
-  state: string;
-  industries?: string[];
-  rates?: RateDetail[];
-  showcaseContent?: ContentDetail[];
-  hasFullProfile?: boolean;
-  country: string;
-
-}
-
-export const createUserProfile = async (
-  payload: CreateUserProfilePayload,
-): Promise<UserProfileResponse> => {
+export const createUserProfile = async (data: CreateUserProfile): Promise<UserProfile> => {
   try {
-    return await userProfileApi.createUserProfile(payload);
+    const formData = serialize(data);
+
+    return await userProfileApi.createUserProfile(formData);
   } catch (err) {
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
@@ -75,12 +64,12 @@ export const createUserProfile = async (
   }
 };
 
-export const updateUserProfile = async ({
-  id,
-  ...payload
-}: UpdateUserProfilePayload): Promise<UserProfileResponse> => {
+export const updateUserProfile = async (data: UpdateUserProfile): Promise<UserProfile> => {
+  const { id, ...payload } = data;
   try {
-    return await userProfileApi.updateUserProfile(id, payload);
+    const formData = serialize(payload);
+
+    return await userProfileApi.updateUserProfile(id as string, formData);
   } catch (err) {
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
@@ -90,7 +79,7 @@ export const updateUserProfile = async ({
   }
 };
 
-export const fetchUserProfileById = async (id?: string): Promise<UserProfileResponse> => {
+export const fetchUserProfileById = async (id?: string): Promise<UserProfile> => {
   if (!id) {
     throw new Error('No user id provided');
   }
@@ -105,7 +94,7 @@ export const fetchUserProfileById = async (id?: string): Promise<UserProfileResp
   }
 };
 
-export const fetchAllUserProfiles = async (): Promise<UserProfileResponse[]> => {
+export const fetchAllUserProfiles = async (): Promise<UserProfile[]> => {
   try {
     return await userProfileApi.getAllUserProfiles();
   } catch (err) {
@@ -125,9 +114,7 @@ export const deleteUserProfile = async (id: string): Promise<void> => {
 };
 
 /* USER PROFILE CREATION UPLOADING FOR SHOWCASE CONTENT */
-export const uploadShowCaseContent = async (
-  formData: FormData,
-): Promise<UserProfileResponse> => {
+export const uploadShowCaseContent = async (formData: FormData): Promise<UserProfile> => {
   try {
     return await userProfileApi.uploadShowCaseContent(formData);
   } catch (err) {

@@ -8,9 +8,10 @@ interface CSCalendarWidgetProps {
     time: string;
     label: string;
   }[];
+  emptyStateImg?: string;
 }
 
-export const CSCalendarWidget = ({ calendarItems = [] }: CSCalendarWidgetProps) => {
+export const CSCalendarWidget = ({ calendarItems = [], emptyStateImg }: CSCalendarWidgetProps) => {
 
   const viewCalendar = () => {
     console.log('viewCalendar clicked');
@@ -35,9 +36,9 @@ export const CSCalendarWidget = ({ calendarItems = [] }: CSCalendarWidgetProps) 
       ) : (
         <div className="flex w-full flex-col items-center justify-center gap-1 rounded-lg">
           <img
-            src={emptyState}
+            src={emptyStateImg || emptyState}
             alt="No events today"
-            className='mt-10'
+            className={emptyStateImg ? 'mr-3 h-12 mt-10' : 'mt-10'}
           />
           <p className='mt-4'>No events today</p>
           <CSButton

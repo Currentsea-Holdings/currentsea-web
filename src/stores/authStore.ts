@@ -1,13 +1,14 @@
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { mountStoreDevtool } from 'simple-zustand-devtools';
 
 export interface User {
   id: string;
-  email: string;
-  emailVerified: boolean;
+  email?: string;
+  password?: string;
+  emailVerified?: boolean;
   userType?: 'Creator' | 'Agency' | 'Brand';
-  userProfile?: UserProfile
+  userProfile?: UserProfile;
   industries?: string[];
 }
 
@@ -17,12 +18,14 @@ export interface UserProfile {
   lastName?: string;
   companyName?: string;
   phoneNumber?: string;
-  profilePicture?: string;
+  profilePicture?: File | null;
+  profilePicturePath?: string;
   shortBio?: string;
   city: string;
   state: string;
   industries?: string[];
   country: string;
+  profileCompleted: boolean;
 }
 
 interface AuthStore {

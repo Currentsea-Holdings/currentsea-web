@@ -1,44 +1,23 @@
 import { axiosClient as api } from '@/api/axiosClient';
-import type { UserProfileResponse } from '@/services/userProfileService';
 import { API_ENDPOINTS } from '@/utils/constants';
 
-export interface CreateUserPayload {
-  email: string;
-  password: string;
-  emailVerified: boolean;
-  emailVerificationCode?: string;
-  verificationCodeExpires?: Date;
-}
-
-export interface UpdateUserPayload {
-  name?: string;
-  email?: string;
-  password?: string;
-  userType?: 'Creator' | 'Agency' | 'Brand';
-  refreshToken?: string;
-  emailVerified?: boolean;
-}
-
-export interface UserResponse {
-  id: string;
-  email: string;
-  emailVerified: boolean;
-}
+import type { User, UserProfile } from '@/stores/authStore';
+import type { CreateUserDto, UpdateUserDto } from './types';
 
 export const usersApi = {
-  createUser: async (payload: CreateUserPayload): Promise<UserResponse> => {
+  createUser: async (payload: CreateUserDto): Promise<User> => {
     return await api.post(API_ENDPOINTS.USERS, payload);
   },
 
-  getAllUsers: async (): Promise<UserResponse[]> => {
+  getAllUsers: async (): Promise<User[]> => {
     return await api.get(API_ENDPOINTS.USERS);
   },
 
-  getUserById: async (id: string): Promise<UserResponse> => {
+  getUserById: async (id: string): Promise<User> => {
     return await api.get(`${API_ENDPOINTS.USERS}/${id}`);
   },
 
-  updateUser: async (id: string, payload: UpdateUserPayload): Promise<UserResponse> => {
+  updateUser: async (id: string, payload: UpdateUserDto): Promise<User> => {
     return await api.patch(`${API_ENDPOINTS.USERS}/${id}`, payload);
   },
 
@@ -46,7 +25,7 @@ export const usersApi = {
     await api.delete(`${API_ENDPOINTS.USERS}/${id}`);
   },
 
-  getUserUserProfile: async (id: string): Promise<UserProfileResponse> => {
+  getUserUserProfile: async (id: string): Promise<UserProfile> => {
     return await api.get(`${API_ENDPOINTS.USERS}/${id}/profile`);
   },
 };

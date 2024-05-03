@@ -123,7 +123,7 @@ export const ConnectSocialMedia = ({ user, onNext, onBack }: ConnectSocialMediaP
     Frontend (User sees the result of the connection attempt).
    */
 
-  const { id: loggedId } = user;
+  const { id: loggedId } = user as { id: string };
 
   interface SocialMediaConnections {
     [key: string]: boolean;
