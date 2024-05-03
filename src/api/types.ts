@@ -9,7 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+// !! !!
 // Run "yarn generate-types" to update types/dtos from backend
+// !! !!
+// Saves us from having to update these types manually
+// These comments will be removed when we run the command as it will overwrite the file
 
 export interface RegisterRequestDto {
   /** Must be a valid email address */
@@ -123,7 +127,7 @@ export interface User {
   xRefreshToken?: string | null;
   linkedInToken?: string | null;
   linkedInRefreshToken?: string | null;
-  /** @default "62688c45-c103-433e-b94b-7e627f10ae4a" */
+  /** @default "3588fb4d-9609-4469-a4a0-81d334502848" */
   id: string;
   email: string;
   password: string;
@@ -131,12 +135,12 @@ export interface User {
   emailVerified: boolean;
   /**
    * @format date-time
-   * @default "2024-05-02T08:39:29.956Z"
+   * @default "2024-05-03T08:12:48.065Z"
    */
   createdAt: string;
   /**
    * @format date-time
-   * @default "2024-05-02T08:39:29.956Z"
+   * @default "2024-05-03T08:12:48.065Z"
    */
   updatedAt: string;
   snapchatAccessToken?: string;
@@ -153,7 +157,8 @@ export interface UserProfile {
   profilePicturePath?: string | null;
   phoneNumber?: string | null;
   shortBio?: string;
-  /** @default "54e92825-78b5-40c9-9b9f-2132fd12d26b" */
+  industries?: string[] | null;
+  /** @default "e8e78dca-87e0-44de-a8da-a4a6acc42de5" */
   id: string;
   city: string;
   state: string;
@@ -161,12 +166,12 @@ export interface UserProfile {
   userProfileCompleted: boolean;
   /**
    * @format date-time
-   * @default "2024-05-02T08:39:29.957Z"
+   * @default "2024-05-03T08:12:48.066Z"
    */
   createdAt: string;
   /**
    * @format date-time
-   * @default "2024-05-02T08:39:29.957Z"
+   * @default "2024-05-03T08:12:48.066Z"
    */
   updatedAt: string;
   user: User;
@@ -180,8 +185,6 @@ export interface UserProfile {
   rates: object;
   /** @default [] */
   showcaseContent: object;
-  /** @default [] */
-  industries: object;
 }
 
 export interface UpdateUserDto {
@@ -202,7 +205,6 @@ export interface UpdateUserDto {
 }
 
 export interface CreateUserProfileDto {
-  profilePicture?: object;
   shortBio?: string;
   city: string;
   state: string;
@@ -212,6 +214,7 @@ export interface CreateUserProfileDto {
   lastName?: string;
   companyName?: string;
   phoneNumber?: string;
+  profilePicture?: object;
 }
 
 export type RateDto = object;
@@ -223,6 +226,7 @@ export interface UpdateUserProfileDto {
   content?: ShowcaseContentDto[];
   /** @format binary */
   profilePicture?: File;
+  industries?: string[];
   userProfileCompleted: boolean;
 }
 
