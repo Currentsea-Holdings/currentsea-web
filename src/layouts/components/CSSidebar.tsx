@@ -7,6 +7,7 @@ import logo from '@/assets/logo-title-black.svg';
 import { css, Global, useTheme } from '@emotion/react';
 
 import type { CustomFlowbiteTheme } from 'flowbite-react';
+import { Link } from 'react-router-dom';
 interface CSSidebarProps {
   // theme: {
   //   colors: {
@@ -41,7 +42,7 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
   // const tw = (strings: TemplateStringsArray, ...values: string[]) => String.raw({ raw: strings }, ...values);
 
   const menuItems = [
-    { href: '#', icon: HiOutlineHome, label: 'Home' },
+    { href: '/', icon: HiOutlineHome, label: 'Home' },
     { href: '#', icon: Icons.CompassIcon, label: 'Discover' },
     { href: '#', icon: HiInbox, label: 'Campaigns' },
     { href: '#', icon: Icons.InboxIcon, label: 'Inbox' },
@@ -100,11 +101,13 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
         <div className="mt-auto flex w-full items-center justify-between p-4">
           {' '}
           {/* Added items-center to align items vertically */}
-          <img
-            src={profilePic}
-            alt="User"
-            className="h-10 w-10 rounded-full border-4 border-blue-500"
-          />
+          <Link to="/profile">
+            <img
+              src={profilePic}
+              alt="User"
+              className="h-10 w-10 rounded-full border-4 border-blue-500"
+            />
+          </Link>
           <div className="flex">
             <NotificationIcon className="h-6 w-6 text-gray-600" />
             <SettingsIcon className="h-4 w-4 text-gray-600" />
