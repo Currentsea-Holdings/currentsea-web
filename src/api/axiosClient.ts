@@ -8,7 +8,7 @@ import { BASE_API_URL, TIMEOUT, HEADERS } from '@/utils/constants';
 const axiosInstance = axios.create({
   baseURL: BASE_API_URL,
   timeout: TIMEOUT,
-  headers: HEADERS,
+  // headers: HEADERS,
 });
 
 axiosInstance.interceptors.response.use(

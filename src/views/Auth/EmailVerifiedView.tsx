@@ -1,27 +1,20 @@
-import { useState, useEffect, Fragment } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import type { FormEvent, KeyboardEvent } from 'react';
-import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
-import { CSButton } from '@/components';
-import logo from '@/assets/logo-title-black.svg';
-import loginBackground from '@/assets/images/authentication/login-background.png';
-import { useRegister } from '@/hooks/useRegister';
-import { useAuthStore } from '@/stores/authStore';
-import {
-  type ConfirmEmailPayload,
-  type ConfirmEmailResponse,
-  confirmEmail,
-} from '@/services/authService';
-import { CSCard } from '@/components';
-import { Card } from 'flowbite-react';
-import agencyImg from '@/assets/images/authentication/agency.png';
-import creatorImg from '@/assets/images/authentication/creator.png';
-import brandImg from '@/assets/images/authentication/brand.png';
 import classNames from 'classnames';
-import type { UserResponse } from '@/services/usersService';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import agencyImg from '@/assets/images/authentication/agency.png';
+import brandImg from '@/assets/images/authentication/brand.png';
+import creatorImg from '@/assets/images/authentication/creator.png';
+import loginBackground from '@/assets/images/authentication/login-background.png';
+import logo from '@/assets/logo-title-black.svg';
+import { CSButton, CSCard } from '@/components';
+import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
 import { updateUser } from '@/services/usersService';
+import { useAuthStore } from '@/stores/authStore';
 import { useMutation } from '@tanstack/react-query';
+
+import type { FormEvent } from 'react';
+import type { User } from '@/stores/authStore';
 
 const cardData: { type: 'Agency' | 'Brand' | 'Creator'; img: string }[] = [
   { type: 'Agency', img: agencyImg },
@@ -62,11 +55,11 @@ const Verified = function () {
   const navigate = useNavigate();
 
   const { mutate: updateUserType, isPending } = useMutation<
-    UserResponse,
+    User,
     Error,
     { id: string; userType: 'Creator' | 'Agency' | 'Brand' }
   >({
-    mutationFn: async ({ id, userType }) => await updateUser(id, { userType }),
+    mutationFn: updateUser,
     onSuccess: ({ userType }: { userType?: 'Creator' | 'Agency' | 'Brand' }) => {
       if (userType) {
         useAuthStore.getState().updateUserType(userType);

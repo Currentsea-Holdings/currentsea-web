@@ -1,21 +1,22 @@
-import { useForm } from 'react-hook-form';
-import { STATES } from '@/utils/constants';
-import { CSButton } from '@/components';
-import { useMutation } from '@tanstack/react-query';
-import { createUserProfile, updateUserProfile } from '@/services/userProfileService';
-import type {
-  UserProfileResponse,
-  CreateUserProfilePayload,
-  UpdateUserProfilePayload,
-} from '@/services/userProfileService';
-import type { UserProfile} from '@/stores/authStore';
-import { useAuthStore, type User } from '@/stores/authStore';
-import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-import type { IState } from 'country-state-city';
-import { Country, State } from 'country-state-city';
-import { useEffect, useState } from 'react';
 
+import { Country, State } from 'country-state-city';
+import { useCallback, useEffect, useState } from 'react';
+import { Controller, set, useForm } from 'react-hook-form';
+import { PhoneInput } from 'react-international-phone';
+
+import { CSButton } from '@/components';
+import { createUserProfile, updateUserProfile } from '@/services/userProfileService';
+import { useAuthStore } from '@/stores/authStore';
+import { getBase64 } from '@/utils';
+import { BASE_API_URL, BASE_URL, STATES } from '@/utils/constants';
+import { DevTool } from '@hookform/devtools';
+import { useMutation } from '@tanstack/react-query';
+
+import type { User } from '@/stores/authStore';
+import type { CreateUserProfile, UpdateUserProfile } from '@/services/userProfileService';
+import type { UserProfile } from '@/stores/authStore';
+import type { IState } from 'country-state-city';
 interface AccountSetupFormProps {
   user: User;
   onNext: () => void;
@@ -28,22 +29,24 @@ interface AccountSetupFormFields {
   city: string;
   state: string;
   country: string;
-  profilePhoto: FileList;
+  profilePicture: File | null;
 }
 
 export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
   const userProfile = useAuthStore((state) => state.userProfile);
-  const { id } = user;
+  const { id } = user as { id: string };
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors, isValid },
   } = useForm<AccountSetupFormFields>({
     defaultValues: {
+      profilePicture: null,
       firstName: userProfile?.firstName ?? '',
       lastName: userProfile?.lastName ?? '',
       phoneNumber: userProfile?.phoneNumber ?? '',
@@ -86,23 +89,21 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   }, [states, userProfile?.state, setValue]);
 
   const { mutate: submitCreateUserProfile, isPending: isCreateProfilePending } = useMutation<
-    UserProfileResponse,
+    UserProfile,
     Error,
-    CreateUserProfilePayload
+    CreateUserProfile
   >({ mutationFn: createUserProfile });
 
   const { mutate: submitUpdateUserProfile, isPending: isUpdateProfilePending } = useMutation<
-    UserProfileResponse,
+    UserProfile,
     Error,
-    UpdateUserProfilePayload
+    UpdateUserProfile
   >({ mutationFn: updateUserProfile });
 
   const onSubmit = (data: AccountSetupFormFields) => {
-    const formData = data;
-
     if (userProfile) {
       submitUpdateUserProfile(
-        { id: userProfile.id, userId: user.id, ...formData },
+        { id: userProfile.id, ...data },
         {
           onSuccess: (data: UserProfile) => {
             console.log('User Profile updated successfully.');
@@ -116,7 +117,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
       );
     } else {
       submitCreateUserProfile(
-        { userId: id, ...formData },
+        { userId: id, ...data },
         {
           onSuccess: (data: UserProfile) => {
             console.log('User Profile created successfully.');
@@ -130,6 +131,44 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
       );
     }
   };
+
+  const [selectedFileName, setSelectedFileName] = useState('No file chosen');
+  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+  const [image, setImage] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (userProfile?.profilePicturePath) {
+      setImagePreviewUrl(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
+      setImage(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
+      const pathSegments = userProfile.profilePicturePath.split('/');
+      setSelectedFileName(pathSegments.pop() ?? 'No file chosen');
+    }
+  }, [userProfile?.profilePicturePath]);
+
+  const handleFileChange = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files ? event.target.files[0] : null;
+
+      if (file) {
+        setValue('profilePicture', file, { shouldValidate: true });
+        setSelectedFileName(file.name);
+
+        const base64 = await getBase64(file);
+        setImage(base64);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreviewUrl(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setValue('profilePicture', null, { shouldValidate: true });
+        setSelectedFileName('No file chosen');
+        setImagePreviewUrl('');
+      }
+    },
+    [setValue],
+  );
 
   return (
     <>
@@ -145,28 +184,46 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
         >
           <div className="mb-0 text-left">
             <label
-              htmlFor="profilePhoto"
+              htmlFor="profilePicture"
               className="mb-2 block text-sm font-semibold text-gray-700"
             >
               Profile photo
             </label>
             <div className="flex items-center">
+              {/* Profile Image Preview */}
+              {imagePreviewUrl && (
+                <div className="mr-2 shrink-0">
+                  <img
+                    src={image}
+                    alt="Profile preview"
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Choose File Button */}
               <label
-                htmlFor="profilePhoto"
+                htmlFor="profilePicture"
                 className="cursor-pointer rounded-l-xl border border-blue-600 bg-blue-600 px-4 py-2 text-white"
               >
                 Choose file
               </label>
               <div className="relative flex-1 rounded-r-xl border border-gray-300 px-4 py-2 text-gray-700">
-                <span id="file-chosen">No file chosen</span>
-                <input
-                  type="file"
-                  id="profilePhoto"
-                  {...register('profilePhoto')}
-                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-                  onChange={(event) => {
-                    //Need to add code here
-                  }}
+                <span id="file-chosen">{selectedFileName}</span>
+                <Controller
+                  control={control}
+                  name="profilePicture"
+                  render={({ field: { onBlur, ref } }) => (
+                    <input
+                      type="file"
+                      id="profilePicture"
+                      {...register('profilePicture')}
+                      ref={ref}
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                      onBlur={onBlur}
+                      onChange={handleFileChange}
+                    />
+                  )}
                 />
               </div>
             </div>

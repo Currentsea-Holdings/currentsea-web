@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import '@/styles/showcase-form.styles.css';
 import { Upload } from 'flowbite-react-icons/outline';
-import { UserProfileResponse, userProfileApi } from '@/api/userProfileApi';
+import { userProfileApi } from '@/api/userProfileApi';
 import { API_ENDPOINTS, BASE_API_URL } from '@/utils/constants';
 import trashcanIcon from '@/assets/trash.svg';
 import { PuffLoader, PulseLoader } from 'react-spinners';

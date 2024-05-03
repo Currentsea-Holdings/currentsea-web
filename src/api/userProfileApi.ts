@@ -1,64 +1,25 @@
 import { axiosClient as api } from '@/api/axiosClient';
-import { API_ENDPOINTS, BASE_API_URL } from '@/utils/constants';
-import { type AxiosRequestConfig } from 'axios';
+import { API_ENDPOINTS } from '@/utils/constants';
 
-export interface CreateUserProfilePayload {
-  userId: string;
-  firstName?: string;
-  lastName?: string;
-  companyName?: string;
-  phoneNumber?: string;
-  profilePicture?: string;
-  shortBio?: string;
-  city: string;
-  state: string;
-  country: string;
-}
-
-export interface UpdateUserProfilePayload {
-  userId?: string;
-  firstName?: string;
-  lastName?: string;
-  companyName?: string;
-  phoneNumber?: string;
-  profilePicture?: string;
-  shortBio?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-}
-
-export interface UserProfileResponse {
-  id: string;
-  email: string;
-  emailVerified: boolean;
-  city: string;
-  state: string;
-  country: string;
-  profileCompleted: boolean;
-}
-
+import type { UserProfile } from '@/stores/authStore';
 export interface GetShowCaseContentResponse {
   showcaseContent: string[];
 }
 
 export const userProfileApi = {
-  createUserProfile: async (payload: CreateUserProfilePayload): Promise<UserProfileResponse> => {
+  createUserProfile: async (payload: FormData): Promise<UserProfile> => {
     return await api.post(API_ENDPOINTS.USER_PROFILE, payload);
   },
 
-  updateUserProfile: async (
-    id: string,
-    payload: UpdateUserProfilePayload,
-  ): Promise<UserProfileResponse> => {
+  updateUserProfile: async (id: string, payload: FormData): Promise<UserProfile> => {
     return await api.patch(`${API_ENDPOINTS.USER_PROFILE}/${id}`, payload);
   },
 
-  getAllUserProfiles: async (): Promise<UserProfileResponse[]> => {
+  getAllUserProfiles: async (): Promise<UserProfile[]> => {
     return await api.get(API_ENDPOINTS.USER_PROFILE);
   },
 
-  getUserProfileById: async (id: string): Promise<UserProfileResponse> => {
+  getUserProfileById: async (id: string): Promise<UserProfile> => {
     return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}`);
   },
 
@@ -69,7 +30,7 @@ export const userProfileApi = {
   /* USER PROFILE UPLOADING SHOWCASE CONTENT */
 
   // upload showcase content
-  uploadShowCaseContent: async (formData: FormData): Promise<UserProfileResponse> => {
+  uploadShowCaseContent: async (formData: FormData): Promise<UserProfile> => {
     const userId = formData.get('userId');
     if (typeof userId !== 'string') throw new Error('userId must be a string');
     const config = {
@@ -104,12 +65,12 @@ export const userProfileApi = {
     );
   },
 
-  setUserProfileStatus: async (id: string, status: boolean): Promise<UserProfileResponse> => {
+  setUserProfileStatus: async (id: string, status: boolean): Promise<UserProfile> => {
     const body = { profileCompleted: status };
     return await api.put(`${API_ENDPOINTS.USER_PROFILE}/${id}/set-user-profile-status`, body);
   },
 
-  getUserProfileStatus: async (id: string): Promise<UserProfileResponse> => {
+  getUserProfileStatus: async (id: string): Promise<UserProfile> => {
     return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}/get-user-profile-status`);
   },
 };

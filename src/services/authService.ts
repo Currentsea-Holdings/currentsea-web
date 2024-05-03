@@ -1,6 +1,9 @@
-import { authApi } from '@/api/authApi';
 import { isAxiosError } from 'axios';
+
+import { authApi } from '@/api/authApi';
 import { ERROR_MESSAGES } from '@/utils/constants';
+
+import type { UserProfile } from '@/stores/authStore';
 
 export interface LoginPayload {
   email?: string;
@@ -13,18 +16,7 @@ export interface LoginResponse {
     email: string;
     emailVerified: boolean;
   };
-  userProfile?: {
-    id: string;
-    firstName?: string;
-    lastName?: string;
-    companyName?: string;
-    phoneNumber?: string;
-    profilePicture?: string;
-    shortBio?: string;
-    city: string;
-    state: string;
-    country: string;
-  }
+  userProfile?: UserProfile;
   message: string;
 }
 

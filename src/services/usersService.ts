@@ -1,18 +1,21 @@
-import { usersApi } from '@/api/usersApi';
 import { isAxiosError } from 'axios';
-import { ERROR_MESSAGES } from '@/utils/constants';
-import type { UserProfileResponse } from './userProfileService';
-import { userProfileApi } from '@/api/userProfileApi';
 
-export interface CreateUserPayload {
+import { usersApi } from '@/api/usersApi';
+import { ERROR_MESSAGES } from '@/utils/constants';
+
+import type { UserProfile } from '@/stores/authStore';
+import type { User } from '@/stores/authStore';
+
+export interface CreateUser {
   email: string;
   password: string;
   emailVerified: boolean;
-  emailVerificationCode?: string;
-  verificationCodeExpires?: Date;
+  emailVerificationCode?: string | null;
+  verificationCodeExpires?: string | null;
 }
 
-export interface UpdateUserPayload {
+export interface UpdateUser {
+  id: string;
   name?: string;
   email?: string;
   password?: string;
@@ -22,16 +25,9 @@ export interface UpdateUserPayload {
   hasFullProfile?: boolean;
 }
 
-export interface UserResponse {
-  id: string;
-  email: string;
-  emailVerified: boolean;
-  userType?: 'Creator' | 'Agency' | 'Brand';
-}
-
-export const createUser = async (payload: CreateUserPayload): Promise<UserResponse> => {
+export const createUser = async (data: CreateUser): Promise<User> => {
   try {
-    return await usersApi.createUser(payload);
+    return await usersApi.createUser(data);
   } catch (err) {
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
@@ -41,7 +37,8 @@ export const createUser = async (payload: CreateUserPayload): Promise<UserRespon
   }
 };
 
-export const updateUser = async (id: string, payload: UpdateUserPayload): Promise<UserResponse> => {
+export const updateUser = async (data: UpdateUser): Promise<User> => {
+  const { id, ...payload } = data;
   try {
     return await usersApi.updateUser(id, payload);
   } catch (err) {
@@ -53,7 +50,7 @@ export const updateUser = async (id: string, payload: UpdateUserPayload): Promis
   }
 };
 
-export const fetchUserById = async (id: string): Promise<UserResponse> => {
+export const fetchUserById = async (id: string): Promise<User> => {
   try {
     return await usersApi.getUserById(id);
   } catch (err) {
@@ -65,7 +62,7 @@ export const fetchUserById = async (id: string): Promise<UserResponse> => {
   }
 };
 
-export const fetchAllUsers = async (): Promise<UserResponse[]> => {
+export const fetchAllUsers = async (): Promise<User[]> => {
   try {
     return await usersApi.getAllUsers();
   } catch (err) {
@@ -84,7 +81,7 @@ export const deleteUser = async (id: string): Promise<void> => {
   }
 };
 
-export const getUserUserProfile = async (id?: string): Promise<UserProfileResponse | undefined> => {
+export const getUserUserProfile = async (id?: string): Promise<UserProfile | undefined> => {
   if (!id) {
     throw new Error('No user id provided');
   }
