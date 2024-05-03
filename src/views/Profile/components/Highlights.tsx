@@ -20,7 +20,11 @@ interface GetShowCaseContentResponse {
   showcaseContent: string[];
 }
 
-export const Highlights = () => {
+interface HighlightsProps {
+  isEditing: boolean;
+}
+
+export const Highlights = ({ isEditing }: HighlightsProps) => {
   const navigate = useNavigate();
   const userProfile = useAuthStore((state) => state.userProfile);
   const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
@@ -172,6 +176,7 @@ export const Highlights = () => {
 
   return (
     <>
+    {!isEditing ? (
       <div className="flex flex-wrap">
         {isDataLoading ? (
           <div className="spinner-container">
@@ -234,7 +239,8 @@ export const Highlights = () => {
           })
         )}
       </div>
-      {/* <form
+    ) : (
+      <form
         onSubmit={onUpload}
         className="space-y-6"
       >
@@ -300,7 +306,8 @@ export const Highlights = () => {
         <div style={{ width: '100%', textAlign: 'center', fontSize: '14px' }}>
           {uploadError && <div style={{ color: 'red', marginBottom: '10px' }}>{uploadError}</div>}
         </div>
-      </form> */}
+      </form>
+    )}
     </>
   );
 };

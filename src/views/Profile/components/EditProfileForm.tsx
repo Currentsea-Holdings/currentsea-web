@@ -17,15 +17,14 @@ import type { User } from '@/stores/authStore';
 import type { CreateUserProfile, UpdateUserProfile } from '@/services/userProfileService';
 import type { UserProfile } from '@/stores/authStore';
 import type { IState } from 'country-state-city';
-interface AccountSetupFormProps {
+import { Highlights } from './Highlights';
+interface EditProfileFormProps {
   user: User;
-  onNext: () => void;
 }
 
-interface AccountSetupFormFields {
-  firstName?: string;
-  lastName?: string;
-  companyName?: string;
+interface EditProfileFormFields {
+  shortBio: string;
+  lastName: string;
   phoneNumber: string;
   city: string;
   state: string;
@@ -33,10 +32,10 @@ interface AccountSetupFormFields {
   profilePicture: File | null;
 }
 
-export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
+export const EditProfileForm = ({ user }: EditProfileFormProps) => {
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
   const userProfile = useAuthStore((state) => state.userProfile);
-  const { id, userType } = user as { id: string, userType: 'Creator' | 'Brand' | 'Agency' };
+  const { id } = user as { id: string };
 
   const {
     register,
@@ -45,12 +44,11 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
     watch,
     control,
     formState: { errors, isValid },
-  } = useForm<AccountSetupFormFields>({
+  } = useForm<EditProfileFormFields>({
     defaultValues: {
       profilePicture: null,
-      firstName: userProfile?.firstName ?? '',
+      shortBio: userProfile?.shortBio ?? '',
       lastName: userProfile?.lastName ?? '',
-      companyName: userProfile?.companyName ?? '',
       phoneNumber: userProfile?.phoneNumber ?? '',
       city: userProfile?.city ?? '',
       state: userProfile?.state ?? '',
@@ -102,7 +100,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
     UpdateUserProfile
   >({ mutationFn: updateUserProfile });
 
-  const onSubmit = (data: AccountSetupFormFields) => {
+  const onSubmit = (data: EditProfileFormFields) => {
     if (userProfile) {
       submitUpdateUserProfile(
         { id: userProfile.id, ...data },
@@ -110,7 +108,6 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
           onSuccess: (data: UserProfile) => {
             console.log('User Profile updated successfully.');
             setUserProfile(data);
-            onNext();
           },
           onError: (error) => {
             console.error('error:', error);
@@ -124,7 +121,6 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
           onSuccess: (data: UserProfile) => {
             console.log('User Profile created successfully.');
             setUserProfile(data);
-            onNext();
           },
           onError: (error) => {
             console.error('error:', error);
@@ -174,15 +170,10 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
 
   return (
     <>
-      <div className="mt-20 flex items-center justify-center p-4">
-        <h1 className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-          Let&apos;s start with the basics...
-        </h1>
-      </div>
-      <div className="flex flex-1 flex-col items-center justify-start overflow-y-auto p-4">
+      <div className="flex flex-1 flex-col items-center justify-start overflow-y-auto p-4 mx-40">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-10 bg-white p-10"
+          className="space-y-10 bg-gray-10 w-full"
         >
           <div className="mb-0 text-left">
             <label
@@ -230,41 +221,18 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
               </div>
             </div>
           </div>
-          {userType === 'Creator' && (
-          <>
-            <div>
-              <label htmlFor="firstName" className="mb-2 block text-sm font-semibold text-gray-700">
-                First name
-              </label>
-              <input id="firstName" type="text" {...register('firstName')} className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700" />
-            </div>
-            <div>
-              <label htmlFor="lastName" className="mb-2 block text-sm font-semibold text-gray-700">
-                Last name
-              </label>
-              <input id="lastName" type="text" {...register('lastName')} className="block w-full rounded-xl border border-gray-300 p-2" />
-            </div>
-          </>
-        )}
-        {['Brand', 'Agency'].includes(userType) && (
+
           <div>
-            <label htmlFor="companyName" className="mb-2 block text-sm font-semibold text-gray-700">
-              {userType === 'Brand' ? 'Brand Name' : 'Agency Name'}
-            </label>
-            <input id="companyName" type="text" {...register('companyName')} className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700" />
-          </div>
-        )}
-          {/* <div>
             <label
-              htmlFor="First name"
+              htmlFor="shortBio"
               className="mb-2 block text-sm font-semibold text-gray-700"
             >
-              First name
+              Biography
             </label>
             <input
-              id="firstName"
+              id="shortBio"
               type="text"
-              {...register('firstName')}
+              {...register('shortBio')}
               className="block w-full  rounded-xl border border-gray-300 p-2 text-gray-700"
             />
           </div>
@@ -281,7 +249,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
               {...register('lastName')}
               className="block w-full rounded-xl border border-gray-300 p-2"
             />
-          </div> */}
+          </div>
           <div>
             <label
               htmlFor="Phone"
@@ -375,6 +343,10 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
             Next: Social Media
           </CSButton>
         </form>
+        <div className="mt-10 w-full">
+          <h3 className="mb-5 text-left font-semibold text-dark">Highlights</h3>
+          <Highlights isEditing={true} />
+        </div>
       </div>
     </>
   );

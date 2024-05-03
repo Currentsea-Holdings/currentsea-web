@@ -10,11 +10,14 @@ import { DashboardLayout } from '@/layouts';
 import { getUserUserProfile } from '@/services/usersService';
 import { useAuthStore } from '@/stores/authStore';
 import { BASE_API_URL } from '@/utils/constants';
-import { Highlights } from './components/Highlights';
-import { ViewProfile } from './components/ViewProfile';
-import { EditProfile } from './components/EditProfile';
+import { Highlights } from './Highlights';
+import { EditProfileForm } from './EditProfileForm';
 
-export const ProfileView = () => {
+interface EditProfileProps {
+  toggleEdit: () => void;
+}
+
+export const EditProfile = ({ toggleEdit }: EditProfileProps) => {
   const user = useAuthStore((state) => state.user);
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
   const userProfile = useAuthStore((state) => state.userProfile);
@@ -56,16 +59,31 @@ export const ProfileView = () => {
   const buttonStyle = {
     padding: '0px 6px',
   };
-
-  const [isEditing, setIsEditing] = useState(false);
-
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  }
-  
   return (
-    <DashboardLayout>
-      {isEditing ? <EditProfile toggleEdit={toggleEdit} /> : <ViewProfile toggleEdit={toggleEdit} />}
-    </DashboardLayout>
+    <div className="p-20">
+      <div className="mb-20 flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Edit Profile</h1>
+        <div className="flex-grow"></div>
+        <div className="flex">
+          {' '}
+          <CSButton
+            style={buttonStyle}
+            className="rounded-half mr-2 bg-primary font-semibold text-white" // Added margin-right to separate the buttons
+            onClick={toggleEdit}
+          >
+            Save
+          </CSButton>
+          <CSButton
+            style={buttonStyle}
+            outline
+            className="rounded-half font-semibold text-dark"
+            onClick={toggleEdit}
+          >
+            Cancel
+          </CSButton>
+        </div>
+      </div>
+      { user && <EditProfileForm user={user} /> }
+    </div>
   );
 };
