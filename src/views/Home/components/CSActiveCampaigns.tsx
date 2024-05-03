@@ -15,9 +15,14 @@ interface CSActiveCampaignsProps {
     title: string;
     brand: string;
   }[];
+  emptyStateImg?: string;
 }
 
-export const CSActiveCampaigns = ({ title, campaigns = [] }: CSActiveCampaignsProps) => {
+export const CSActiveCampaigns = ({
+  title,
+  campaigns = [],
+  emptyStateImg,
+}: CSActiveCampaignsProps) => {
   const theme = getTheme();
 
   const carouselButtonStyles = css`
@@ -71,8 +76,9 @@ export const CSActiveCampaigns = ({ title, campaigns = [] }: CSActiveCampaignsPr
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg py-20">
               <img
-                src={emptyState}
+                src={emptyStateImg || emptyState}
                 alt="No active campaigns"
+                className={emptyStateImg ? 'mr-3 h-12' : ''}
               />
               <p className="mt-4">No active campaigns</p>
               <CSButton

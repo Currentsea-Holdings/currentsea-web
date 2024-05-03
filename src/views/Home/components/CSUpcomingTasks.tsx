@@ -14,9 +14,10 @@ interface CSUpcomingTasksProps {
   tasks?: {
     title: string;
   }[];
+  emptyStateImg?: string;
 }
 
-export const CSUpcomingTasks = ({ title, tasks = [] }: CSUpcomingTasksProps) => {
+export const CSUpcomingTasks = ({ title, tasks = [], emptyStateImg }: CSUpcomingTasksProps) => {
   const carouselButtonStyles = css`
     .carouselLeftButton button,
     .carouselRightButton button {
@@ -88,8 +89,9 @@ export const CSUpcomingTasks = ({ title, tasks = [] }: CSUpcomingTasksProps) => 
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-1 rounded-lg">
             <img
-              src={emptyState}
+              src={emptyStateImg || emptyState}
               alt="No upcoming tasks"
+              className={emptyStateImg ? 'mr-3 h-12' : ''}
             />
             <p className="mt-6">No upcoming tasks</p>
           </div>
