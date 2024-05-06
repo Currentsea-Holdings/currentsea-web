@@ -70,7 +70,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
       .then(() => {
         setProfileCompleted(true);
         setIsProfileCreationStepsOpen(false);
-        navigate('/');
+        navigate('/profile');
       })
       .catch((error: unknown) => {
         setIsProfileCreationStepsOpen(true);
