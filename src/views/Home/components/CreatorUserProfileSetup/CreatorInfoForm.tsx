@@ -1,18 +1,20 @@
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { Dropdown, Modal, Textarea, Button, Tooltip } from 'flowbite-react';
-import { CSButton } from '@/components';
-import { updateUserProfile } from '@/services/userProfileService';
-import { useUserProfile } from '@/hooks/useUserProfile';
-import { useAuthStore } from '@/stores/authStore';
+import { Button, Dropdown, Modal, Textarea, Tooltip } from 'flowbite-react';
 import { InfoCircle } from 'flowbite-react-icons/outline';
+import { useForm } from 'react-hook-form';
+
+import { CSButton } from '@/components';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { updateUserProfile } from '@/services/userProfileService';
+import { useAuthStore } from '@/stores/authStore';
+import { INDUSTRIES } from '@/utils/constants/industries.constants';
+import { useMutation } from '@tanstack/react-query';
 
 interface FormFields {
   shortBio: string;
   industries: string[];
 }
 
-const industryOptions = ['Food', 'Gaming', 'Hair', 'Health', 'Home'];
+const industryOptions = INDUSTRIES;
 
 const CreatorInfoForm = () => {
   const userProfile = useAuthStore((state) => state.userProfile);
