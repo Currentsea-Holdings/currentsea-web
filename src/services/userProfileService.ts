@@ -67,9 +67,9 @@ export const createUserProfile = async (data: CreateUserProfile): Promise<UserPr
 export const updateUserProfile = async (data: UpdateUserProfile): Promise<UserProfile> => {
   const { id, ...payload } = data;
   try {
-    const formData = serialize(payload);
+    const formData = payload.rates ? payload : serialize(payload);
 
-    return await userProfileApi.updateUserProfile(id as string, formData);
+    return await userProfileApi.updateUserProfile(id as string, formData as FormData);
   } catch (err) {
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);

@@ -109,15 +109,18 @@ const CreatorBaseRateForm = () => {
         rate: value,
       };
     });
-    const payload = {
-      id: userProfile.id,
-      userId: userProfile.id,
-      city: userProfile.city,
-      state: userProfile.state,
-      phoneNumber: userProfile.phoneNumber,
-      rates: ratesArray,
-    };
-    return await updateUserProfile(payload);
+
+    // const payload = {
+    //   id: userProfile.id,
+    //   userId: userProfile.id,
+    //   city: userProfile.city,
+    //   state: userProfile.state,
+    //   phoneNumber: userProfile.phoneNumber,
+    //   rates: ratesArray,
+    // };
+
+    const data = { id: userProfile.id, rates: ratesArray };
+    return await updateUserProfile(data);
   };
 
   const { mutate, isPending } = useMutation({

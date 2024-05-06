@@ -1,3 +1,4 @@
+import type { RateDetail } from '@/services/userProfileService';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
@@ -26,6 +27,7 @@ export interface UserProfile {
   industries?: string[];
   country: string;
   profileCompleted: boolean;
+  rates: RateDetail[];
 }
 
 interface AuthStore {
