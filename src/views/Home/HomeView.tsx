@@ -28,9 +28,11 @@ export const HomeView = ({ hasFullProfile }: HomeViewProps) => {
   useEffect(() => {
     if (userProfile && user) {
       const fetchProfileData = async () => {
+        console.log('userType signed on:', userType);
         const profile = await getUserUserProfile(user.id);
         const userProfileStatus = await userProfileApi.getUserProfileStatus(userProfile.id);
         const userProfileComplete = userProfileStatus.profileCompleted;
+        console.log('has user completed frull profile?', userProfileComplete);
         if (profile && !userProfileComplete) {
           setIsProfileCreationStepsOpen(true);
         }
