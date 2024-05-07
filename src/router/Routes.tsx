@@ -16,6 +16,10 @@ import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
 import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
 import { ProfileView } from '@/views/Profile/ProfileView';
 import { ThemeProvider } from '@emotion/react';
+import ActiveCampaignsView from '@/views/CampaignViews/ActiveCampaignsView';
+import PastCampaignsView from '@/views/CampaignViews/PastCampaignsView';
+import AppliedCampaignsView from '@/views/CampaignViews/AppliedCampaignsView';
+import ActiveCampaignDetailView from '@/views/CampaignViews/ActiveCampaignDetailView';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -56,6 +60,27 @@ export const Routes = () => {
         {
           path: '/onboarding/:step',
           element: <OnboardingView />,
+        },
+        /* CAMPAIGN ROUTES */
+        {
+          path: '/active-campaigns',
+          element: <ActiveCampaignsView />,
+        },
+        // {
+        //   path: '/active-campaigns/detail', // placeholder path for now use the one below when back end is integrated
+        //   element: <ActiveCampaignDetailView />,
+        // },
+        {
+          path: '/active-campaigns/:id/detail',
+          element: <ActiveCampaignDetailView />,
+        },
+        {
+          path: '/past-campaigns',
+          element: <PastCampaignsView />,
+        },
+        {
+          path: '/applied-campaigns',
+          element: <AppliedCampaignsView />,
         },
         {
           path: '*',

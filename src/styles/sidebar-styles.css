@@ -1,0 +1,13 @@
+.campaign-item {
+  color: #4c5664;
+}
+
+.campaign-item:hover {
+  border-radius: 10px;
+  background-color: #f8f8f8;
+}
+
+.active-item {
+  color: #007bff;
+  font-weight: 600;
+}

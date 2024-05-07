@@ -73,4 +73,13 @@ export const userProfileApi = {
   getUserProfileStatus: async (id: string): Promise<UserProfile> => {
     return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}/get-user-profile-status`);
   },
+
+  getUserProfileActiveCampaigns: async (id: string): Promise<UserProfile> => {
+    return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}/get-active-campaigns`);
+  },
+
+  getUserProfileActiveCampaignById: async (id: string): Promise<UserProfile> => {
+    return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}/get-active-campaign-details`);
+  },
+
 };

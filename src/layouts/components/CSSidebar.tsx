@@ -1,21 +1,17 @@
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { getTheme, Sidebar } from 'flowbite-react';
-import { Chart, Envelope, UsersGroup } from 'flowbite-react-icons/outline';
+import { Chart, Envelope, UsersGroup, ChevronRight } from 'flowbite-react-icons/outline';
 import { HiOutlineHome } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
-
 import Icons, { CampaignIcon, NotificationIcon, SettingsIcon } from '@/assets/icons';
 import profilePic from '@/assets/images/authentication/agency.png';
 import logo from '@/assets/logo-title-black.svg';
 import { useAuthStore } from '@/stores/authStore';
 import { css, Global, useTheme } from '@emotion/react';
+import { type CustomFlowbiteTheme } from 'flowbite-react';
+import '@/styles/sidebar-styles.css';
 
-import type { CustomFlowbiteTheme } from 'flowbite-react';
 interface CSSidebarProps {
-  // theme: {
-  //   colors: {
-  //     sidebar: string;
-  //   };
-  // },
   className?: string;
 }
 
@@ -25,8 +21,20 @@ interface MyTheme {
   };
 }
 
-export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
-  const theme = useTheme() as MyTheme; // Type assertion
+export const CSSidebar = ({ className }: CSSidebarProps) => {
+  const [campaignSubMenuOpen, setCampaignSubMenuOpen] = useState(false);
+  const theme = useTheme() as MyTheme;
+  const location = useLocation();
+
+  // this is here to check if path === either campaign sub menu to make sure the submenu state stays open when user interacts within the submenu of campaigns
+  useEffect(() => {
+    const campaignPaths = ['/active-campaigns', '/past-campaigns', '/applied-campaigns'];
+    const isCampaignPath = campaignPaths.some((path) => location.pathname.includes(path));
+    setCampaignSubMenuOpen(isCampaignPath);
+  }, [location]);
+
+  // this will check if current path name above is active to keep selected sub menu item highlighted
+  const isActive = (path: string) => location.pathname === path;
 
   const sidebarTheme: CustomFlowbiteTheme['sidebar'] = getTheme().sidebar;
 
@@ -36,19 +44,26 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
       ...sidebarTheme.item,
       icon: {
         ...sidebarTheme.item?.icon,
-        base: `${sidebarTheme.item?.icon?.base} text-gray-60`,
+        base: `${sidebarTheme.item?.icon?.base} text-gray-600`,
       },
     },
   };
-
-  // const tw = (strings: TemplateStringsArray, ...values: string[]) => String.raw({ raw: strings }, ...values);
 
   const userType = useAuthStore((state) => state.user?.userType);
 
   const menuItems = [
     { href: '/', icon: HiOutlineHome, label: 'Home' },
     { href: '#', icon: Icons.CompassIcon, label: 'Discover' },
-    { href: '#', icon: CampaignIcon, label: 'Campaigns' },
+    {
+      href: '/active-campaigns',
+      icon: CampaignIcon,
+      label: 'Campaigns',
+      campaignItems: [
+        { href: '/active-campaigns', label: 'Active' },
+        { href: '/past-campaigns', label: 'Past' },
+        { href: '/applied-campaigns', label: 'Applied' },
+      ],
+    },
     { href: '#', icon: Envelope, label: 'Inbox' },
     { href: '#', icon: Icons.CalendarIcon, label: 'Calendar' },
     userType === 'Agency'
@@ -59,6 +74,7 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
       ? { href: '#', icon: Icons.DollarIcon, label: 'Earnings' }
       : { href: '#', icon: Icons.DollarIcon, label: 'Payments' },
   ];
+
   return (
     <>
       <Global
@@ -67,48 +83,83 @@ export const CSSidebar = ({ className, ...props }: CSSidebarProps) => {
             background-color: ${theme.colors.white};
             width: 100%;
           }
+          .sidebar-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+          }
         `}
       />
-      {/*------------------- */}
       <div className={`flex h-full flex-col ${className}`}>
         <Sidebar
           theme={componentTheme}
-          // aria-label="Sidebar - Main navigation"
-          //----------------------
           className="cs-sidebar flex-grow"
-          {...props}
         >
           <div className="mb-5 flex items-center">
             <a
-              className="mb-5 flex items-center"
               href="/"
+              className="mb-5 flex items-center"
             >
               <img
                 src={logo}
                 alt="Logo"
                 className="mr-3 h-12"
               />
-              <span className="align self-center whitespace-nowrap text-xl font-semibold dark:text-white"></span>
             </a>
           </div>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              {menuItems.map((item) => (
-                <Sidebar.Item
-                  className="text-left"
-                  key={item.label}
-                  href={item.href}
-                  icon={item.icon}
-                >
-                  {item.label}
-                </Sidebar.Item>
-              ))}
+              {menuItems.map((item) =>
+                item.campaignItems ? (
+                  <React.Fragment key={item.label}>
+                    <Sidebar.Item
+                      icon={item.icon}
+                      onClick={() => {
+                        setCampaignSubMenuOpen(!campaignSubMenuOpen);
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {item.label}
+                        <ChevronRight
+                          className={`transition-transform ${campaignSubMenuOpen ? 'rotate-90' : ''}`}
+                        />
+                      </div>
+                    </Sidebar.Item>
+                    {campaignSubMenuOpen && (
+                      <div className="pl-4">
+                        {item.campaignItems.map((subIcampaignItem) => (
+                          <Link
+                            to={subIcampaignItem.href}
+                            key={subIcampaignItem.label}
+                            className={`campaign-item block p-2 ${isActive(subIcampaignItem.href) ? 'active-item' : ''}`}
+                          >
+                            {subIcampaignItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </React.Fragment>
+                ) : (
+                  <Sidebar.Item
+                    key={item.label}
+                    href={item.href}
+                    icon={item.icon}
+                  >
+                    {item.label}
+                  </Sidebar.Item>
+                ),
+              )}
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
         <div className="mt-auto flex w-full items-center justify-between p-4">
-          {' '}
-          {/* Added items-center to align items vertically */}
           <Link to="/profile">
             <img
               src={profilePic}
