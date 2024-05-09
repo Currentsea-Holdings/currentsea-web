@@ -26,9 +26,13 @@ export interface CreateUserProfile {
   shortBio?: string;
   city: string;
   state: string;
-  industries?: string[];
   rates?: RateDetail[];
   country: string;
+}
+
+interface Industry {
+  id: number;
+  name: string;
 }
 
 export interface UpdateUserProfile {
@@ -42,7 +46,7 @@ export interface UpdateUserProfile {
   shortBio?: string;
   city?: string;
   state?: string;
-  industries?: string[];
+  industries?: Industry[];
   rates?: RateDetail[];
   emailInvites?: string[];
   showcaseContent?: ContentDetail[];
