@@ -28,8 +28,8 @@ export const IndustryDropdown = ({
 
   const industryOptions = INDUSTRIES;
 
-  const sortedIndustryOptions = useMemo(() => {
-    return [...industryOptions].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedIndustryOptions: Industry[] = useMemo(() => {
+    return [...industryOptions].sort((a: Industry, b: Industry) => a.name.localeCompare(b.name));
   }, [industryOptions]);
 
   const handleIndustrySelect = (industry: Industry) => {

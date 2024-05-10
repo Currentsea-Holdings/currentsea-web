@@ -9,6 +9,7 @@ import { updateUserProfile } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
 import { useMutation } from '@tanstack/react-query';
 
+import type { UserProfile } from '@/stores/authStore';
 interface Industry {
   id: number;
   name: string;
@@ -20,8 +21,8 @@ interface FormFields {
 }
 
 const CreatorInfoForm = () => {
-  const userProfile = useAuthStore((state) => state.userProfile);
-  const { user, nextStep, closeModal } = useUserProfile();
+  const userProfile = useAuthStore((state) => state.userProfile) as UserProfile;
+  const { nextStep, closeModal } = useUserProfile();
   const {
     register,
     handleSubmit,
@@ -46,15 +47,8 @@ const CreatorInfoForm = () => {
   });
 
   const onSubmit = (formData: FormFields) => {
-    if (!userProfile || !user) {
-      console.error('User profile is not available.');
-      return;
-    }
-    const data = {
-      ...formData,
-      id: userProfile.id,
-      userId: userProfile.id,
-    };
+    const data = { ...formData, id: userProfile.id };
+
     updateProfile(data);
   };
 
