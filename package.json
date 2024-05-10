@@ -11,7 +11,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=chpt_0bc8d033252d760",
-    "generate-types": "swagger-typescript-api -p http://localhost:3000/api-json -o src/api/ --axios --name types.ts"
+    "generate-types": "swagger-typescript-api -p http://localhost:3000/api-json -o src/api/ --axios --name types.ts && node appendTypesComment.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

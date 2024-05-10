@@ -1,14 +1,14 @@
-import { Modal, Textarea, Tooltip, getTheme } from 'flowbite-react';
+import { Modal, Textarea, Tooltip } from 'flowbite-react';
 import { InfoCircle } from 'flowbite-react-icons/outline';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { CSButton } from '@/components';
 import { IndustryDropdown } from '@/components/IndustryDropdown';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { updateUserProfile } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
-import { useMutation } from '@tanstack/react-query';
 import { DevTool } from '@hookform/devtools';
+import { useMutation } from '@tanstack/react-query';
 
 interface Industry {
   id: number;
@@ -35,7 +35,7 @@ const CreatorInfoForm = () => {
     },
   });
 
-  const { mutate: updateProfile , isPending } = useMutation({
+  const { mutate: updateProfile, isPending } = useMutation({
     mutationFn: updateUserProfile,
     onSuccess: () => {
       console.log('Profile updated successfully.');
@@ -55,7 +55,6 @@ const CreatorInfoForm = () => {
       ...formData,
       id: userProfile.id,
       userId: userProfile.id,
-      rates: [],
     };
     updateProfile(data);
   };

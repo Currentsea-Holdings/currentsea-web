@@ -2,6 +2,7 @@ import { axiosClient as api } from '@/api/axiosClient';
 import { API_ENDPOINTS } from '@/utils/constants';
 
 import type { UserProfile } from '@/stores/authStore';
+import type { UpdateUserProfileDto } from './types';
 export interface GetShowCaseContentResponse {
   showcaseContent: string[];
 }
@@ -11,7 +12,7 @@ export const userProfileApi = {
     return await api.post(API_ENDPOINTS.USER_PROFILE, payload);
   },
 
-  updateUserProfile: async (id: string, payload: FormData): Promise<UserProfile> => {
+  updateUserProfile: async (id: string, payload: UpdateUserProfileDto): Promise<UserProfile> => {
     return await api.patch(`${API_ENDPOINTS.USER_PROFILE}/${id}`, payload);
   },
 
@@ -25,6 +26,10 @@ export const userProfileApi = {
 
   deleteUserProfile: async (id: string): Promise<void> => {
     await api.delete(`${API_ENDPOINTS.USER_PROFILE}/${id}`);
+  },
+
+  uploadProfilePicture: async (id: string, formData: FormData): Promise<UserProfile> => {
+    return await api.post(`${API_ENDPOINTS.USER_PROFILE}/${id}/profile-picture`, formData);
   },
 
   /* USER PROFILE UPLOADING SHOWCASE CONTENT */
