@@ -1,19 +1,18 @@
 import 'react-international-phone/style.css';
 
 import { Country, State } from 'country-state-city';
-import { useCallback, useEffect, useState } from 'react';
-import { Controller, set, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { PhoneInput } from 'react-international-phone';
 
 import { CSButton } from '@/components';
+import { ProfileImageUploader } from '@/components/ProfileImageUploader';
 import {
   createUserProfile,
   updateUserProfile,
   uploadProfilePicture,
 } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
-import { getBase64 } from '@/utils';
-import { BASE_API_URL, BASE_URL, STATES } from '@/utils/constants';
 import { useMutation } from '@tanstack/react-query';
 
 import type { User } from '@/stores/authStore';
@@ -140,44 +139,6 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
     }
   };
 
-  const [selectedFileName, setSelectedFileName] = useState('No file chosen');
-  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-  const [image, setImage] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (userProfile?.profilePicturePath) {
-      setImagePreviewUrl(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
-      setImage(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
-      const pathSegments = userProfile.profilePicturePath.split('/');
-      setSelectedFileName(pathSegments.pop() ?? 'No file chosen');
-    }
-  }, [userProfile?.profilePicturePath]);
-
-  const handleFileChange = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files ? event.target.files[0] : null;
-
-      if (file) {
-        setValue('profilePicture', file, { shouldValidate: true });
-        setSelectedFileName(file.name);
-
-        const base64 = await getBase64(file);
-        setImage(base64);
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImagePreviewUrl(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setValue('profilePicture', null, { shouldValidate: true });
-        setSelectedFileName('No file chosen');
-        setImagePreviewUrl('');
-      }
-    },
-    [setValue],
-  );
-
   return (
     <>
       <div className="mt-20 flex items-center justify-center p-4">
@@ -190,52 +151,11 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-10 bg-white p-10"
         >
-          <div className="mb-0 text-left">
-            <label
-              htmlFor="profilePicture"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Profile photo
-            </label>
-            <div className="flex items-center">
-              {/* Profile Image Preview */}
-              {imagePreviewUrl && (
-                <div className="mr-2 shrink-0">
-                  <img
-                    src={image}
-                    alt="Profile preview"
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
-                </div>
-              )}
-
-              {/* Choose File Button */}
-              <label
-                htmlFor="profilePicture"
-                className="cursor-pointer rounded-l-xl border border-blue-600 bg-blue-600 px-4 py-2 text-white"
-              >
-                Choose file
-              </label>
-              <div className="relative flex-1 rounded-r-xl border border-gray-300 px-4 py-2 text-gray-700">
-                <span id="file-chosen">{selectedFileName}</span>
-                <Controller
-                  control={control}
-                  name="profilePicture"
-                  render={({ field: { onBlur, ref } }) => (
-                    <input
-                      type="file"
-                      id="profilePicture"
-                      {...register('profilePicture')}
-                      ref={ref}
-                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-                      onBlur={onBlur}
-                      onChange={handleFileChange}
-                    />
-                  )}
-                />
-              </div>
-            </div>
-          </div>
+          <ProfileImageUploader
+            control={control}
+            setValue={setValue}
+            defaultImage={userProfile?.profilePicturePath}
+          />
           {userType === 'Creator' && (
             <>
               <div>
