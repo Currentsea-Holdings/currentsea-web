@@ -7,18 +7,11 @@ import { PhoneInput } from 'react-international-phone';
 
 import { CSButton } from '@/components';
 import { ProfileImageUploader } from '@/components/ProfileImageUploader';
-import {
-  createUserProfile,
-  updateUserProfile,
-  uploadProfilePicture,
-} from '@/services/userProfileService';
+import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useAuthStore } from '@/stores/authStore';
 import { BASE_API_URL } from '@/utils/constants';
-import { useMutation } from '@tanstack/react-query';
 
 import type { User } from '@/stores/authStore';
-import type { CreateUserProfile, UpdateUserProfile } from '@/services/userProfileService';
-import type { UserProfile } from '@/stores/authStore';
 import type { IState } from 'country-state-city';
 interface AccountSetupFormProps {
   user: User;
@@ -37,10 +30,11 @@ interface AccountSetupFormFields {
 }
 
 export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
-  const setUserProfile = useAuthStore((state) => state.setUserProfile);
-  const userProfile = useAuthStore((state) => state.userProfile);
   const { id, userType } = user as { id: string; userType: 'Creator' | 'Brand' | 'Agency' };
-
+  
+  const { saveUserProfile, isProcessing } = useManageUserProfile();
+  const userProfile = useAuthStore((state) => state.userProfile);
+  
   const {
     register,
     handleSubmit,
@@ -51,93 +45,52 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   } = useForm<AccountSetupFormFields>({
     defaultValues: {
       profilePicture: null,
-      firstName: userProfile?.firstName ?? '',
-      lastName: userProfile?.lastName ?? '',
-      companyName: userProfile?.companyName ?? '',
-      phoneNumber: userProfile?.phoneNumber ?? '',
-      city: userProfile?.city ?? '',
-      state: userProfile?.state ?? '',
-      country: userProfile?.country ?? 'US',
+      firstName: '',
+      lastName: '',
+      companyName: '',
+      phoneNumber: '',
+      city: '',
+      state: '',
+      country: 'US',
     },
   });
 
-  const phoneNumber = watch('phoneNumber');
+  useEffect(() => {
+    if (userProfile) {
+      setValue('firstName', userProfile.firstName ?? '');
+      setValue('lastName', userProfile.lastName ?? '');
+      setValue('companyName', userProfile.companyName ?? '');
+      setValue('phoneNumber', userProfile.phoneNumber ?? '');
+      setValue('city', userProfile.city);
+      setValue('state', userProfile.state);
+      setValue('country', userProfile.country);
+    }
+  }, [userProfile, setValue]);
 
-  const countries = Country.getAllCountries();
+  const phoneNumber = watch('phoneNumber');
   const selectedCountry = watch('country');
 
-  const [states, setStates] = useState<IState[]>([]);
+  const countries = Country.getAllCountries();
 
-  // triggers based on new selected country
+  // Load states based on the selected country
+  const [states, setStates] = useState<IState[]>([]);
   useEffect(() => {
     if (selectedCountry) {
       const fetchedStates = State.getStatesOfCountry(selectedCountry);
       setStates(fetchedStates);
-
-      const userProfileState = userProfile?.state || '';
-      if (fetchedStates.find((state) => state.isoCode === userProfileState)) {
-        setValue('state', userProfileState);
-      } else {
-        setValue('state', '');
-      }
+      setValue('state', fetchedStates.find((state) => state.isoCode === userProfile?.state) ? (userProfile?.state || '') : '');
     }
   }, [selectedCountry, userProfile?.state, setValue]);
-
-  // triggers when state list is updated
-  useEffect(() => {
-    const userProfileState = userProfile?.state || '';
-    if (states.find((state) => state.isoCode === userProfileState)) {
-      setValue('state', userProfileState);
-    } else {
-      setValue('state', '');
-    }
-  }, [states, userProfile?.state, setValue]);
-
-  const { mutate: submitCreateUserProfile, isPending: isCreateProfilePending } = useMutation<
-    UserProfile,
-    Error,
-    CreateUserProfile
-  >({ mutationFn: createUserProfile });
-
-  const { mutate: submitUpdateUserProfile, isPending: isUpdateProfilePending } = useMutation<
-    UserProfile,
-    Error,
-    UpdateUserProfile
-  >({ mutationFn: updateUserProfile });
 
   const onSubmit = (data: AccountSetupFormFields) => {
     const { profilePicture, ...profileData } = data;
 
-    if (userProfile) {
-      submitUpdateUserProfile(
-        { id: userProfile.id, ...profileData },
-        {
-          onSuccess: async (data: UserProfile) => {
-            console.log('User Profile updated successfully.');
-            setUserProfile(data);
-            await uploadProfilePicture({ id: userProfile.id, profilePicture });
-            onNext();
-          },
-          onError: (error) => {
-            console.error('error:', error);
-          },
-        },
-      );
-    } else {
-      submitCreateUserProfile(
-        { userId: id, ...data },
-        {
-          onSuccess: (data: UserProfile) => {
-            console.log('User Profile created successfully.');
-            setUserProfile(data);
-            onNext();
-          },
-          onError: (error) => {
-            console.error('error:', error);
-          },
-        },
-      );
-    }
+    const profileInfo = {
+      ...profileData,
+      ...(userProfile ? { id: userProfile.id } : { userId: id }),
+    };
+
+    saveUserProfile(profileInfo, profilePicture, onNext);
   };
 
   return (
@@ -162,6 +115,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
             <ProfileImageUploader
               control={control}
               setValue={setValue}
+              fieldName="profilePicture"
               defaultImage={
                 userProfile?.profilePicturePath
                   ? `${BASE_API_URL}/${userProfile.profilePicturePath}`
@@ -304,7 +258,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
             type="submit"
             size="lg"
             disabled={!isValid}
-            isProcessing={isCreateProfilePending || isUpdateProfilePending}
+            isProcessing={isProcessing}
             className="inline-flex h-12 w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
           >
             Next: Social Media

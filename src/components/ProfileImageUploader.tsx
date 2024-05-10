@@ -4,26 +4,21 @@ import { Controller } from 'react-hook-form';
 
 import { getBase64 } from '@/utils';
 
-import type { Control, UseFormSetValue } from 'react-hook-form';
-type TFormValues = {
-  profilePicture: File | null;
-  phoneNumber: string;
-  city: string;
-  state: string;
-  country: string;
-};
+import type { Control, FieldValues, Path, UseFormSetValue } from 'react-hook-form';
 
-interface ProfileImageUploaderProps {
-  control: Control<TFormValues>;
-  setValue: UseFormSetValue<TFormValues>;
+interface ProfileImageUploaderProps<T extends FieldValues> {
+  control: Control<T>;
+  setValue: UseFormSetValue<T>;
   defaultImage?: string;
+  fieldName: Path<T>;
 }
 
-export const ProfileImageUploader = ({
+export const ProfileImageUploader = <T extends FieldValues>({
   control,
   setValue,
   defaultImage,
-}: ProfileImageUploaderProps) => {
+  fieldName,
+}: ProfileImageUploaderProps<T>) => {
   const [selectedFileName, setSelectedFileName] = useState('No file chosen');
   const [imagePreviewUrl, setImagePreviewUrl] = useState(defaultImage || '');
 
@@ -43,13 +38,13 @@ export const ProfileImageUploader = ({
     const file = event.target.files ? event.target.files[0] : null;
 
     if (file) {
-      setValue('profilePicture', file, { shouldValidate: true });
+      setValue(fieldName, file as T[typeof fieldName], { shouldValidate: true });
 
       setSelectedFileName(file.name);
       const base64 = await getBase64(file);
       setImagePreviewUrl(base64);
     } else {
-      setValue('profilePicture', null, { shouldValidate: true });
+      setValue(fieldName, null as T[typeof fieldName], { shouldValidate: true });
       setSelectedFileName('No file chosen');
       setImagePreviewUrl('');
     }
@@ -67,7 +62,7 @@ export const ProfileImageUploader = ({
         </div>
       )}
       <label
-        htmlFor="profilePicture"
+        htmlFor={String(fieldName)}
         className="cursor-pointer rounded-l-xl border border-blue-600 bg-blue-600 px-4 py-2 text-white"
       >
         Choose file
@@ -76,11 +71,11 @@ export const ProfileImageUploader = ({
         <span id="file-chosen">{selectedFileName}</span>
         <Controller
           control={control}
-          name="profilePicture"
+          name={fieldName}
           render={({ field: { ref, onBlur } }) => (
             <input
               type="file"
-              id="profilePicture"
+              id={String(fieldName)}
               className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
               ref={ref}
               onBlur={onBlur}
