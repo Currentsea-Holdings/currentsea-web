@@ -63,5 +63,5 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['src/stories/**/*', 'src/**/*.stories.tsx', 'vite.config.ts'],
+  ignorePatterns: ['src/stories/**/*', 'src/**/*.stories.tsx', 'vite.config.ts', "appendTypesComment.mjs"],
 };

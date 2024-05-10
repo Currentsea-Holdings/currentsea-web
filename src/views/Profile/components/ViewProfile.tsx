@@ -104,13 +104,13 @@ export const ViewProfile = ({ toggleEdit }: ViewProfileProps) => {
 
           {userType === 'Creator' ? (
             <div className="flex w-full justify-center space-x-8 px-20 py-4">
-              {industries?.map((industry: string, index: number) => (
+              {industries?.map(({id, name, profile}) => (
                 <CSButton
-                  key={index}
+                  key={id}
                   style={buttonStyle}
                   className="rounded-half bg-primary-light-20 font-semibold text-white"
                 >
-                  {industry}
+                  {name}
                 </CSButton>
               ))}
             </div>

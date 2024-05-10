@@ -1,3 +1,14 @@
+
+/*
+***********************************************************************
+***      THIS FILE CONTAINS CURRENTSEA-API TYPES/INTERFACES/DTOS    ***
+***                                                                 ***
+***              TO UPDATE, RUN "yarn generate-types"               ***
+***                                                                 ***
+***********************************************************************
+*/
+
+
 /* eslint-disable */
 /* tslint:disable */
 /*
@@ -8,12 +19,6 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
-
-// !! !!
-// Run "yarn generate-types" to update types/dtos from backend
-// !! !!
-// Saves us from having to update these types manually
-// These comments will be removed when we run the command as it will overwrite the file
 
 export interface RegisterRequestDto {
   /** Must be a valid email address */
@@ -127,7 +132,7 @@ export interface User {
   xRefreshToken?: string | null;
   linkedInToken?: string | null;
   linkedInRefreshToken?: string | null;
-  /** @default "3588fb4d-9609-4469-a4a0-81d334502848" */
+  /** @default "f035e52e-23a4-49e4-a217-6fb035cc446b" */
   id: string;
   email: string;
   password: string;
@@ -135,12 +140,12 @@ export interface User {
   emailVerified: boolean;
   /**
    * @format date-time
-   * @default "2024-05-03T08:12:48.065Z"
+   * @default "2024-05-10T03:09:19.531Z"
    */
   createdAt: string;
   /**
    * @format date-time
-   * @default "2024-05-03T08:12:48.065Z"
+   * @default "2024-05-10T03:09:19.531Z"
    */
   updatedAt: string;
   snapchatAccessToken?: string;
@@ -157,8 +162,7 @@ export interface UserProfile {
   profilePicturePath?: string | null;
   phoneNumber?: string | null;
   shortBio?: string;
-  industries?: string[] | null;
-  /** @default "e8e78dca-87e0-44de-a8da-a4a6acc42de5" */
+  /** @default "71be49d9-454a-41ea-a5f3-be64f831b626" */
   id: string;
   city: string;
   state: string;
@@ -166,12 +170,12 @@ export interface UserProfile {
   userProfileCompleted: boolean;
   /**
    * @format date-time
-   * @default "2024-05-03T08:12:48.066Z"
+   * @default "2024-05-10T03:09:19.532Z"
    */
   createdAt: string;
   /**
    * @format date-time
-   * @default "2024-05-03T08:12:48.066Z"
+   * @default "2024-05-10T03:09:19.532Z"
    */
   updatedAt: string;
   user: User;
@@ -185,6 +189,8 @@ export interface UserProfile {
   rates: object;
   /** @default [] */
   showcaseContent: object;
+  /** @default [] */
+  industries: object;
 }
 
 export interface UpdateUserDto {
@@ -214,20 +220,21 @@ export interface CreateUserProfileDto {
   lastName?: string;
   companyName?: string;
   phoneNumber?: string;
-  profilePicture?: object;
 }
 
 export type RateDto = object;
+
+export interface IndustryDto {
+  name: string;
+}
 
 export type ShowcaseContentDto = object;
 
 export interface UpdateUserProfileDto {
   rates?: RateDto[];
+  industries?: IndustryDto[];
   content?: ShowcaseContentDto[];
-  /** @format binary */
-  profilePicture?: File;
-  industries?: string[];
-  userProfileCompleted: boolean;
+  userProfileCompleted?: boolean;
 }
 
 import type {
@@ -1484,11 +1491,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags User Profile
-     * @name UserProfileControllerUpdate
+     * @name UserProfileControllerUpdate2
      * @summary Update a User Profile's information
      * @request PATCH:/user-profile/{id}
      */
-    userProfileControllerUpdate: (
+    userProfileControllerUpdate2: (
       id: string,
       data: UpdateUserProfileDto,
       params: RequestParams = {},
@@ -1497,7 +1504,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/user-profile/${id}`,
         method: 'PATCH',
         body: data,
-        type: ContentType.FormData,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
@@ -1514,6 +1521,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/user-profile/${id}`,
         method: 'DELETE',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User Profile
+     * @name UserProfileControllerUploadProfilePicture
+     * @summary Upload a profile picture for a User Profile
+     * @request POST:/user-profile/{id}/profile-picture
+     */
+    userProfileControllerUploadProfilePicture: (id: string, params: RequestParams = {}) =>
+      this.request<UserProfile, any>({
+        path: `/user-profile/${id}/profile-picture`,
+        method: 'POST',
+        format: 'json',
         ...params,
       }),
 

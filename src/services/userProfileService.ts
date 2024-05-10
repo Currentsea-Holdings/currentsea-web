@@ -26,28 +26,37 @@ export interface CreateUserProfile {
   shortBio?: string;
   city: string;
   state: string;
-  industries?: string[];
   rates?: RateDetail[];
   country: string;
 }
 
+interface Industry {
+  id: number;
+  name: string;
+}
+
 export interface UpdateUserProfile {
-  id?: string;
+  id: string;
   userId?: string;
   firstName?: string;
   lastName?: string;
   companyName?: string;
   phoneNumber?: string;
-  profilePicture?: File | null;
   shortBio?: string;
   city?: string;
   state?: string;
-  industries?: string[];
+  industries?: Industry[];
   rates?: RateDetail[];
   emailInvites?: string[];
   showcaseContent?: ContentDetail[];
   hasFullProfile?: boolean;
   country?: string;
+  userProfileCompleted?: boolean;
+}
+
+export interface UploadProfilePicture {
+  id: string;
+  profilePicture?: File | null;
 }
 
 export const createUserProfile = async (data: CreateUserProfile): Promise<UserProfile> => {
@@ -67,9 +76,7 @@ export const createUserProfile = async (data: CreateUserProfile): Promise<UserPr
 export const updateUserProfile = async (data: UpdateUserProfile): Promise<UserProfile> => {
   const { id, ...payload } = data;
   try {
-    const formData = payload.rates ? payload : serialize(payload);
-
-    return await userProfileApi.updateUserProfile(id as string, formData as FormData);
+    return await userProfileApi.updateUserProfile(id, payload);
   } catch (err) {
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
@@ -110,6 +117,21 @@ export const deleteUserProfile = async (id: string): Promise<void> => {
   } catch (err) {
     console.error('Delete UserProfile Error:', err);
     throw err;
+  }
+};
+
+export const uploadProfilePicture = async (data: UploadProfilePicture): Promise<UserProfile> => {
+  const { id, ...payload } = data;
+  try {
+    const formData = serialize(payload);
+
+    return await userProfileApi.uploadProfilePicture(id, formData);
+  } catch (err) {
+    if (isAxiosError(err)) {
+      throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
+    } else {
+      throw err;
+    }
   }
 };
 

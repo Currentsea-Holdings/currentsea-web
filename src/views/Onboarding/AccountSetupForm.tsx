@@ -6,11 +6,14 @@ import { Controller, set, useForm } from 'react-hook-form';
 import { PhoneInput } from 'react-international-phone';
 
 import { CSButton } from '@/components';
-import { createUserProfile, updateUserProfile } from '@/services/userProfileService';
+import {
+  createUserProfile,
+  updateUserProfile,
+  uploadProfilePicture,
+} from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
 import { getBase64 } from '@/utils';
 import { BASE_API_URL, BASE_URL, STATES } from '@/utils/constants';
-import { DevTool } from '@hookform/devtools';
 import { useMutation } from '@tanstack/react-query';
 
 import type { User } from '@/stores/authStore';
@@ -36,7 +39,7 @@ interface AccountSetupFormFields {
 export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
   const userProfile = useAuthStore((state) => state.userProfile);
-  const { id, userType } = user as { id: string, userType: 'Creator' | 'Brand' | 'Agency' };
+  const { id, userType } = user as { id: string; userType: 'Creator' | 'Brand' | 'Agency' };
 
   const {
     register,
@@ -103,13 +106,16 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   >({ mutationFn: updateUserProfile });
 
   const onSubmit = (data: AccountSetupFormFields) => {
+    const { profilePicture, ...profileData } = data;
+
     if (userProfile) {
       submitUpdateUserProfile(
-        { id: userProfile.id, ...data },
+        { id: userProfile.id, ...profileData },
         {
-          onSuccess: (data: UserProfile) => {
+          onSuccess: async (data: UserProfile) => {
             console.log('User Profile updated successfully.');
             setUserProfile(data);
+            await uploadProfilePicture({ id: userProfile.id, profilePicture });
             onNext();
           },
           onError: (error) => {
@@ -231,57 +237,53 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
             </div>
           </div>
           {userType === 'Creator' && (
-          <>
+            <>
+              <div>
+                <label
+                  htmlFor="firstName"
+                  className="mb-2 block text-sm font-semibold text-gray-700"
+                >
+                  First name
+                </label>
+                <input
+                  id="firstName"
+                  type="text"
+                  {...register('firstName')}
+                  className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="mb-2 block text-sm font-semibold text-gray-700"
+                >
+                  Last name
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  {...register('lastName')}
+                  className="block w-full rounded-xl border border-gray-300 p-2"
+                />
+              </div>
+            </>
+          )}
+          {['Brand', 'Agency'].includes(userType) && (
             <div>
-              <label htmlFor="firstName" className="mb-2 block text-sm font-semibold text-gray-700">
-                First name
+              <label
+                htmlFor="companyName"
+                className="mb-2 block text-sm font-semibold text-gray-700"
+              >
+                {userType === 'Brand' ? 'Brand Name' : 'Agency Name'}
               </label>
-              <input id="firstName" type="text" {...register('firstName')} className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700" />
+              <input
+                id="companyName"
+                type="text"
+                {...register('companyName')}
+                className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700"
+              />
             </div>
-            <div>
-              <label htmlFor="lastName" className="mb-2 block text-sm font-semibold text-gray-700">
-                Last name
-              </label>
-              <input id="lastName" type="text" {...register('lastName')} className="block w-full rounded-xl border border-gray-300 p-2" />
-            </div>
-          </>
-        )}
-        {['Brand', 'Agency'].includes(userType) && (
-          <div>
-            <label htmlFor="companyName" className="mb-2 block text-sm font-semibold text-gray-700">
-              {userType === 'Brand' ? 'Brand Name' : 'Agency Name'}
-            </label>
-            <input id="companyName" type="text" {...register('companyName')} className="block w-full rounded-xl border border-gray-300 p-2 text-gray-700" />
-          </div>
-        )}
-          {/* <div>
-            <label
-              htmlFor="First name"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              First name
-            </label>
-            <input
-              id="firstName"
-              type="text"
-              {...register('firstName')}
-              className="block w-full  rounded-xl border border-gray-300 p-2 text-gray-700"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="Last name"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Last name
-            </label>
-            <input
-              id="lastName"
-              type="text"
-              {...register('lastName')}
-              className="block w-full rounded-xl border border-gray-300 p-2"
-            />
-          </div> */}
+          )}
           <div>
             <label
               htmlFor="Phone"

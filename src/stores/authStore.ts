@@ -10,7 +10,7 @@ export interface User {
   emailVerified?: boolean;
   userType?: 'Creator' | 'Agency' | 'Brand';
   userProfile?: UserProfile;
-  industries?: string[];
+  industries?: Industry[];
 }
 
 export interface UserProfile {
@@ -24,12 +24,17 @@ export interface UserProfile {
   shortBio?: string;
   city: string;
   state: string;
-  industries?: string[];
+  industries?: Industry[];
   country: string;
   profileCompleted: boolean;
   rates: RateDetail[];
 }
 
+interface Industry {
+  id: string;
+  name: string;
+  profile: object;
+}
 interface AuthStore {
   isLoggedIn: () => boolean;
   user: User | null;
