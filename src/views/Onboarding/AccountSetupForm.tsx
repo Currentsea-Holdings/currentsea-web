@@ -13,6 +13,7 @@ import {
   uploadProfilePicture,
 } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
+import { BASE_API_URL } from '@/utils/constants';
 import { useMutation } from '@tanstack/react-query';
 
 import type { User } from '@/stores/authStore';
@@ -82,7 +83,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
     }
   }, [selectedCountry, userProfile?.state, setValue]);
 
-  // trigers when state list is updated
+  // triggers when state list is updated
   useEffect(() => {
     const userProfileState = userProfile?.state || '';
     if (states.find((state) => state.isoCode === userProfileState)) {
@@ -151,11 +152,23 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-10 bg-white p-10"
         >
-          <ProfileImageUploader
-            control={control}
-            setValue={setValue}
-            defaultImage={userProfile?.profilePicturePath}
-          />
+          <div className="mb-0 text-left">
+            <label
+              htmlFor="profilePicture"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              Profile photo
+            </label>
+            <ProfileImageUploader
+              control={control}
+              setValue={setValue}
+              defaultImage={
+                userProfile?.profilePicturePath
+                  ? `${BASE_API_URL}/${userProfile.profilePicturePath}`
+                  : ''
+              }
+            />
+          </div>
           {userType === 'Creator' && (
             <>
               <div>
