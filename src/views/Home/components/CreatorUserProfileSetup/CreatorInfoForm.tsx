@@ -7,7 +7,6 @@ import { IndustryDropdown } from '@/components/IndustryDropdown';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { updateUserProfile } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
-import { DevTool } from '@hookform/devtools';
 import { useMutation } from '@tanstack/react-query';
 
 interface Industry {
@@ -22,7 +21,7 @@ interface FormFields {
 
 const CreatorInfoForm = () => {
   const userProfile = useAuthStore((state) => state.userProfile);
-  const { user, nextStep, setIsProfileCreationStepsOpen, closeModal } = useUserProfile();
+  const { user, nextStep, closeModal } = useUserProfile();
   const {
     register,
     handleSubmit,
@@ -85,7 +84,7 @@ const CreatorInfoForm = () => {
             />
             {errors.shortBio && <p className="text-red-500">{errors.shortBio.message}</p>}
 
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-4">
               <div className="space-y-4">
                 <label
                   htmlFor="industries"
@@ -131,10 +130,6 @@ const CreatorInfoForm = () => {
           </CSButton>
         </form>
       </Modal.Body>
-      <DevTool
-        control={control}
-        placement="top-right"
-      />
     </Modal>
   );
 };
