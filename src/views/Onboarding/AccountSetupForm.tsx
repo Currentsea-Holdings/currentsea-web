@@ -1,18 +1,16 @@
 import 'react-international-phone/style.css';
 
-import { Country, State } from 'country-state-city';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { PhoneInput } from 'react-international-phone';
 
 import { CSButton } from '@/components';
+import { LocationSelector } from '@/components/LocationSelector';
 import { ProfileImageUploader } from '@/components/ProfileImageUploader';
 import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useAuthStore } from '@/stores/authStore';
 import { BASE_API_URL } from '@/utils/constants';
 
 import type { User } from '@/stores/authStore';
-import type { IState } from 'country-state-city';
 interface AccountSetupFormProps {
   user: User;
   onNext: () => void;
@@ -31,10 +29,23 @@ interface AccountSetupFormFields {
 
 export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   const { id, userType } = user as { id: string; userType: 'Creator' | 'Brand' | 'Agency' };
-  
+
   const { saveUserProfile, isProcessing } = useManageUserProfile();
   const userProfile = useAuthStore((state) => state.userProfile);
-  
+
+  const formMethods = useForm<AccountSetupFormFields>({
+    defaultValues: {
+      profilePicture: null,
+      firstName: userProfile?.firstName ?? '',
+      lastName: userProfile?.lastName ?? '',
+      companyName: userProfile?.companyName ?? '',
+      phoneNumber: userProfile?.phoneNumber ?? '',
+      city: userProfile?.city ?? '',
+      state: userProfile?.state ?? '',
+      country: userProfile?.country ?? 'US',
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -42,45 +53,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
     watch,
     control,
     formState: { errors, isValid },
-  } = useForm<AccountSetupFormFields>({
-    defaultValues: {
-      profilePicture: null,
-      firstName: '',
-      lastName: '',
-      companyName: '',
-      phoneNumber: '',
-      city: '',
-      state: '',
-      country: 'US',
-    },
-  });
-
-  useEffect(() => {
-    if (userProfile) {
-      setValue('firstName', userProfile.firstName ?? '');
-      setValue('lastName', userProfile.lastName ?? '');
-      setValue('companyName', userProfile.companyName ?? '');
-      setValue('phoneNumber', userProfile.phoneNumber ?? '');
-      setValue('city', userProfile.city);
-      setValue('state', userProfile.state);
-      setValue('country', userProfile.country);
-    }
-  }, [userProfile, setValue]);
-
-  const phoneNumber = watch('phoneNumber');
-  const selectedCountry = watch('country');
-
-  const countries = Country.getAllCountries();
-
-  // Load states based on the selected country
-  const [states, setStates] = useState<IState[]>([]);
-  useEffect(() => {
-    if (selectedCountry) {
-      const fetchedStates = State.getStatesOfCountry(selectedCountry);
-      setStates(fetchedStates);
-      setValue('state', fetchedStates.find((state) => state.isoCode === userProfile?.state) ? (userProfile?.state || '') : '');
-    }
-  }, [selectedCountry, userProfile?.state, setValue]);
+  } = formMethods;
 
   const onSubmit = (data: AccountSetupFormFields) => {
     const { profilePicture, ...profileData } = data;
@@ -94,7 +67,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   };
 
   return (
-    <>
+    <FormProvider {...formMethods}>
       <div className="mt-20 flex items-center justify-center p-4">
         <h1 className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
           Let&apos;s start with the basics...
@@ -180,7 +153,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
             </label>
             <PhoneInput
               defaultCountry="us"
-              value={phoneNumber}
+              value={watch('phoneNumber')}
               inputClassName="w-full"
               countrySelectorStyleProps={{
                 flagClassName: 'p-1',
@@ -191,69 +164,11 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
               required
             />
           </div>
-          <div>
-            <label
-              htmlFor="Phone"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Country
-            </label>
-            <select
-              id="country"
-              {...register('country')}
-              className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-            >
-              <option value="">Select</option>
-              {Object.entries(countries).map(([id, country]) => (
-                <option
-                  key={id}
-                  value={country.isoCode}
-                >
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-6 flex gap-4">
-            <div className="flex-1">
-              <label
-                htmlFor="city"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                City
-              </label>
-              <input
-                id="city"
-                type="text"
-                {...register('city')}
-                className="form-input mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-              />
-            </div>
-
-            <div className="w-1/3">
-              <label
-                htmlFor="state"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                State
-              </label>
-              <select
-                id="state"
-                {...register('state')}
-                className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-              >
-                <option value="">Select</option>
-                {states.map((state) => (
-                  <option
-                    key={state.isoCode}
-                    value={state.isoCode}
-                  >
-                    {state.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <LocationSelector
+            initialCountry={userProfile?.country}
+            initialState={userProfile?.state}
+            initialCity={userProfile?.city}
+          />
           <CSButton
             type="submit"
             size="lg"
@@ -265,6 +180,6 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
           </CSButton>
         </form>
       </div>
-    </>
+    </FormProvider>
   );
 };
