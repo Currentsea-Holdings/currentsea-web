@@ -4,8 +4,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { PhoneInput } from 'react-international-phone';
 
 import { CSButton } from '@/components';
-import { LocationSelector } from '@/components/LocationSelector';
-import { ProfileImageUploader } from '@/components/ProfileImageUploader';
+import { LocationSelector } from '@/components/inputs/LocationSelector';
+import { ProfileImageUploader } from '@/components/inputs/ProfileImageUploader';
 import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useAuthStore } from '@/stores/authStore';
 import { BASE_API_URL } from '@/utils/constants';

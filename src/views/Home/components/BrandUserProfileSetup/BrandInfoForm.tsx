@@ -3,7 +3,7 @@ import { InfoCircle } from 'flowbite-react-icons/outline';
 import { Controller, useForm } from 'react-hook-form';
 
 import { CSButton } from '@/components';
-import { IndustryDropdown } from '@/components/IndustryDropdown';
+import { IndustryDropdown } from '@/components/inputs/IndustryDropdown';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { updateUserProfile } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
