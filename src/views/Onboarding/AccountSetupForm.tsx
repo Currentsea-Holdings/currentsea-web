@@ -1,30 +1,22 @@
 import 'react-international-phone/style.css';
 
-import { Country, State } from 'country-state-city';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { PhoneInput } from 'react-international-phone';
 
 import { CSButton } from '@/components';
-import { ProfileImageUploader } from '@/components/ProfileImageUploader';
-import {
-  createUserProfile,
-  updateUserProfile,
-  uploadProfilePicture,
-} from '@/services/userProfileService';
+import { LocationSelector } from '@/components/inputs/LocationSelector';
+import { ProfileImageUploader } from '@/components/inputs/ProfileImageUploader';
+import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useAuthStore } from '@/stores/authStore';
-import { useMutation } from '@tanstack/react-query';
+import { BASE_API_URL } from '@/utils/constants';
 
 import type { User } from '@/stores/authStore';
-import type { CreateUserProfile, UpdateUserProfile } from '@/services/userProfileService';
-import type { UserProfile } from '@/stores/authStore';
-import type { IState } from 'country-state-city';
 interface AccountSetupFormProps {
   user: User;
   onNext: () => void;
 }
 
-interface AccountSetupFormFields {
+interface FormFields {
   firstName?: string;
   lastName?: string;
   companyName?: string;
@@ -36,18 +28,12 @@ interface AccountSetupFormFields {
 }
 
 export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
-  const setUserProfile = useAuthStore((state) => state.setUserProfile);
-  const userProfile = useAuthStore((state) => state.userProfile);
   const { id, userType } = user as { id: string; userType: 'Creator' | 'Brand' | 'Agency' };
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    control,
-    formState: { errors, isValid },
-  } = useForm<AccountSetupFormFields>({
+  const userProfile = useAuthStore((state) => state.userProfile);
+  const { saveUserProfile, isProcessing } = useManageUserProfile();
+
+  const formMethods = useForm<FormFields>({
     defaultValues: {
       profilePicture: null,
       firstName: userProfile?.firstName ?? '',
@@ -60,87 +46,28 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
     },
   });
 
-  const phoneNumber = watch('phoneNumber');
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    control,
+    formState: { errors, isValid },
+  } = formMethods;
 
-  const countries = Country.getAllCountries();
-  const selectedCountry = watch('country');
+  const onSubmit = (formData: FormFields) => {
+    const { profilePicture, ...profileData } = formData;
 
-  const [states, setStates] = useState<IState[]>([]);
+    const data = {
+      ...profileData,
+      ...(userProfile ? { id: userProfile.id } : { userId: id }),
+    };
 
-  // triggers based on new selected country
-  useEffect(() => {
-    if (selectedCountry) {
-      const fetchedStates = State.getStatesOfCountry(selectedCountry);
-      setStates(fetchedStates);
-
-      const userProfileState = userProfile?.state || '';
-      if (fetchedStates.find((state) => state.isoCode === userProfileState)) {
-        setValue('state', userProfileState);
-      } else {
-        setValue('state', '');
-      }
-    }
-  }, [selectedCountry, userProfile?.state, setValue]);
-
-  // trigers when state list is updated
-  useEffect(() => {
-    const userProfileState = userProfile?.state || '';
-    if (states.find((state) => state.isoCode === userProfileState)) {
-      setValue('state', userProfileState);
-    } else {
-      setValue('state', '');
-    }
-  }, [states, userProfile?.state, setValue]);
-
-  const { mutate: submitCreateUserProfile, isPending: isCreateProfilePending } = useMutation<
-    UserProfile,
-    Error,
-    CreateUserProfile
-  >({ mutationFn: createUserProfile });
-
-  const { mutate: submitUpdateUserProfile, isPending: isUpdateProfilePending } = useMutation<
-    UserProfile,
-    Error,
-    UpdateUserProfile
-  >({ mutationFn: updateUserProfile });
-
-  const onSubmit = (data: AccountSetupFormFields) => {
-    const { profilePicture, ...profileData } = data;
-
-    if (userProfile) {
-      submitUpdateUserProfile(
-        { id: userProfile.id, ...profileData },
-        {
-          onSuccess: async (data: UserProfile) => {
-            console.log('User Profile updated successfully.');
-            setUserProfile(data);
-            await uploadProfilePicture({ id: userProfile.id, profilePicture });
-            onNext();
-          },
-          onError: (error) => {
-            console.error('error:', error);
-          },
-        },
-      );
-    } else {
-      submitCreateUserProfile(
-        { userId: id, ...data },
-        {
-          onSuccess: (data: UserProfile) => {
-            console.log('User Profile created successfully.');
-            setUserProfile(data);
-            onNext();
-          },
-          onError: (error) => {
-            console.error('error:', error);
-          },
-        },
-      );
-    }
+    saveUserProfile(data, profilePicture, onNext);
   };
 
   return (
-    <>
+    <FormProvider {...formMethods}>
       <div className="mt-20 flex items-center justify-center p-4">
         <h1 className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
           Let&apos;s start with the basics...
@@ -151,11 +78,24 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-10 bg-white p-10"
         >
-          <ProfileImageUploader
-            control={control}
-            setValue={setValue}
-            defaultImage={userProfile?.profilePicturePath}
-          />
+          <div className="mb-0 text-left">
+            <label
+              htmlFor="profilePicture"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              Profile photo
+            </label>
+            <ProfileImageUploader
+              control={control}
+              setValue={setValue}
+              fieldName="profilePicture"
+              defaultImage={
+                userProfile?.profilePicturePath
+                  ? `${BASE_API_URL}/${userProfile.profilePicturePath}`
+                  : ''
+              }
+            />
+          </div>
           {userType === 'Creator' && (
             <>
               <div>
@@ -213,7 +153,7 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
             </label>
             <PhoneInput
               defaultCountry="us"
-              value={phoneNumber}
+              value={watch('phoneNumber')}
               inputClassName="w-full"
               countrySelectorStyleProps={{
                 flagClassName: 'p-1',
@@ -224,80 +164,22 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
               required
             />
           </div>
-          <div>
-            <label
-              htmlFor="Phone"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Country
-            </label>
-            <select
-              id="country"
-              {...register('country')}
-              className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-            >
-              <option value="">Select</option>
-              {Object.entries(countries).map(([id, country]) => (
-                <option
-                  key={id}
-                  value={country.isoCode}
-                >
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-6 flex gap-4">
-            <div className="flex-1">
-              <label
-                htmlFor="city"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                City
-              </label>
-              <input
-                id="city"
-                type="text"
-                {...register('city')}
-                className="form-input mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-              />
-            </div>
-
-            <div className="w-1/3">
-              <label
-                htmlFor="state"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                State
-              </label>
-              <select
-                id="state"
-                {...register('state')}
-                className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-              >
-                <option value="">Select</option>
-                {states.map((state) => (
-                  <option
-                    key={state.isoCode}
-                    value={state.isoCode}
-                  >
-                    {state.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <LocationSelector
+            initialCountry={userProfile?.country}
+            initialState={userProfile?.state}
+            initialCity={userProfile?.city}
+          />
           <CSButton
             type="submit"
             size="lg"
             disabled={!isValid}
-            isProcessing={isCreateProfilePending || isUpdateProfilePending}
+            isProcessing={isProcessing}
             className="inline-flex h-12 w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
           >
             Next: Social Media
           </CSButton>
         </form>
       </div>
-    </>
+    </FormProvider>
   );
 };

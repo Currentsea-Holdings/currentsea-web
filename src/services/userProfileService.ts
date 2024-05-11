@@ -68,7 +68,7 @@ export const createUserProfile = async (data: CreateUserProfile): Promise<UserPr
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
     } else {
-      throw err;
+      throw new Error('An unexpected error occurred');
     }
   }
 };
@@ -81,7 +81,7 @@ export const updateUserProfile = async (data: UpdateUserProfile): Promise<UserPr
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
     } else {
-      throw err;
+      throw new Error('An unexpected error occurred');
     }
   }
 };
@@ -96,7 +96,7 @@ export const fetchUserProfileById = async (id?: string): Promise<UserProfile> =>
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
     } else {
-      throw err;
+      throw new Error('An unexpected error occurred');
     }
   }
 };
@@ -106,7 +106,7 @@ export const fetchAllUserProfiles = async (): Promise<UserProfile[]> => {
     return await userProfileApi.getAllUserProfiles();
   } catch (err) {
     console.error('Fetch All UserProfiles Error:', err);
-    throw err;
+    throw new Error('An unexpected error occurred');
   }
 };
 
@@ -116,7 +116,7 @@ export const deleteUserProfile = async (id: string): Promise<void> => {
     return;
   } catch (err) {
     console.error('Delete UserProfile Error:', err);
-    throw err;
+    throw new Error('An unexpected error occurred');
   }
 };
 
@@ -130,7 +130,7 @@ export const uploadProfilePicture = async (data: UploadProfilePicture): Promise<
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
     } else {
-      throw err;
+      throw new Error('An unexpected error occurred');
     }
   }
 };
@@ -143,7 +143,7 @@ export const uploadShowCaseContent = async (formData: FormData): Promise<UserPro
     if (isAxiosError(err)) {
       throw new Error(ERROR_MESSAGES.GENERAL_ERROR);
     } else {
-      throw err;
+      throw new Error('An unexpected error occurred');
     }
   }
 };

@@ -3,11 +3,10 @@ import { InfoCircle } from 'flowbite-react-icons/outline';
 import { Controller, useForm } from 'react-hook-form';
 
 import { CSButton } from '@/components';
-import { IndustryDropdown } from '@/components/IndustryDropdown';
+import { IndustryDropdown } from '@/components/inputs/IndustryDropdown';
+import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { updateUserProfile } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
-import { useMutation } from '@tanstack/react-query';
 
 import type { UserProfile } from '@/stores/authStore';
 interface Industry {
@@ -22,6 +21,8 @@ interface FormFields {
 
 const CreatorInfoForm = () => {
   const userProfile = useAuthStore((state) => state.userProfile) as UserProfile;
+  const { saveUserProfile, isProcessing } = useManageUserProfile();
+
   const { nextStep, closeModal } = useUserProfile();
   const {
     register,
@@ -30,26 +31,18 @@ const CreatorInfoForm = () => {
     formState: { errors, isValid },
   } = useForm<FormFields>({
     defaultValues: {
-      shortBio: '',
-      industries: [],
-    },
-  });
-
-  const { mutate: updateProfile, isPending } = useMutation({
-    mutationFn: updateUserProfile,
-    onSuccess: () => {
-      console.log('Profile updated successfully.');
-      nextStep();
-    },
-    onError: (error: Error) => {
-      console.error('Error submitting profile:', error.message);
+      shortBio: userProfile.shortBio ?? '',
+      industries: userProfile.industries ?? [],
     },
   });
 
   const onSubmit = (formData: FormFields) => {
-    const data = { ...formData, id: userProfile.id };
+    const data = {
+      ...formData,
+      id: userProfile.id,
+    };
 
-    updateProfile(data);
+    saveUserProfile(data, null, nextStep);
   };
 
   return (
@@ -116,8 +109,8 @@ const CreatorInfoForm = () => {
           </div>
           <CSButton
             type="submit"
-            disabled={!isValid || isPending}
-            isProcessing={isPending}
+            disabled={!isValid || isProcessing}
+            isProcessing={isProcessing}
             className="mt-auto w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
           >
             Next: Rates
