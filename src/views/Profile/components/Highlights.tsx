@@ -296,12 +296,13 @@ export const Highlights = ({ isEditing }: HighlightsProps) => {
             Create Profile
           </CSButton>
         ) : (
-          <CSButton
-            disabled // You can decide what should happen if there are no files selected and no previews
-            className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-          >
-            Select Files
-          </CSButton>
+          // <CSButton
+          //   disabled // You can decide what should happen if there are no files selected and no previews
+          //   className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          // >
+          //   Select Files
+          // </CSButton>
+          <></>
         )}
         <div style={{ width: '100%', textAlign: 'center', fontSize: '14px' }}>
           {uploadError && <div style={{ color: 'red', marginBottom: '10px' }}>{uploadError}</div>}

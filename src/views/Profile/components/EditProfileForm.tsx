@@ -1,29 +1,29 @@
 import 'react-international-phone/style.css';
 
-import { Country, State } from 'country-state-city';
-import { useCallback, useEffect, useState } from 'react';
 import { Controller, set, useForm } from 'react-hook-form';
-import { PhoneInput } from 'react-international-phone';
 
-import { CSButton } from '@/components';
-import { createUserProfile, updateUserProfile } from '@/services/userProfileService';
+import { IndustryDropdown } from '@/components/inputs/IndustryDropdown';
+import { ProfileImageUploader } from '@/components/inputs/ProfileImageUploader';
+import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useAuthStore } from '@/stores/authStore';
-import { getBase64 } from '@/utils';
-import { BASE_API_URL, BASE_URL, STATES } from '@/utils/constants';
-import { DevTool } from '@hookform/devtools';
-import { useMutation } from '@tanstack/react-query';
+import { BASE_API_URL } from '@/utils/constants';
 
 import type { User } from '@/stores/authStore';
-import type { CreateUserProfile, UpdateUserProfile } from '@/services/userProfileService';
 import type { UserProfile } from '@/stores/authStore';
-import type { IState } from 'country-state-city';
-import { Highlights } from './Highlights';
+import { Textarea } from 'flowbite-react';
+
 interface EditProfileFormProps {
-  user: User;
+  toggleEdit: () => void;
 }
 
-interface EditProfileFormFields {
+interface Industry {
+  id: number;
+  name: string;
+}
+
+interface FormFields {
   shortBio: string;
+  industries: Industry[];
   lastName: string;
   phoneNumber: string;
   city: string;
@@ -32,148 +32,39 @@ interface EditProfileFormFields {
   profilePicture: File | null;
 }
 
-export const EditProfileForm = ({ user }: EditProfileFormProps) => {
-  const setUserProfile = useAuthStore((state) => state.setUserProfile);
-  const userProfile = useAuthStore((state) => state.userProfile);
-  const { id } = user as { id: string };
+export const EditProfileForm = ({ toggleEdit }: EditProfileFormProps) => {
+  const userProfile = useAuthStore((state) => state.userProfile) as UserProfile;
+  const { saveUserProfile, isProcessing } = useManageUserProfile();
+
+  const formMethods = useForm<FormFields>({
+    defaultValues: {
+      profilePicture: null,
+      shortBio: userProfile.shortBio ?? '',
+      industries: userProfile.industries ?? [],
+    },
+  });
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     control,
     formState: { errors, isValid },
-  } = useForm<EditProfileFormFields>({
-    defaultValues: {
-      profilePicture: null,
-      shortBio: userProfile?.shortBio ?? '',
-      lastName: userProfile?.lastName ?? '',
-      phoneNumber: userProfile?.phoneNumber ?? '',
-      city: userProfile?.city ?? '',
-      state: userProfile?.state ?? '',
-      country: userProfile?.country ?? 'US',
-    },
-  });
+  } = formMethods;
 
-  const phoneNumber = watch('phoneNumber');
-
-  const countries = Country.getAllCountries();
-  const selectedCountry = watch('country');
-
-  const [states, setStates] = useState<IState[]>([]);
-
-  // triggers based on new selected country
-  useEffect(() => {
-    if (selectedCountry) {
-      const fetchedStates = State.getStatesOfCountry(selectedCountry);
-      setStates(fetchedStates);
-
-      const userProfileState = userProfile?.state || '';
-      if (fetchedStates.find((state) => state.isoCode === userProfileState)) {
-        setValue('state', userProfileState);
-      } else {
-        setValue('state', '');
-      }
-    }
-  }, [selectedCountry, userProfile?.state, setValue]);
-
-  // trigers when state list is updated
-  useEffect(() => {
-    const userProfileState = userProfile?.state || '';
-    if (states.find((state) => state.isoCode === userProfileState)) {
-      setValue('state', userProfileState);
-    } else {
-      setValue('state', '');
-    }
-  }, [states, userProfile?.state, setValue]);
-
-  const { mutate: submitCreateUserProfile, isPending: isCreateProfilePending } = useMutation<
-    UserProfile,
-    Error,
-    CreateUserProfile
-  >({ mutationFn: createUserProfile });
-
-  const { mutate: submitUpdateUserProfile, isPending: isUpdateProfilePending } = useMutation<
-    UserProfile,
-    Error,
-    UpdateUserProfile
-  >({ mutationFn: updateUserProfile });
-
-  const onSubmit = (data: EditProfileFormFields) => {
-    if (userProfile) {
-      submitUpdateUserProfile(
-        { id: userProfile.id, ...data },
-        {
-          onSuccess: (data: UserProfile) => {
-            console.log('User Profile updated successfully.');
-            setUserProfile(data);
-          },
-          onError: (error) => {
-            console.error('error:', error);
-          },
-        },
-      );
-    } else {
-      submitCreateUserProfile(
-        { userId: id, ...data },
-        {
-          onSuccess: (data: UserProfile) => {
-            console.log('User Profile created successfully.');
-            setUserProfile(data);
-          },
-          onError: (error) => {
-            console.error('error:', error);
-          },
-        },
-      );
-    }
+  const onSubmit = (data: FormFields) => {
+    const { profilePicture, ...profileData } = data;
+    const profileInfo = { ...profileData, id: userProfile.id };
+    saveUserProfile(profileInfo, profilePicture);
+    toggleEdit();
   };
-
-  const [selectedFileName, setSelectedFileName] = useState('No file chosen');
-  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-  const [image, setImage] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (userProfile?.profilePicturePath) {
-      setImagePreviewUrl(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
-      setImage(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
-      const pathSegments = userProfile.profilePicturePath.split('/');
-      setSelectedFileName(pathSegments.pop() ?? 'No file chosen');
-    }
-  }, [userProfile?.profilePicturePath]);
-
-  const handleFileChange = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files ? event.target.files[0] : null;
-
-      if (file) {
-        setValue('profilePicture', file, { shouldValidate: true });
-        setSelectedFileName(file.name);
-
-        const base64 = await getBase64(file);
-        setImage(base64);
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImagePreviewUrl(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setValue('profilePicture', null, { shouldValidate: true });
-        setSelectedFileName('No file chosen');
-        setImagePreviewUrl('');
-      }
-    },
-    [setValue],
-  );
 
   return (
     <>
-      <div className="flex flex-1 flex-col items-center justify-start overflow-y-auto p-4 mx-40">
+      <div className="mx-40 flex flex-1 flex-col items-center justify-start overflow-y-auto p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-10 bg-gray-10 w-full"
+          className="w-full space-y-10 bg-gray-10"
         >
           <div className="mb-0 text-left">
             <label
@@ -182,44 +73,16 @@ export const EditProfileForm = ({ user }: EditProfileFormProps) => {
             >
               Profile photo
             </label>
-            <div className="flex items-center">
-              {/* Profile Image Preview */}
-              {imagePreviewUrl && (
-                <div className="mr-2 shrink-0">
-                  <img
-                    src={image}
-                    alt="Profile preview"
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
-                </div>
-              )}
-
-              {/* Choose File Button */}
-              <label
-                htmlFor="profilePicture"
-                className="cursor-pointer rounded-l-xl border border-blue-600 bg-blue-600 px-4 py-2 text-white"
-              >
-                Choose file
-              </label>
-              <div className="relative flex-1 rounded-r-xl border border-gray-300 px-4 py-2 text-gray-700">
-                <span id="file-chosen">{selectedFileName}</span>
-                <Controller
-                  control={control}
-                  name="profilePicture"
-                  render={({ field: { onBlur, ref } }) => (
-                    <input
-                      type="file"
-                      id="profilePicture"
-                      {...register('profilePicture')}
-                      ref={ref}
-                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-                      onBlur={onBlur}
-                      onChange={handleFileChange}
-                    />
-                  )}
-                />
-              </div>
-            </div>
+            <ProfileImageUploader
+              control={control}
+              setValue={setValue}
+              fieldName="profilePicture"
+              defaultImage={
+                userProfile.profilePicturePath
+                  ? `${BASE_API_URL}/${userProfile.profilePicturePath}`
+                  : ''
+              }
+            />
           </div>
 
           <div>
@@ -229,124 +92,40 @@ export const EditProfileForm = ({ user }: EditProfileFormProps) => {
             >
               Biography
             </label>
-            <input
+            <Textarea
               id="shortBio"
-              type="text"
               {...register('shortBio')}
-              className="block w-full  rounded-xl border border-gray-300 p-2 text-gray-700"
+              className="block w-full rounded-xl border border-gray-300 bg-white p-2 text-gray-700"
             />
           </div>
-          <div>
+          <div className="flex flex-col space-y-2">
             <label
-              htmlFor="Last name"
-              className="mb-2 block text-sm font-semibold text-gray-700"
+              htmlFor="industries"
+              className="flex text-sm font-medium text-gray-700"
             >
-              Last name
+              Select your industry
             </label>
-            <input
-              id="lastName"
-              type="text"
-              {...register('lastName')}
-              className="block w-full rounded-xl border border-gray-300 p-2"
+            <Controller
+              name="industries"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <IndustryDropdown
+                  selectedIndustries={value}
+                  onSelectIndustry={(industry) => {
+                    onChange([...value, industry]);
+                  }}
+                  onRemoveIndustry={(industry) => {
+                    onChange(value.filter((ind) => ind.id !== industry.id));
+                  }}
+                />
+              )}
             />
           </div>
-          <div>
-            <label
-              htmlFor="Phone"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Phone
-            </label>
-            <PhoneInput
-              defaultCountry="us"
-              value={phoneNumber}
-              inputClassName="w-full"
-              countrySelectorStyleProps={{
-                flagClassName: 'p-1',
-              }}
-              onChange={(num) => {
-                num && setValue('phoneNumber', num);
-              }}
-              required
-            />
+          <div className="mt-10 h-52 w-full">
+            {/* <h3 className="mb-5 text-left font-semibold text-dark">Highlights</h3> */}
+            {/* <Highlights isEditing={true} /> */}
           </div>
-          <div>
-            <label
-              htmlFor="Phone"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Country
-            </label>
-            <select
-              id="country"
-              {...register('country')}
-              className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-            >
-              <option value="">Select</option>
-              {Object.entries(countries).map(([id, country]) => (
-                <option
-                  key={id}
-                  value={country.isoCode}
-                >
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-6 flex gap-4">
-            <div className="flex-1">
-              <label
-                htmlFor="city"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                City
-              </label>
-              <input
-                id="city"
-                type="text"
-                {...register('city')}
-                className="form-input mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-              />
-            </div>
-
-            <div className="w-1/3">
-              <label
-                htmlFor="state"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                State
-              </label>
-              <select
-                id="state"
-                {...register('state')}
-                className="form-select mt-1 block w-full rounded-xl border-gray-300 text-gray-700"
-              >
-                <option value="">Select</option>
-                {states.map((state) => (
-                  <option
-                    key={state.isoCode}
-                    value={state.isoCode}
-                  >
-                    {state.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <CSButton
-            type="submit"
-            size="lg"
-            disabled={!isValid}
-            isProcessing={isCreateProfilePending || isUpdateProfilePending}
-            className="inline-flex h-12 w-full items-center justify-center rounded-lg border bg-primary px-5 py-0"
-          >
-            Next: Social Media
-          </CSButton>
         </form>
-        <div className="mt-10 w-full">
-          <h3 className="mb-5 text-left font-semibold text-dark">Highlights</h3>
-          <Highlights isEditing={true} />
-        </div>
       </div>
     </>
   );

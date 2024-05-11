@@ -31,8 +31,8 @@ const CreatorInfoForm = () => {
     formState: { errors, isValid },
   } = useForm<FormFields>({
     defaultValues: {
-      shortBio: '',
-      industries: [],
+      shortBio: userProfile.shortBio ?? '',
+      industries: userProfile.industries ?? [],
     },
   });
 

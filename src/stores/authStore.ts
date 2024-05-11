@@ -31,7 +31,7 @@ export interface UserProfile {
 }
 
 interface Industry {
-  id: string;
+  id: number;
   name: string;
   profile: object;
 }
