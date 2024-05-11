@@ -16,7 +16,7 @@ interface AccountSetupFormProps {
   onNext: () => void;
 }
 
-interface AccountSetupFormFields {
+interface FormFields {
   firstName?: string;
   lastName?: string;
   companyName?: string;
@@ -30,10 +30,10 @@ interface AccountSetupFormFields {
 export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
   const { id, userType } = user as { id: string; userType: 'Creator' | 'Brand' | 'Agency' };
 
-  const { saveUserProfile, isProcessing } = useManageUserProfile();
   const userProfile = useAuthStore((state) => state.userProfile);
+  const { saveUserProfile, isProcessing } = useManageUserProfile();
 
-  const formMethods = useForm<AccountSetupFormFields>({
+  const formMethods = useForm<FormFields>({
     defaultValues: {
       profilePicture: null,
       firstName: userProfile?.firstName ?? '',
@@ -55,15 +55,15 @@ export const AccountSetupForm = ({ user, onNext }: AccountSetupFormProps) => {
     formState: { errors, isValid },
   } = formMethods;
 
-  const onSubmit = (data: AccountSetupFormFields) => {
-    const { profilePicture, ...profileData } = data;
+  const onSubmit = (formData: FormFields) => {
+    const { profilePicture, ...profileData } = formData;
 
-    const profileInfo = {
+    const data = {
       ...profileData,
       ...(userProfile ? { id: userProfile.id } : { userId: id }),
     };
 
-    saveUserProfile(profileInfo, profilePicture, onNext);
+    saveUserProfile(data, profilePicture, onNext);
   };
 
   return (
