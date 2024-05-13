@@ -1,40 +1,8 @@
-import type { RateDetail } from '@/services/userProfileService';
+import type { User, UserProfile } from '@/types';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-export interface User {
-  id: string;
-  email?: string;
-  password?: string;
-  emailVerified?: boolean;
-  userType?: 'Creator' | 'Agency' | 'Brand';
-  userProfile?: UserProfile;
-  industries?: Industry[];
-}
-
-export interface UserProfile {
-  id: string;
-  firstName?: string;
-  lastName?: string;
-  companyName?: string;
-  phoneNumber?: string;
-  profilePicture?: File | null;
-  profilePicturePath?: string;
-  shortBio?: string;
-  city: string;
-  state: string;
-  industries?: Industry[];
-  country: string;
-  profileCompleted: boolean;
-  rates: RateDetail[];
-}
-
-interface Industry {
-  id: number;
-  name: string;
-  profile: object;
-}
 interface AuthStore {
   isLoggedIn: () => boolean;
   user: User | null;

@@ -3,46 +3,13 @@ import { isAxiosError } from 'axios';
 import { authApi } from '@/api/authApi';
 import { ERROR_MESSAGES } from '@/utils/constants';
 
-import type { UserProfile } from '@/stores/authStore';
-
-export interface LoginPayload {
-  email?: string;
-  password?: string;
-}
-
-export interface LoginResponse {
-  user: {
-    id: string;
-    email: string;
-    emailVerified: boolean;
-  };
-  userProfile?: UserProfile;
-  message: string;
-}
-
-export interface RegisterPayload {
-  email: string;
-  password: string;
-}
-
-export interface RegisterResponse {
-  user: {
-    id: string;
-    email: string;
-    emailVerified: boolean;
-  };
-  message: string;
-}
+import type { MessageResponseDto, RegisterResponseDto, LoginResponseDto, AuthRequestDto } from '@/types';
 
 export interface ConfirmEmailPayload {
   emailVerificationCode: string;
 }
 
-export interface ConfirmEmailResponse {
-  message: string;
-}
-
-export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
+export const login = async (payload: AuthRequestDto): Promise<LoginResponseDto> => {
   try {
     const userData = await authApi.login(payload);
     return {
@@ -62,7 +29,7 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   }
 };
 
-export const register = async (payload: LoginPayload): Promise<RegisterResponse> => {
+export const register = async (payload: AuthRequestDto): Promise<RegisterResponseDto> => {
   try {
     return await authApi.register(payload);
   } catch (err) {
@@ -82,7 +49,7 @@ export const register = async (payload: LoginPayload): Promise<RegisterResponse>
 export const confirmEmail = async (
   payload: ConfirmEmailPayload,
   params: { email?: string },
-): Promise<ConfirmEmailResponse | undefined> => {
+): Promise<MessageResponseDto | undefined> => {
   try {
     return await authApi.confirmEmail(payload, params);
   } catch (err) {
@@ -91,7 +58,9 @@ export const confirmEmail = async (
   }
 };
 
-export const sendPasswordResetEmail = async (payload: { email: string }): Promise<unknown> => {
+export const sendPasswordResetEmail = async (payload: {
+  email: string;
+}): Promise<MessageResponseDto> => {
   try {
     return await authApi.sendPasswordResetEmail(payload);
   } catch (err) {
@@ -110,7 +79,7 @@ export const sendPasswordResetEmail = async (payload: { email: string }): Promis
 export const resetPassword = async (payload: {
   token: string;
   password: string;
-}): Promise<unknown> => {
+}): Promise<MessageResponseDto> => {
   try {
     return await authApi.resetPassword(payload);
   } catch (err) {
@@ -119,4 +88,3 @@ export const resetPassword = async (payload: {
   }
 };
 
-export const fetchProfile = async () => {};

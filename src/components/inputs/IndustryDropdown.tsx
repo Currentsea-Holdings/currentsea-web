@@ -1,23 +1,21 @@
 import { AngleDown, Close } from 'flowbite-react-icons/outline';
 import { startTransition, useMemo, useRef } from 'react';
 import { useClickAway, useToggle } from 'react-use';
-import { INDUSTRIES } from '@/utils/constants/industries.constants';
 
-interface Industry {
-  id: number;
-  name: string;
-}
+import { useIndustries } from '@/hooks/useIndustries';
+
+import type { Industry } from '@/types';
 
 interface IndustryDropdownProps {
-  selectedIndustries: Industry[];
-  onSelectIndustry: (industry: Industry) => void;
-  onRemoveIndustry: (industry: Industry) => void;
+  selectedIndustryIds: string[];
+  onSelectIndustryId: (industryId: string) => void;
+  onRemoveIndustryId: (industryId: string) => void;
 }
 
 export const IndustryDropdown = ({
-  selectedIndustries,
-  onSelectIndustry,
-  onRemoveIndustry,
+  selectedIndustryIds,
+  onSelectIndustryId,
+  onRemoveIndustryId,
 }: IndustryDropdownProps) => {
   const [isOpen, toggleDropdown] = useToggle(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -26,20 +24,16 @@ export const IndustryDropdown = ({
     if (isOpen) toggleDropdown(false);
   });
 
-  const industryOptions = INDUSTRIES;
-
-  const sortedIndustryOptions: Industry[] = useMemo(() => {
-    return [...industryOptions].sort((a: Industry, b: Industry) => a.name.localeCompare(b.name));
-  }, [industryOptions]);
+  const { industries } = useIndustries();
 
   const handleIndustrySelect = (industry: Industry) => {
     startTransition(() => {
-      if (selectedIndustries.some((ind) => ind.id === industry.id)) {
-        onRemoveIndustry(industry);
-      } else if (selectedIndustries.length < 3) {
-        onSelectIndustry(industry);
+      if (selectedIndustryIds.includes(industry.id)) {
+        onRemoveIndustryId(industry.id);
+      } else if (selectedIndustryIds.length < 3) {
+        onSelectIndustryId(industry.id);
 
-        if (selectedIndustries.length === 2) {
+        if (selectedIndustryIds.length === 2) {
           setTimeout(() => {
             toggleDropdown(false);
           }, 200);
@@ -62,7 +56,7 @@ export const IndustryDropdown = ({
         aria-haspopup="true"
         aria-expanded={isOpen ? 'true' : 'false'}
       >
-        <span className="text-dark">{selectedIndustries.length} out of 3 selected</span>
+        <span className="text-dark">{selectedIndustryIds.length} out of 3 selected</span>
         <AngleDown className="ml-2 h-5 w-5 text-dark group-hover:text-gray-50" />
       </button>
       {isOpen && (
@@ -71,22 +65,22 @@ export const IndustryDropdown = ({
             className="py-1 text-gray-700"
             aria-labelledby="dropdownButton"
           >
-            {sortedIndustryOptions.map((industry) => {
-              const isIndustrySelected = selectedIndustries.some((ind) => ind.id === industry.id);
+            {industries?.map((industry) => {
+              const isIndustrySelected = selectedIndustryIds.includes(industry.id);
 
               return (
                 <button
                   type="button"
                   key={industry.id}
                   className={`block w-full cursor-pointer px-4 py-2 text-left hover:bg-gray-100 ${
-                    selectedIndustries.length >= 3 && !isIndustrySelected
+                    selectedIndustryIds.length >= 3 && !isIndustrySelected
                       ? '!cursor-not-allowed opacity-50'
                       : ''
                   }`}
                   onClick={() => {
                     handleIndustrySelect(industry);
                   }}
-                  disabled={selectedIndustries.length >= 3 && !isIndustrySelected}
+                  disabled={selectedIndustryIds.length >= 3 && !isIndustrySelected}
                 >
                   <div className="flex items-center space-x-2">
                     <input
@@ -94,7 +88,7 @@ export const IndustryDropdown = ({
                       checked={isIndustrySelected}
                       readOnly
                       className="form-checkbox h-4 w-4 rounded-full border-primary text-primary transition duration-150 ease-in-out focus:ring-0"
-                      disabled={selectedIndustries.length >= 3 && !isIndustrySelected}
+                      disabled={selectedIndustryIds.length >= 3 && !isIndustrySelected}
                     />
                     <span className="flex-grow">{industry.name}</span>
                   </div>
@@ -105,23 +99,26 @@ export const IndustryDropdown = ({
         </div>
       )}
       <div className="mt-2 flex flex-wrap gap-2">
-        {selectedIndustries.map((industry) => (
-          <div
-            key={industry.id}
-            className="flex items-center space-x-2 rounded bg-primary-light-20 px-2 py-1 text-white"
-          >
-            <span>{industry.name}</span>
-            <button
-              type="button"
-              className="text-white"
-              onClick={() => {
-                onRemoveIndustry(industry);
-              }}
+        {selectedIndustryIds.map((id) => {
+          const industry = industries?.find((ind) => ind.id === id);
+          return (
+            <div
+              key={id}
+              className="flex items-center space-x-2 rounded bg-primary-light-20 px-2 py-1 text-white"
             >
-              <Close size={24} />
-            </button>
-          </div>
-        ))}
+              <span>{industry?.name}</span>
+              <button
+                type="button"
+                className="text-white"
+                onClick={() => {
+                  onRemoveIndustryId(id);
+                }}
+              >
+                <Close size={24} />
+              </button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

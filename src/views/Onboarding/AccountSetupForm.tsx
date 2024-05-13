@@ -10,7 +10,7 @@ import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useAuthStore } from '@/stores/authStore';
 import { BASE_API_URL } from '@/utils/constants';
 
-import type { User } from '@/stores/authStore';
+import type { User } from '@/types';
 interface AccountSetupFormProps {
   user: User;
   onNext: () => void;

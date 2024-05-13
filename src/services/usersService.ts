@@ -3,16 +3,8 @@ import { isAxiosError } from 'axios';
 import { usersApi } from '@/api/usersApi';
 import { ERROR_MESSAGES } from '@/utils/constants';
 
-import type { UserProfile } from '@/stores/authStore';
-import type { User } from '@/stores/authStore';
-
-export interface CreateUser {
-  email: string;
-  password: string;
-  emailVerified: boolean;
-  emailVerificationCode?: string | null;
-  verificationCodeExpires?: string | null;
-}
+import type { CreateUser, User } from '@/types';
+import type{ UserProfile } from '@/types';
 
 export interface UpdateUser {
   id: string;

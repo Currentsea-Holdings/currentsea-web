@@ -89,7 +89,7 @@ export const ViewProfile = () => {
 
         {userType === 'Creator' ? (
           <div className="flex w-full justify-center space-x-8 px-20 py-4">
-            {industries?.map(({ id, name, profile }) => (
+            {industries?.map(({ id, name }) => (
               <CSButton
                 key={id}
                 style={buttonStyle}

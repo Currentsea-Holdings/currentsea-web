@@ -4,17 +4,21 @@ import {
   uploadProfilePicture,
 } from '@/services/userProfileService';
 import { useAuthStore } from '@/stores/authStore';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import type {
   CreateUserProfile,
   UpdateUserProfile,
   UploadProfilePicture,
-} from '@/services/userProfileService';
-import type { UserProfile } from '@/stores/authStore';
+  User,
+  UserProfile,
+} from '@/types';
+import { userProfileApi } from '@/api/userProfileApi';
+import { usersApi } from '@/api/usersApi';
 
 export const useManageUserProfile = () => {
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
+  const user = useAuthStore((state) => state.user) as User;
 
   const { mutate: createUser, isPending: isCreating } = useMutation<
     UserProfile,
@@ -89,7 +93,7 @@ export const useManageUserProfile = () => {
     onSuccess?: () => void,
   ) => {
     if ('userId' in data) {
-      createUser(data as CreateUserProfile, {
+      createUser(data, {
         onSuccess: (profileData) => {
           handleProfileUpdate(profileData, profilePicture, onSuccess);
         },

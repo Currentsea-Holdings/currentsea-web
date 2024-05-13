@@ -1,33 +1,43 @@
-export type Account = {
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  state: string;
-  country: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+export * from '@/api/types';
+import type {
+  UpdateUserProfileDto,
+  CreateUserProfileDto,
+  UserProfile as IUserProfile,
+  Industry,
+  CreateUserDto,
+  RateDto,
+} from '@/api/types';
 
+export type UserType = 'Creator' | 'Agency' | 'Brand';
 export interface User {
-  followers: number;
-  following: number;
-  location: string;
-  description: string;
-  socialLinks: { [key: string]: string };
-  createdAt: Date;
-  updatedAt: Date;
+  id: string;
+  email: string;
+  userType?: UserType;
+  emailVerified: boolean;
 }
 
-export interface Creator extends User {
-  tags: string[];
-  pastClients: string[];
+export interface CreateUser extends CreateUserDto {}
+
+
+export type { CreateUserProfileDto as CreateUserProfile };
+
+
+export interface Rate extends RateDto {
+  type: string;
+  rate: string;
+  platform: string;
 }
 
-export interface Brand extends User {}
+export interface UserProfile extends Omit<IUserProfile, 'industries'> {
+  industries?: Industry[];
+  rates: Rate[];
+}
 
-export interface Agency extends User {
-  tags: string[];
-  pastClients: string[];
-  rates: number;
+export interface UpdateUserProfile extends UpdateUserProfileDto {
+  id: string;
+}
+
+export interface UploadProfilePicture {
+  id: string;
+  profilePicture?: File | null;
 }

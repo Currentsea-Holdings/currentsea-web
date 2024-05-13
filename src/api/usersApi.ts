@@ -1,8 +1,8 @@
 import { axiosClient as api } from '@/api/axiosClient';
 import { API_ENDPOINTS } from '@/utils/constants';
 
-import type { User, UserProfile } from '@/stores/authStore';
-import type { CreateUserDto, UpdateUserDto } from './types';
+import type { CreateUserDto, UpdateUserDto, User } from './types';
+import type { UserProfile } from '@/types';
 
 export const usersApi = {
   createUser: async (payload: CreateUserDto): Promise<User> => {

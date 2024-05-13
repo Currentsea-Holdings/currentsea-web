@@ -1,13 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
-import type { RegisterPayload, RegisterResponse } from '@/services/authService';
 import { register } from '@/services/authService';
-import { type User } from '@/stores/authStore';
+import type { AuthRequestDto, RegisterResponseDto, User } from '@/types';
 
 export const useRegister = () => {
   const { mutate, isSuccess, isPending, data, isError, error } = useMutation<
-    RegisterResponse,
+    RegisterResponseDto,
     Error,
-    RegisterPayload,
+    AuthRequestDto,
     User
   >({
     mutationFn: register,

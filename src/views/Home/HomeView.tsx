@@ -30,8 +30,9 @@ export const HomeView = ({ hasFullProfile }: HomeViewProps) => {
       const fetchProfileData = async () => {
         console.log('userType signed on:', userType);
         const profile = await getUserUserProfile(user.id);
-        const userProfileStatus = await userProfileApi.getUserProfileStatus(userProfile.id);
-        const userProfileComplete = userProfileStatus.profileCompleted;
+        // const userProfileStatus = await userProfileApi.getUserProfileStatus(userProfile.id);
+        // const userProfileComplete = userProfileStatus.profileCompleted;
+        const userProfileComplete = profile?.userProfileCompleted;
         console.log('has user completed frull profile?', userProfileComplete);
         if (profile && !userProfileComplete) {
           setIsProfileCreationStepsOpen(true);

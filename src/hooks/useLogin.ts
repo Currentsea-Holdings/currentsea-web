@@ -1,22 +1,21 @@
 import { useMutation } from '@tanstack/react-query';
-import type { LoginPayload, LoginResponse } from '@/services/authService';
 import { login } from '@/services/authService';
-import { useAuthStore, type User } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/authStore';
+import type { AuthRequestDto, LoginResponseDto, UserProfile } from '@/types';
 
 export const useLogin = () => {
   const setUser = useAuthStore((state) => state.setUser);
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
   const { mutate, isSuccess, isPending, data, isError, error } = useMutation<
-    LoginResponse,
+    LoginResponseDto,
     Error,
-    LoginPayload,
-    User
+    AuthRequestDto
   >({
     mutationFn: login,
-    onSuccess: ({ user, userProfile}) => {
+    onSuccess: ({ user, userProfile }) => {
       console.log('Login successful.');
       setUser(user);
-      setUserProfile(userProfile);
+      setUserProfile(userProfile as UserProfile);
     },
   });
 

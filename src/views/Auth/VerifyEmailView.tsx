@@ -1,18 +1,17 @@
-import { useState, useEffect, Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import type { KeyboardEvent } from 'react';
-import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
-import { CSButton } from '@/components';
-import logo from '@/assets/logo-title-black.svg';
+
 import loginBackground from '@/assets/images/authentication/login-background.png';
-import { useAuthStore } from '@/stores/authStore';
-import {
-  type ConfirmEmailPayload,
-  type ConfirmEmailResponse,
-  confirmEmail,
-} from '@/services/authService';
+import logo from '@/assets/logo-title-black.svg';
+import { CSButton } from '@/components';
 import { BackButton } from '@/components/BackButton';
+import { AuthSplitLayout } from '@/layouts/AuthSplitLayout';
+import { confirmEmail } from '@/services/authService';
+import { useAuthStore } from '@/stores/authStore';
+
+import type { KeyboardEvent } from 'react';
+import type { MessageResponseDto } from '@/types';
 
 type VerificationCodeFields = {
   [K in `code${number}`]: string;
@@ -22,7 +21,6 @@ export const VerifyEmailView = function () {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(loginBackground);
 
   const user = useAuthStore((state) => state.user);
-  const isEmailVerified = user?.emailVerified;
 
   return (
     <>
@@ -135,7 +133,7 @@ const Verify = function () {
 
   const onSubmit = async (data: VerificationCodeFields) => {
     const emailVerificationCode = Object.values(data).join('');
-    const result: ConfirmEmailResponse | undefined = await confirmEmail(
+    const result: MessageResponseDto | undefined = await confirmEmail(
       { emailVerificationCode },
       { email: user?.email },
     );

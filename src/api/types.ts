@@ -20,7 +20,7 @@
  * ---------------------------------------------------------------
  */
 
-export interface RegisterRequestDto {
+export interface AuthRequestDto {
   /** Must be a valid email address */
   email: string;
   /**
@@ -35,26 +35,87 @@ export interface RegisterResponseDto {
   user: {
     id: string;
     email: string;
+    emailVerified: boolean;
   };
   message: string;
 }
 
-export interface LoginRequestDto {
-  /**
-   * The user's email address
-   * @example "user@example.com"
-   */
+export interface User {
+  refreshToken?: string | null;
+  emailVerificationCode?: string | null;
+  /** @format date-time */
+  verificationCodeExpires?: string | null;
+  stripeCustomerId?: string | null;
+  paypalCustomerId?: string | null;
+  paypalTransactionId?: string | null;
+  paypalAccessToken?: string | null;
+  paypalRefreshToken?: string | null;
+  tiktokAccessToken?: string | null;
+  tiktokRefreshToken?: string | null;
+  youtubeAccessToken?: string | null;
+  youtubeRefreshToken?: string | null;
+  twitchAccessToken?: string | null;
+  twitchRefreshToken?: string | null;
+  facebookAccessToken?: string | null;
+  facebookRefreshToken?: string | null;
+  instagramAccessToken?: string | null;
+  instagramRefreshToken?: string | null;
+  pinterestAccessToken?: string | null;
+  pinterestRefreshToken?: string | null;
+  xAccessToken?: string | null;
+  xRefreshToken?: string | null;
+  linkedInToken?: string | null;
+  linkedInRefreshToken?: string | null;
   email: string;
-  /**
-   * The user's password
-   * @minLength 8
-   * @maxLength 24
-   * @example "SecurePassword123!"
-   */
   password: string;
+  userType?: 'Creator' | 'Agency' | 'Brand';
+  emailVerified: boolean;
+  snapchatAccessToken?: string;
+  snapchatRefreshToken?: string;
+  profile: UserProfile;
+  /** @default [] */
+  socialMediaLinks: object;
+  /** @default "b50fff99-ce39-4515-acd7-6d88d894ee75" */
+  id: string;
+  /** @default "2024-05-13T10:47:49.966Z" */
+  createdAt: object;
+  /** @default "2024-05-13T10:47:49.966Z" */
+  updatedAt: object;
 }
 
-export type UserProfilePartial = object;
+export type Collection = object;
+
+export interface UserProfile {
+  firstName?: string | null;
+  lastName?: string | null;
+  companyName?: string | null;
+  profilePicturePath?: string | null;
+  phoneNumber?: string | null;
+  shortBio?: string;
+  city: string;
+  state: string;
+  country: string;
+  userProfileCompleted: boolean;
+  user: User;
+  /** @default [] */
+  socialMediaLinks: object;
+  /** @default [] */
+  pictures: object;
+  /** @default [] */
+  videos: object;
+  /** @default [] */
+  rates: object;
+  /** @default [] */
+  showcaseContent: object;
+  /** @default [] */
+  industries: Collection;
+  /** @default "9b8a90f7-3c82-4b7b-82e2-a20a31588e6f" */
+  id: string;
+  /** @default "2024-05-13T10:47:49.965Z" */
+  createdAt: object;
+  /** @default "2024-05-13T10:47:49.965Z" */
+  updatedAt: object;
+}
 
 export interface LoginResponseDto {
   user: {
@@ -63,12 +124,25 @@ export interface LoginResponseDto {
     emailVerified: boolean;
     userType?: 'Creator' | 'Agency' | 'Brand';
   };
-  userProfile?: UserProfilePartial;
-  message: string;
+  userProfile?: UserProfile;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface ConfirmEmailDto {
   emailVerificationCode: string;
+}
+
+export interface ForgotPasswordRequestDto {
+  email: string;
+}
+
+export interface MessageResponseDto {
+  /**
+   * Descriptive message about the operation result.
+   * @example "Operation completed successfully"
+   */
+  message: string;
 }
 
 export interface ResetPasswordRequestDto {
@@ -106,93 +180,6 @@ export interface CreateUserDto {
   verificationCodeExpires?: string | null;
 }
 
-export interface User {
-  refreshToken?: string | null;
-  emailVerificationCode?: string | null;
-  /** @format date-time */
-  verificationCodeExpires?: string | null;
-  stripeCustomerId?: string | null;
-  paypalCustomerId?: string | null;
-  paypalTransactionId?: string | null;
-  paypalAccessToken?: string | null;
-  paypalRefreshToken?: string | null;
-  tiktokAccessToken?: string | null;
-  tiktokRefreshToken?: string | null;
-  youtubeAccessToken?: string | null;
-  youtubeRefreshToken?: string | null;
-  twitchAccessToken?: string | null;
-  twitchRefreshToken?: string | null;
-  facebookAccessToken?: string | null;
-  facebookRefreshToken?: string | null;
-  instagramAccessToken?: string | null;
-  instagramRefreshToken?: string | null;
-  pinterestAccessToken?: string | null;
-  pinterestRefreshToken?: string | null;
-  xAccessToken?: string | null;
-  xRefreshToken?: string | null;
-  linkedInToken?: string | null;
-  linkedInRefreshToken?: string | null;
-  /** @default "f035e52e-23a4-49e4-a217-6fb035cc446b" */
-  id: string;
-  email: string;
-  password: string;
-  userType?: 'Creator' | 'Agency' | 'Brand';
-  emailVerified: boolean;
-  /**
-   * @format date-time
-   * @default "2024-05-10T03:09:19.531Z"
-   */
-  createdAt: string;
-  /**
-   * @format date-time
-   * @default "2024-05-10T03:09:19.531Z"
-   */
-  updatedAt: string;
-  snapchatAccessToken?: string;
-  snapchatRefreshToken?: string;
-  profile: UserProfile;
-  /** @default [] */
-  socialMediaLinks: object;
-}
-
-export interface UserProfile {
-  firstName?: string | null;
-  lastName?: string | null;
-  companyName?: string | null;
-  profilePicturePath?: string | null;
-  phoneNumber?: string | null;
-  shortBio?: string;
-  /** @default "71be49d9-454a-41ea-a5f3-be64f831b626" */
-  id: string;
-  city: string;
-  state: string;
-  country: string;
-  userProfileCompleted: boolean;
-  /**
-   * @format date-time
-   * @default "2024-05-10T03:09:19.532Z"
-   */
-  createdAt: string;
-  /**
-   * @format date-time
-   * @default "2024-05-10T03:09:19.532Z"
-   */
-  updatedAt: string;
-  user: User;
-  /** @default [] */
-  socialMediaLinks: object;
-  /** @default [] */
-  pictures: object;
-  /** @default [] */
-  videos: object;
-  /** @default [] */
-  rates: object;
-  /** @default [] */
-  showcaseContent: object;
-  /** @default [] */
-  industries: object;
-}
-
 export interface UpdateUserDto {
   name?: string;
   /** Must be a valid email address */
@@ -210,6 +197,14 @@ export interface UpdateUserDto {
   emailVerified?: boolean;
 }
 
+export interface Industry {
+  name: string;
+  /** @default "3c774a07-c70a-4e4e-936c-2d937c49b71a" */
+  id: string;
+  /** @default [] */
+  userProfile: object;
+}
+
 export interface CreateUserProfileDto {
   shortBio?: string;
   city: string;
@@ -224,15 +219,12 @@ export interface CreateUserProfileDto {
 
 export type RateDto = object;
 
-export interface IndustryDto {
-  name: string;
-}
-
 export type ShowcaseContentDto = object;
 
 export interface UpdateUserProfileDto {
   rates?: RateDto[];
-  industries?: IndustryDto[];
+  /** List of industry IDs */
+  industryIds?: string[];
   content?: ShowcaseContentDto[];
   userProfileCompleted?: boolean;
 }
@@ -394,7 +386,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Register a new user account
      * @request POST:/auth/register
      */
-    authControllerRegister: (data: RegisterRequestDto, params: RequestParams = {}) =>
+    authControllerRegister: (data: AuthRequestDto, params: RequestParams = {}) =>
       this.request<RegisterResponseDto, any>({
         path: `/auth/register`,
         method: 'POST',
@@ -412,7 +404,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Authenticate a user
      * @request POST:/auth/login
      */
-    authControllerLogin: (data: LoginRequestDto, params: RequestParams = {}) =>
+    authControllerLogin: (data: AuthRequestDto, params: RequestParams = {}) =>
       this.request<LoginResponseDto, any>({
         path: `/auth/login`,
         method: 'POST',
@@ -511,12 +503,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Request password reset
      * @request POST:/auth/forgot-password
      */
-    authControllerForgotPassword: (data: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+    authControllerForgotPassword: (data: ForgotPasswordRequestDto, params: RequestParams = {}) =>
+      this.request<MessageResponseDto, any>({
         path: `/auth/forgot-password`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -529,11 +522,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/auth/reset-password
      */
     authControllerResetPassword: (data: ResetPasswordRequestDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<MessageResponseDto, any>({
         path: `/auth/reset-password`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
   };
@@ -645,59 +639,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/users/social-media/access-tokens
      */
     usersControllerGetSocialMediaConnections: (params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
+      this.request<Collection, any>({
         path: `/users/social-media/access-tokens`,
         method: 'POST',
         format: 'json',
         ...params,
       }),
   };
-  tiktok = {
+  industries = {
     /**
      * No description
      *
-     * @tags TikTok Integration
-     * @name TikTokApiControllerAuthorize
-     * @request POST:/tiktok/auth/api/authorize
+     * @tags Industries
+     * @name IndustryControllerGetAll
+     * @summary Get all industries
+     * @request GET:/industries
      */
-    tikTokApiControllerAuthorize: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/tiktok/auth/api/authorize`,
-        method: 'POST',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags TikTok Integration
-     * @name TikTokApiControllerCallback
-     * @request GET:/tiktok/auth/api/callback
-     */
-    tikTokApiControllerCallback: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/tiktok/auth/api/callback`,
+    industryControllerGetAll: (params: RequestParams = {}) =>
+      this.request<Industry, any>({
+        path: `/industries`,
         method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags TikTok Integration
-     * @name TikTokApiControllerGetUserInfo
-     * @request GET:/tiktok/auth/api/user-info
-     */
-    tikTokApiControllerGetUserInfo: (
-      query: {
-        accessToken: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<UserProfilePartial, any>({
-        path: `/tiktok/auth/api/user-info`,
-        method: 'GET',
-        query: query,
         format: 'json',
         ...params,
       }),
@@ -782,24 +743,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/instagram/auth/api/fetch-user-insights
      */
     instagramApiControllerFetchUserInsights: (params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
+      this.request<Collection, any>({
         path: `/instagram/auth/api/fetch-user-insights`,
         method: 'GET',
         format: 'json',
         ...params,
       }),
   };
-  youtube = {
+  linkedin = {
     /**
      * No description
      *
-     * @tags YouTube Integration
-     * @name YoutubeApiControllerAuthorize
-     * @request POST:/youtube/auth/api/authorize
+     * @name LinkedinApiControllerAuthorize
+     * @request POST:/linkedin/auth/api/authorize
      */
-    youtubeApiControllerAuthorize: (params: RequestParams = {}) =>
+    linkedinApiControllerAuthorize: (params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/youtube/auth/api/authorize`,
+        path: `/linkedin/auth/api/authorize`,
         method: 'POST',
         format: 'json',
         ...params,
@@ -808,11 +768,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags YouTube Integration
-     * @name YoutubeApiControllerCallback
-     * @request GET:/youtube/auth/api/callback
+     * @name LinkedinApiControllerCallback
+     * @request GET:/linkedin/auth/api/callback
      */
-    youtubeApiControllerCallback: (
+    linkedinApiControllerCallback: (
       query: {
         code: string;
         state: string;
@@ -820,7 +779,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/youtube/auth/api/callback`,
+        path: `/linkedin/auth/api/callback`,
         method: 'GET',
         query: query,
         ...params,
@@ -829,18 +788,107 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags YouTube Integration
-     * @name YoutubeApiControllerExchangeCode
-     * @request GET:/youtube/auth/api/exchange-code
+     * @name LinkedinApiControllerGetLifetimeOrganizationPageStatistics
+     * @request GET:/linkedin/auth/api/{organizationUrn}/lifetime
      */
-    youtubeApiControllerExchangeCode: (
+    linkedinApiControllerGetLifetimeOrganizationPageStatistics: (
+      organizationUrn: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<Collection, any>({
+        path: `/linkedin/auth/api/${organizationUrn}/lifetime`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name LinkedinApiControllerGetTimeBoundOrganizationPageStatistics
+     * @request GET:/linkedin/auth/api/{organizationUrn}/time-bound/{timeGranularityType}/{startTime}/{endTime}
+     */
+    linkedinApiControllerGetTimeBoundOrganizationPageStatistics: (
+      organizationUrn: string,
+      timeGranularityType: string,
+      startTime: number,
+      endTime: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<Collection, any>({
+        path: `/linkedin/auth/api/${organizationUrn}/time-bound/${timeGranularityType}/${startTime}/${endTime}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+  };
+  paypal = {
+    /**
+     * No description
+     *
+     * @tags Paypal Integration
+     * @name PaypalApiControllerAuthorize
+     * @request POST:/paypal/auth/api/authorize
+     */
+    paypalApiControllerAuthorize: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/paypal/auth/api/authorize`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Paypal Integration
+     * @name PaypalApiControllerCallback
+     * @request GET:/paypal/auth/api/callback
+     */
+    paypalApiControllerCallback: (
       query: {
         code: string;
+        state: string;
       },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/youtube/auth/api/exchange-code`,
+        path: `/paypal/auth/api/callback`,
+        method: 'GET',
+        query: query,
+        ...params,
+      }),
+  };
+  pinterest = {
+    /**
+     * No description
+     *
+     * @name PinterestApiControllerAuthorize
+     * @request POST:/pinterest/auth/api/authorize
+     */
+    pinterestApiControllerAuthorize: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/pinterest/auth/api/authorize`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name PinterestApiControllerCallback
+     * @request GET:/pinterest/auth/api/callback
+     */
+    pinterestApiControllerCallback: (
+      query: {
+        code: string;
+        state: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/pinterest/auth/api/callback`,
         method: 'GET',
         query: query,
         ...params,
@@ -849,13 +897,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags YouTube Integration
-     * @name YoutubeApiControllerHandleAccessToken
-     * @request POST:/youtube/auth/api/handle-access-token
+     * @name PinterestApiControllerHandleAccessToken
+     * @request POST:/pinterest/auth/api/handle-access-token
      */
-    youtubeApiControllerHandleAccessToken: (params: RequestParams = {}) =>
+    pinterestApiControllerHandleAccessToken: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/youtube/auth/api/handle-access-token`,
+        path: `/pinterest/auth/api/handle-access-token`,
         method: 'POST',
         ...params,
       }),
@@ -863,19 +910,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags YouTube Integration
-     * @name YoutubeApiControllerConnectYoutubeAccount
-     * @request POST:/youtube/auth/api/connect-youtube-account
+     * @name PinterestApiControllerConnectPinterestAccount
+     * @request POST:/pinterest/auth/api/connect-pinterest-account
      */
-    youtubeApiControllerConnectYoutubeAccount: (
+    pinterestApiControllerConnectPinterestAccount: (
       query: {
-        uuid: string;
+        email: string;
         code: string;
       },
       params: RequestParams = {},
     ) =>
       this.request<string, any>({
-        path: `/youtube/auth/api/connect-youtube-account`,
+        path: `/pinterest/auth/api/connect-pinterest-account`,
         method: 'POST',
         query: query,
         format: 'json',
@@ -885,19 +931,105 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags YouTube Integration
-     * @name YoutubeApiControllerFetchAnalytics
-     * @request GET:/youtube/auth/api/fetch-analytics
+     * @name PinterestApiControllerFetchUserInsights
+     * @request GET:/pinterest/auth/api/fetch-user-insights
      */
-    youtubeApiControllerFetchAnalytics: (
+    pinterestApiControllerFetchUserInsights: (params: RequestParams = {}) =>
+      this.request<Collection, any>({
+        path: `/pinterest/auth/api/fetch-user-insights`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+  };
+  snapchat = {
+    /**
+     * No description
+     *
+     * @tags Snapchat Integration
+     * @name SnapchatApiControllerAuthorize
+     * @request POST:/snapchat/auth/api/authorize
+     */
+    snapchatApiControllerAuthorize: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/snapchat/auth/api/authorize`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Snapchat Integration
+     * @name SnapchatApiControllerCallback
+     * @request GET:/snapchat/auth/api/callback
+     */
+    snapchatApiControllerCallback: (
       query: {
-        channelId: string;
+        code: string;
+        state: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<UserProfilePartial, any>({
-        path: `/youtube/auth/api/fetch-analytics`,
+      this.request<void, any>({
+        path: `/snapchat/auth/api/callback`,
         method: 'GET',
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Snapchat Integration
+     * @name SnapchatApiControllerExchangeCode
+     * @request GET:/snapchat/auth/api/exchange-code
+     */
+    snapchatApiControllerExchangeCode: (
+      query: {
+        code: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/snapchat/auth/api/exchange-code`,
+        method: 'GET',
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Snapchat Integration
+     * @name SnapchatApiControllerHandleAccessToken
+     * @request POST:/snapchat/auth/api/handle-access-token
+     */
+    snapchatApiControllerHandleAccessToken: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/snapchat/auth/api/handle-access-token`,
+        method: 'POST',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Snapchat Integration
+     * @name SnapchatApiControllerConnectSnapchatAccount
+     * @request POST:/snapchat/auth/api/connect-snapchat-account
+     */
+    snapchatApiControllerConnectSnapchatAccount: (
+      query: {
+        email: string;
+        code: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<string, any>({
+        path: `/snapchat/auth/api/connect-snapchat-account`,
+        method: 'POST',
         query: query,
         format: 'json',
         ...params,
@@ -906,14 +1038,91 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags YouTube Integration
-     * @name YoutubeApiControllerFetchChannelData
-     * @request GET:/youtube/auth/api/fetch-channel-analytics
+     * @tags Snapchat Integration
+     * @name SnapchatApiControllerFetchUserData
+     * @request GET:/snapchat/auth/api/fetch-user-data
      */
-    youtubeApiControllerFetchChannelData: (params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
-        path: `/youtube/auth/api/fetch-channel-analytics`,
+    snapchatApiControllerFetchUserData: (params: RequestParams = {}) =>
+      this.request<Collection, any>({
+        path: `/snapchat/auth/api/fetch-user-data`,
         method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+  };
+  stripe = {
+    /**
+     * No description
+     *
+     * @name StripeApiControllerCreatePaymentIntent
+     * @request POST:/stripe/create-payment-intent
+     */
+    stripeApiControllerCreatePaymentIntent: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/stripe/create-payment-intent`,
+        method: 'POST',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name StripeApiControllerPayIntent
+     * @request POST:/stripe/pay-intent
+     */
+    stripeApiControllerPayIntent: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/stripe/pay-intent`,
+        method: 'POST',
+        ...params,
+      }),
+  };
+  tiktok = {
+    /**
+     * No description
+     *
+     * @tags TikTok Integration
+     * @name TikTokApiControllerAuthorize
+     * @request POST:/tiktok/auth/api/authorize
+     */
+    tikTokApiControllerAuthorize: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/tiktok/auth/api/authorize`,
+        method: 'POST',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TikTok Integration
+     * @name TikTokApiControllerCallback
+     * @request GET:/tiktok/auth/api/callback
+     */
+    tikTokApiControllerCallback: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/tiktok/auth/api/callback`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TikTok Integration
+     * @name TikTokApiControllerGetUserInfo
+     * @request GET:/tiktok/auth/api/user-info
+     */
+    tikTokApiControllerGetUserInfo: (
+      query: {
+        accessToken: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Collection, any>({
+        path: `/tiktok/auth/api/user-info`,
+        method: 'GET',
+        query: query,
         format: 'json',
         ...params,
       }),
@@ -1024,7 +1233,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<UserProfilePartial, any>({
+      this.request<Collection, any>({
         path: `/twitch/auth/api/fetch-analytics`,
         method: 'GET',
         query: query,
@@ -1040,396 +1249,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/twitch/auth/api/fetch-channel-analytics
      */
     twitchApiControllerFetchChannelAnalytics: (params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
+      this.request<Collection, any>({
         path: `/twitch/auth/api/fetch-channel-analytics`,
         method: 'GET',
         format: 'json',
-        ...params,
-      }),
-  };
-  snapchat = {
-    /**
-     * No description
-     *
-     * @tags Snapchat Integration
-     * @name SnapchatApiControllerAuthorize
-     * @request POST:/snapchat/auth/api/authorize
-     */
-    snapchatApiControllerAuthorize: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/snapchat/auth/api/authorize`,
-        method: 'POST',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Snapchat Integration
-     * @name SnapchatApiControllerCallback
-     * @request GET:/snapchat/auth/api/callback
-     */
-    snapchatApiControllerCallback: (
-      query: {
-        code: string;
-        state: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/snapchat/auth/api/callback`,
-        method: 'GET',
-        query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Snapchat Integration
-     * @name SnapchatApiControllerExchangeCode
-     * @request GET:/snapchat/auth/api/exchange-code
-     */
-    snapchatApiControllerExchangeCode: (
-      query: {
-        code: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/snapchat/auth/api/exchange-code`,
-        method: 'GET',
-        query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Snapchat Integration
-     * @name SnapchatApiControllerHandleAccessToken
-     * @request POST:/snapchat/auth/api/handle-access-token
-     */
-    snapchatApiControllerHandleAccessToken: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/snapchat/auth/api/handle-access-token`,
-        method: 'POST',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Snapchat Integration
-     * @name SnapchatApiControllerConnectSnapchatAccount
-     * @request POST:/snapchat/auth/api/connect-snapchat-account
-     */
-    snapchatApiControllerConnectSnapchatAccount: (
-      query: {
-        email: string;
-        code: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<string, any>({
-        path: `/snapchat/auth/api/connect-snapchat-account`,
-        method: 'POST',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Snapchat Integration
-     * @name SnapchatApiControllerFetchUserData
-     * @request GET:/snapchat/auth/api/fetch-user-data
-     */
-    snapchatApiControllerFetchUserData: (params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
-        path: `/snapchat/auth/api/fetch-user-data`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-  };
-  xTwitter = {
-    /**
-     * No description
-     *
-     * @tags X/Twitter Integration
-     * @name XTwitterApiControllerAuthorize
-     * @request POST:/x-twitter/auth/api/authorize
-     */
-    xTwitterApiControllerAuthorize: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/x-twitter/auth/api/authorize`,
-        method: 'POST',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags X/Twitter Integration
-     * @name XTwitterApiControllerCallback
-     * @request GET:/x-twitter/auth/api/callback
-     */
-    xTwitterApiControllerCallback: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/x-twitter/auth/api/callback`,
-        method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags X/Twitter Integration
-     * @name XTwitterApiControllerGetUserMetrics
-     * @request GET:/x-twitter/auth/api/user/{id}/metrics
-     */
-    xTwitterApiControllerGetUserMetrics: (id: string, params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
-        path: `/x-twitter/auth/api/user/${id}/metrics`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags X/Twitter Integration
-     * @name XTwitterApiControllerGetTweetMetrics
-     * @request GET:/x-twitter/auth/api/tweet/{id}/metrics
-     */
-    xTwitterApiControllerGetTweetMetrics: (id: string, params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
-        path: `/x-twitter/auth/api/tweet/${id}/metrics`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-  };
-  pinterest = {
-    /**
-     * No description
-     *
-     * @name PinterestApiControllerAuthorize
-     * @request POST:/pinterest/auth/api/authorize
-     */
-    pinterestApiControllerAuthorize: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/pinterest/auth/api/authorize`,
-        method: 'POST',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name PinterestApiControllerCallback
-     * @request GET:/pinterest/auth/api/callback
-     */
-    pinterestApiControllerCallback: (
-      query: {
-        code: string;
-        state: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/pinterest/auth/api/callback`,
-        method: 'GET',
-        query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name PinterestApiControllerHandleAccessToken
-     * @request POST:/pinterest/auth/api/handle-access-token
-     */
-    pinterestApiControllerHandleAccessToken: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/pinterest/auth/api/handle-access-token`,
-        method: 'POST',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name PinterestApiControllerConnectPinterestAccount
-     * @request POST:/pinterest/auth/api/connect-pinterest-account
-     */
-    pinterestApiControllerConnectPinterestAccount: (
-      query: {
-        email: string;
-        code: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<string, any>({
-        path: `/pinterest/auth/api/connect-pinterest-account`,
-        method: 'POST',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name PinterestApiControllerFetchUserInsights
-     * @request GET:/pinterest/auth/api/fetch-user-insights
-     */
-    pinterestApiControllerFetchUserInsights: (params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
-        path: `/pinterest/auth/api/fetch-user-insights`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-  };
-  linkedin = {
-    /**
-     * No description
-     *
-     * @name LinkedinApiControllerAuthorize
-     * @request POST:/linkedin/auth/api/authorize
-     */
-    linkedinApiControllerAuthorize: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/linkedin/auth/api/authorize`,
-        method: 'POST',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name LinkedinApiControllerCallback
-     * @request GET:/linkedin/auth/api/callback
-     */
-    linkedinApiControllerCallback: (
-      query: {
-        code: string;
-        state: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/linkedin/auth/api/callback`,
-        method: 'GET',
-        query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name LinkedinApiControllerGetLifetimeOrganizationPageStatistics
-     * @request GET:/linkedin/auth/api/{organizationUrn}/lifetime
-     */
-    linkedinApiControllerGetLifetimeOrganizationPageStatistics: (
-      organizationUrn: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<UserProfilePartial, any>({
-        path: `/linkedin/auth/api/${organizationUrn}/lifetime`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name LinkedinApiControllerGetTimeBoundOrganizationPageStatistics
-     * @request GET:/linkedin/auth/api/{organizationUrn}/time-bound/{timeGranularityType}/{startTime}/{endTime}
-     */
-    linkedinApiControllerGetTimeBoundOrganizationPageStatistics: (
-      organizationUrn: string,
-      timeGranularityType: string,
-      startTime: number,
-      endTime: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<UserProfilePartial, any>({
-        path: `/linkedin/auth/api/${organizationUrn}/time-bound/${timeGranularityType}/${startTime}/${endTime}`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-  };
-  stripe = {
-    /**
-     * No description
-     *
-     * @name StripeApiControllerCreatePaymentIntent
-     * @request POST:/stripe/create-payment-intent
-     */
-    stripeApiControllerCreatePaymentIntent: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/stripe/create-payment-intent`,
-        method: 'POST',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name StripeApiControllerPayIntent
-     * @request POST:/stripe/pay-intent
-     */
-    stripeApiControllerPayIntent: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/stripe/pay-intent`,
-        method: 'POST',
-        ...params,
-      }),
-  };
-  paypal = {
-    /**
-     * No description
-     *
-     * @tags Paypal Integration
-     * @name PaypalApiControllerAuthorize
-     * @request POST:/paypal/auth/api/authorize
-     */
-    paypalApiControllerAuthorize: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/paypal/auth/api/authorize`,
-        method: 'POST',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Paypal Integration
-     * @name PaypalApiControllerCallback
-     * @request GET:/paypal/auth/api/callback
-     */
-    paypalApiControllerCallback: (
-      query: {
-        code: string;
-        state: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/paypal/auth/api/callback`,
-        method: 'GET',
-        query: query,
         ...params,
       }),
   };
@@ -1491,11 +1314,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags User Profile
-     * @name UserProfileControllerUpdate2
+     * @name UserProfileControllerUpdate
      * @summary Update a User Profile's information
      * @request PATCH:/user-profile/{id}
      */
-    userProfileControllerUpdate2: (
+    userProfileControllerUpdate: (
       id: string,
       data: UpdateUserProfileDto,
       params: RequestParams = {},
@@ -1609,7 +1432,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/user-profile/{id}/set-user-profile-status
      */
     userProfileControllerSetUserProfileStatus: (id: string, params: RequestParams = {}) =>
-      this.request<UserProfilePartial, any>({
+      this.request<Collection, any>({
         path: `/user-profile/${id}/set-user-profile-status`,
         method: 'PUT',
         format: 'json',
@@ -1627,6 +1450,194 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userProfileControllerGetUserProfileStatus: (id: string, params: RequestParams = {}) =>
       this.request<boolean, any>({
         path: `/user-profile/${id}/get-user-profile-status`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+  };
+  youtube = {
+    /**
+     * No description
+     *
+     * @tags YouTube Integration
+     * @name YoutubeApiControllerAuthorize
+     * @request POST:/youtube/auth/api/authorize
+     */
+    youtubeApiControllerAuthorize: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/youtube/auth/api/authorize`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags YouTube Integration
+     * @name YoutubeApiControllerCallback
+     * @request GET:/youtube/auth/api/callback
+     */
+    youtubeApiControllerCallback: (
+      query: {
+        code: string;
+        state: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/youtube/auth/api/callback`,
+        method: 'GET',
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags YouTube Integration
+     * @name YoutubeApiControllerExchangeCode
+     * @request GET:/youtube/auth/api/exchange-code
+     */
+    youtubeApiControllerExchangeCode: (
+      query: {
+        code: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/youtube/auth/api/exchange-code`,
+        method: 'GET',
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags YouTube Integration
+     * @name YoutubeApiControllerHandleAccessToken
+     * @request POST:/youtube/auth/api/handle-access-token
+     */
+    youtubeApiControllerHandleAccessToken: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/youtube/auth/api/handle-access-token`,
+        method: 'POST',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags YouTube Integration
+     * @name YoutubeApiControllerConnectYoutubeAccount
+     * @request POST:/youtube/auth/api/connect-youtube-account
+     */
+    youtubeApiControllerConnectYoutubeAccount: (
+      query: {
+        uuid: string;
+        code: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<string, any>({
+        path: `/youtube/auth/api/connect-youtube-account`,
+        method: 'POST',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags YouTube Integration
+     * @name YoutubeApiControllerFetchAnalytics
+     * @request GET:/youtube/auth/api/fetch-analytics
+     */
+    youtubeApiControllerFetchAnalytics: (
+      query: {
+        channelId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Collection, any>({
+        path: `/youtube/auth/api/fetch-analytics`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags YouTube Integration
+     * @name YoutubeApiControllerFetchChannelData
+     * @request GET:/youtube/auth/api/fetch-channel-analytics
+     */
+    youtubeApiControllerFetchChannelData: (params: RequestParams = {}) =>
+      this.request<Collection, any>({
+        path: `/youtube/auth/api/fetch-channel-analytics`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+  };
+  xTwitter = {
+    /**
+     * No description
+     *
+     * @tags X/Twitter Integration
+     * @name XTwitterApiControllerAuthorize
+     * @request POST:/x-twitter/auth/api/authorize
+     */
+    xTwitterApiControllerAuthorize: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/x-twitter/auth/api/authorize`,
+        method: 'POST',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags X/Twitter Integration
+     * @name XTwitterApiControllerCallback
+     * @request GET:/x-twitter/auth/api/callback
+     */
+    xTwitterApiControllerCallback: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/x-twitter/auth/api/callback`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags X/Twitter Integration
+     * @name XTwitterApiControllerGetUserMetrics
+     * @request GET:/x-twitter/auth/api/user/{id}/metrics
+     */
+    xTwitterApiControllerGetUserMetrics: (id: string, params: RequestParams = {}) =>
+      this.request<Collection, any>({
+        path: `/x-twitter/auth/api/user/${id}/metrics`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags X/Twitter Integration
+     * @name XTwitterApiControllerGetTweetMetrics
+     * @request GET:/x-twitter/auth/api/tweet/{id}/metrics
+     */
+    xTwitterApiControllerGetTweetMetrics: (id: string, params: RequestParams = {}) =>
+      this.request<Collection, any>({
+        path: `/x-twitter/auth/api/tweet/${id}/metrics`,
         method: 'GET',
         format: 'json',
         ...params,

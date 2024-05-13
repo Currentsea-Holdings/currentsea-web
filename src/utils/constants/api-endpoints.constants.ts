@@ -7,6 +7,7 @@ export const API_ENDPOINTS = {
   USERS: '/users',
   ALL_ACCESS_TOKENS: 'users/social-media/access-tokens',
   USER_PROFILE: '/user-profile',
+  INDUSTRIES: '/industries',
   TIKTOK_AUTHORIZE: '/tiktok/auth/api/authorize',
   // TIKTOK_EXCHANGE_CODE: '/tiktok/auth/api/exchange-code',
   // TIKTOK_HANDLE_ACCESS_TOKEN: '/tiktok/auth/api/handle-access-token',
