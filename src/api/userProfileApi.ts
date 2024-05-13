@@ -1,8 +1,8 @@
 import { axiosClient as api } from '@/api/axiosClient';
 import { API_ENDPOINTS } from '@/utils/constants';
 
-import type { UserProfile } from '@/stores/authStore';
-import type { UpdateUserProfileDto } from './types';
+import type { UpdateUserProfileDto } from '@/api/types';
+import type { UserProfile } from '@/types';
 export interface GetShowCaseContentResponse {
   showcaseContent: string[];
 }

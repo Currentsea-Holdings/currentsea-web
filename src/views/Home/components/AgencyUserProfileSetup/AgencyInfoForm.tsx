@@ -8,14 +8,11 @@ import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useAuthStore } from '@/stores/authStore';
 
-import type { UserProfile } from '@/stores/authStore';
-interface Industry {
-  id: number;
-  name: string;
-}
+import type { UserProfile } from '@/types';
+
 interface FormFields {
   shortBio: string;
-  industries: Industry[];
+  industryIds: string[];
   website: string;
 }
 
@@ -32,7 +29,7 @@ export const AgencyInfoForm = () => {
   } = useForm<FormFields>({
     defaultValues: {
       shortBio: '',
-      industries: [],
+      industryIds: userProfile.industries?.map((industry) => industry.id) ?? [],
       website: '',
     },
   });
@@ -75,7 +72,7 @@ export const AgencyInfoForm = () => {
             <div className="flex flex-col space-y-4">
               <div className="space-y-4">
                 <label
-                  htmlFor="industries"
+                  htmlFor="industryIds"
                   className="flex text-sm font-medium text-gray-700"
                 >
                   Select your industry
@@ -91,16 +88,16 @@ export const AgencyInfoForm = () => {
                   </Tooltip>
                 </label>
                 <Controller
-                  name="industries"
+                  name="industryIds"
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <IndustryDropdown
-                      selectedIndustries={value}
-                      onSelectIndustry={(industry) => {
-                        onChange([...value, industry]);
+                      selectedIndustryIds={value}
+                      onSelectIndustryId={(industryId) => {
+                        onChange([...value, industryId]);
                       }}
-                      onRemoveIndustry={(industry) => {
-                        onChange(value.filter((ind) => ind.id !== industry.id));
+                      onRemoveIndustryId={(industryId) => {
+                        onChange(value.filter((id) => id !== industryId));
                       }}
                     />
                   )}

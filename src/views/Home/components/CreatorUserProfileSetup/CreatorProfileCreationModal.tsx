@@ -1,10 +1,6 @@
 import { CSButton } from '@/components';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { type User } from '@/stores/authStore';
 import { Modal } from 'flowbite-react';
-import { InfoCircle } from 'flowbite-react-icons/outline';
-import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import tooltip from '@/assets/tooltip.svg';
 
 const CreatorProfileCreationModal = () => {

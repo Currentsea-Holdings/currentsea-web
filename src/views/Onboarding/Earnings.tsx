@@ -1,4 +1,4 @@
-import type { User } from '@/stores/authStore';
+import type { User } from '@/types';
 import { ArrowRight } from 'flowbite-react-icons/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';

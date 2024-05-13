@@ -14,7 +14,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useMutation } from '@tanstack/react-query';
 
 import type { FormEvent } from 'react';
-import type { User } from '@/stores/authStore';
+import type { User } from '@/types';
 
 const cardData: { type: 'Agency' | 'Brand' | 'Creator'; img: string }[] = [
   { type: 'Agency', img: agencyImg },

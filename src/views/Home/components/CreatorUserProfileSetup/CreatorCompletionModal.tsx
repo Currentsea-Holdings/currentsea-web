@@ -1,6 +1,6 @@
 import { CSButton } from '@/components';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { type User } from '@/stores/authStore';
+import type { UserProfile } from '@/types';
 import { Modal } from 'flowbite-react';
 import { BadgeCheck } from 'flowbite-react-icons/outline';
 import { useNavigate } from 'react-router-dom';

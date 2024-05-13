@@ -4,62 +4,9 @@ import { serialize } from 'object-to-formdata';
 import { userProfileApi } from '@/api/userProfileApi';
 import { ERROR_MESSAGES } from '@/utils/constants';
 
-import type { UserProfile } from '@/stores/authStore';
+import type { UserProfile, CreateUserProfileDto, UpdateUserProfile, UploadProfilePicture } from '@/types';
 
-export interface RateDetail {
-  platform: string;
-  type: string;
-  rate: string;
-}
-
-export interface ContentDetail {
-  file: File[];
-}
-
-export interface CreateUserProfile {
-  userId: string;
-  firstName?: string;
-  lastName?: string;
-  companyName?: string;
-  phoneNumber?: string;
-  profilePicture?: File | null;
-  shortBio?: string;
-  city: string;
-  state: string;
-  rates?: RateDetail[];
-  country: string;
-}
-
-interface Industry {
-  id: number;
-  name: string;
-}
-
-export interface UpdateUserProfile {
-  id: string;
-  userId?: string;
-  firstName?: string;
-  lastName?: string;
-  companyName?: string;
-  phoneNumber?: string;
-  shortBio?: string;
-  city?: string;
-  state?: string;
-  industries?: Industry[];
-  rates?: RateDetail[];
-  emailInvites?: string[];
-  showcaseContent?: ContentDetail[];
-  hasFullProfile?: boolean;
-  country?: string;
-  userProfileCompleted?: boolean;
-}
-
-export interface UploadProfilePicture {
-  id: string;
-  profilePicture?: File | null;
-}
-
-export const createUserProfile = async (data: CreateUserProfile): Promise<UserProfile> => {
+export const createUserProfile = async (data: CreateUserProfileDto): Promise<UserProfile> => {
   try {
     const formData = serialize(data);
 

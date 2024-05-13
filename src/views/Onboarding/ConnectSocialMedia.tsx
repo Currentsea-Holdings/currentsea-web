@@ -16,7 +16,7 @@ import { BackButton } from '@/components/BackButton';
 
 import { SocialMediaConnectContainer } from './components/SocialMediaConnectContainer';
 
-import type { User } from '@/stores/authStore';
+import type { User } from '@/types';
 import type { ConnectedAccessTokenTypes } from '@/api/platforms/accessTokensApi';
 
 interface ConnectSocialMediaProps {

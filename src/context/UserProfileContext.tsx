@@ -1,6 +1,7 @@
 import { userProfileApi } from '@/api/userProfileApi';
-import { useAuthStore, type User } from '@/stores/authStore';
-import { type ReactNode, createContext, useContext, useState, useEffect } from 'react';
+import { useAuthStore } from '@/stores/authStore';
+import type { User } from '@/types';
+import { type ReactNode, createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface UserProfileContextType {

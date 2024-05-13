@@ -1,5 +1,6 @@
 import 'react-international-phone/style.css';
 
+import { Textarea } from 'flowbite-react';
 import { Controller, set, useForm } from 'react-hook-form';
 
 import { IndustryDropdown } from '@/components/inputs/IndustryDropdown';
@@ -8,22 +9,15 @@ import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useAuthStore } from '@/stores/authStore';
 import { BASE_API_URL } from '@/utils/constants';
 
-import type { User } from '@/stores/authStore';
-import type { UserProfile } from '@/stores/authStore';
-import { Textarea } from 'flowbite-react';
+import type { UserProfile } from '@/types';
 
 interface EditProfileFormProps {
   toggleEdit: () => void;
 }
 
-interface Industry {
-  id: number;
-  name: string;
-}
-
 interface FormFields {
   shortBio: string;
-  industries: Industry[];
+  industryIds: string[];
   lastName: string;
   phoneNumber: string;
   city: string;
@@ -40,7 +34,7 @@ export const EditProfileForm = ({ toggleEdit }: EditProfileFormProps) => {
     defaultValues: {
       profilePicture: null,
       shortBio: userProfile.shortBio ?? '',
-      industries: userProfile.industries ?? [],
+      industryIds: userProfile.industries?.map((industry) => industry.id) ?? [],
     },
   });
 
@@ -106,16 +100,16 @@ export const EditProfileForm = ({ toggleEdit }: EditProfileFormProps) => {
               Select your industry
             </label>
             <Controller
-              name="industries"
+              name="industryIds"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <IndustryDropdown
-                  selectedIndustries={value}
-                  onSelectIndustry={(industry) => {
-                    onChange([...value, industry]);
+                  selectedIndustryIds={value}
+                  onSelectIndustryId={(industryId) => {
+                    onChange([...value, industryId]);
                   }}
-                  onRemoveIndustry={(industry) => {
-                    onChange(value.filter((ind) => ind.id !== industry.id));
+                  onRemoveIndustryId={(industryId) => {
+                    onChange(value.filter((id) => id !== industryId));
                   }}
                 />
               )}

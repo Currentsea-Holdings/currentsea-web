@@ -1,7 +1,7 @@
 import { Modal } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import CreatorInfoForm from './CreatorInfoForm';
-import { type User, useAuthStore } from '@/stores/authStore';
+
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import ProfileCreationModal from './CreatorProfileCreationModal';
 import { useUserProfile } from '@/hooks/useUserProfile';
