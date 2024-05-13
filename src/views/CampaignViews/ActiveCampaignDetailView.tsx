@@ -9,11 +9,19 @@ import { CampaignTaskCard } from '../Home/components/CampaignComponents/Campaign
 import { userProfileApi } from '@/api/userProfileApi';
 import { useAuthStore } from '@/stores/authStore';
 import { useEffect, useState } from 'react';
+import { CampaignCreatorsListCard } from '../Home/components/CampaignComponents/CampaignCreatorsListCard';
+import keeta from '@/assets/keeta.jpeg';
+import tyla from '@/assets/tyla.jpeg';
+import mrbeast from '@/assets/mrbeast.webp';
+import loganpaul from '@/assets/loganpaulboxing.jpeg';
+import caleb from '@/assets/caleb.jpg';
+
 
 const ActiveCampaignDetailView = () => {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const userProfile = useAuthStore((state) => state.userProfile);
+  const userType = useAuthStore((state) => state.user?.userType);
   const [campaignDetails, setCampaignDetails] = useState<object>({});
   const { id } = useParams();
 
@@ -31,6 +39,7 @@ const ActiveCampaignDetailView = () => {
   useEffect(() => {
     if (userProfile && user) {
       const fetchProfileActiveCampaigns = async () => {
+        console.log('userType:', userType);
         const campaignDetails = await userProfileApi.getUserProfileActiveCampaignById(
           userProfile.id,
         );
@@ -93,8 +102,32 @@ const ActiveCampaignDetailView = () => {
           linkUrl={cardPlaceholders.linkUrl}
         />
       </div>
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+        <CampaignTaskCard
+          title="My Tasks"
+          className="mr-2 flex-1"
+        />
+        {userType === 'Agency' && (
+          <CampaignTaskCard
+            title="Creator Tasks"
+            className="flex-1"
+          />
+        )}
+      </div>
       <div>
-        <CampaignTaskCard title="My Tasks" />
+        {userType === 'Agency' && (
+          <CampaignCreatorsListCard
+            title="Creators"
+            creators={[
+              { name: 'Keeta Hill', imageSrc: keeta },
+              { name: 'Tyla', imageSrc: tyla },
+              { name: 'Mr. Beast', imageSrc: mrbeast },
+              { name: 'Logan Paul', imageSrc: loganpaul },
+              { name: 'Caleb', imageSrc: caleb },
+            ]}
+            className="my-custom-class"
+          />
+        )}
       </div>
       <div>
         <CampaignDetailsCard {...campaignDetails} />

@@ -14,9 +14,10 @@ interface TasksProps {
     title: string;
   }[];
   emptyStateImg?: string;
+  className?: string;
 }
 
-export const CampaignTaskCard = ({ title, tasks = [], emptyStateImg }: TasksProps) => {
+export const CampaignTaskCard = ({ title, tasks = [], emptyStateImg, className }: TasksProps) => {
   const carouselButtonStyles = css`
     .carouselLeftButton button,
     .carouselRightButton button {
@@ -68,7 +69,7 @@ export const CampaignTaskCard = ({ title, tasks = [], emptyStateImg }: TasksProp
   return (
     <CSCard
       title={title}
-      className="col-span-2"
+      className={`col-span-2 ${className}`}
     >
       <div className="-mx-4 max-h-[304px] min-h-[20px] sm:h-64 xl:h-80 2xl:h-96">
         {tasks.length > 0 ? (
