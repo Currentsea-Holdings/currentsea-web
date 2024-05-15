@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { userProfileApi } from '@/api/userProfileApi';
 import FullCampaignCard from '../Home/components/CampaignComponents/FullCampaignCard';
 
-const ActiveCampaignsView = () => {
+export const ActiveCampaignsView = () => {
   const user = useAuthStore((state) => state.user);
   const userProfile = useAuthStore((state) => state.userProfile);
   // const [campaigns, setCampaigns] = useState<Array[]>([]);
@@ -66,4 +66,3 @@ const ActiveCampaignsView = () => {
   );
 };
 
-export default ActiveCampaignsView;
