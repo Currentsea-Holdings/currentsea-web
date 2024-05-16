@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { userProfileApi } from '@/api/userProfileApi';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -13,6 +13,8 @@ import { AgencyDashboard } from './dashboards/AgencyDashboard';
 import { BrandDashboard } from './dashboards/BrandDashboard';
 import { CreatorDashboard } from './dashboards/CreatorDashboard';
 
+import { CSAlert } from '@/components/alerts/CSAlert.tsx';
+
 interface HomeViewProps {
   hasFullProfile?: boolean;
 }
@@ -23,6 +25,8 @@ export const HomeView = ({ hasFullProfile }: HomeViewProps) => {
   const userType = useAuthStore((state) => state.user?.userType);
   const { profileCompleted, isProfileCreationStepsOpen, setIsProfileCreationStepsOpen } =
     useUserProfile();
+  // const [showAlert, setShowAlert] = useState(true);
+  // const [alertType, setAlertType] = useState('success');
 
   // Will check for current user that's logged in but will check it against hasFullUserProfile submitted
   useEffect(() => {
