@@ -15,6 +15,7 @@ module.exports = {
     'plugin:storybook/recommended',
     'plugin:jsx-a11y/recommended',
     'prettier',
+    'plugin:@typescript-eslint/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -25,21 +26,19 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'react', 'react-refresh'],
   rules: {
+    '@typescript-eslint/no-unsafe-return': 'error',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react-refresh/only-export-components': 'warn',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
-    "@typescript-eslint/no-unsafe-call": "off",
+    '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-misused-promises': [
       'error', // or 'warn'
       { checksVoidReturn: false },
     ],
     '@typescript-eslint/consistent-type-imports': 'error',
-    '@typescript-eslint/restrict-template-expressions': [
-      'error', 
-      { allowNumber: true }
-    ],
+    '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
   },
   root: true,
   settings: {
@@ -63,5 +62,10 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['src/stories/**/*', 'src/**/*.stories.tsx', 'vite.config.ts', "appendTypesComment.mjs"],
+  ignorePatterns: [
+    'src/stories/**/*',
+    'src/**/*.stories.tsx',
+    'vite.config.ts',
+    'appendTypesComment.mjs',
+  ],
 };
