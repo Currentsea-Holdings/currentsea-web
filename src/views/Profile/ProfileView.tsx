@@ -1,31 +1,47 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { CSButton } from '@/components';
 import { DashboardLayout } from '@/layouts';
+import { useAuthStore } from '@/stores/authStore';
 
 import { EditProfileForm } from './components/EditProfileForm';
 import { ViewProfile } from './components/ViewProfile';
 
+import type { UpdateUserProfile, UserProfile } from '@/types';
+import { useManageUserProfile } from '@/hooks/useManageUserProfile';
+
 export const ProfileView = () => {
-  const buttonStyle = {
-    padding: '0px 6px',
-  };
-
   const [isEditing, setIsEditing] = useState(false);
+  const userProfile = useAuthStore((state) => state.userProfile) as UserProfile;
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const toggleEdit = () => {
+  const { saveUserProfile, isProcessing } = useManageUserProfile();
+
+  const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
 
+  const handleSave = (newProfileData: UpdateUserProfile, profilePicture: File | null) => {
+    saveUserProfile(newProfileData, profilePicture, () => {
+      setIsEditing(false);
+    });
+  };
+
   const title = isEditing ? 'Edit Profile' : 'Profile';
+
+  const buttonStyle = {
+    padding: '0px 6px',
+  };
 
   const buttons = isEditing ? (
     <>
       <CSButton
         style={buttonStyle}
         className="rounded-half mr-2 bg-primary font-semibold text-white"
-        onClick={toggleEdit}
-        disabled
+        onClick={() => {
+          formRef.current?.requestSubmit();
+        }}
+        disabled={isProcessing}
       >
         Save
       </CSButton>
@@ -33,7 +49,7 @@ export const ProfileView = () => {
         style={buttonStyle}
         outline
         className="rounded-half font-semibold text-dark"
-        onClick={toggleEdit}
+        onClick={handleEditToggle}
       >
         Cancel
       </CSButton>
@@ -42,13 +58,21 @@ export const ProfileView = () => {
     <CSButton
       style={buttonStyle}
       className="rounded-half bg-primary font-semibold text-white"
-      onClick={toggleEdit}
+      onClick={handleEditToggle}
     >
       Edit profile
     </CSButton>
   );
 
-  const profileContent = isEditing ? <EditProfileForm toggleEdit={toggleEdit} /> : <ViewProfile />;
+  const profileContent = isEditing ? (
+    <EditProfileForm
+      ref={formRef}
+      userProfile={userProfile}
+      handleSave={handleSave}
+    />
+  ) : (
+    <ViewProfile userProfile={userProfile} />
+  );
 
   return (
     <DashboardLayout>

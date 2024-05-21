@@ -12,10 +12,15 @@ import { BASE_API_URL } from '@/utils/constants';
 
 import { Highlights } from './Highlights';
 
-export const ViewProfile = () => {
+import type { UserProfile } from '@/types';
+
+interface ViewProfileFormProps {
+  userProfile: UserProfile;
+}
+
+export const ViewProfile = ({ userProfile }: ViewProfileFormProps) => {
   const user = useAuthStore((state) => state.user);
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
-  const userProfile = useAuthStore((state) => state.userProfile);
 
   const { userType } = user || {};
 
@@ -34,29 +39,26 @@ export const ViewProfile = () => {
   const [image, setImage] = useState<string | undefined>();
 
   useEffect(() => {
-    if (userProfile?.profilePicturePath) {
+    if (userProfile.profilePicturePath) {
       setImagePreviewUrl(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
       setImage(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
       const pathSegments = userProfile.profilePicturePath.split('/');
       setSelectedFileName(pathSegments.pop() ?? 'No file chosen');
     }
-  }, [userProfile?.profilePicturePath]);
+  }, [userProfile.profilePicturePath]);
 
-  let firstName;
-  let lastName;
-  let city;
-  let state;
-  let shortBio;
-  let industries;
-  let companyName;
-  let rates;
-
-  if (userProfile) {
-    ({ firstName, lastName, city, state, shortBio, industries, companyName, rates } = userProfile);
-  }
-
+  const {
+    firstName,
+    lastName,
+    city,
+    state,
+    shortBio,
+    industries,
+    companyName,
+    rates = [],
+  } = userProfile;
   const [selectedPlatform, setSelectedPlatform] = useState('');
-  const filteredRates = rates?.filter((rate) => rate.platform === selectedPlatform);
+  const filteredRates = rates.filter((rate) => rate.platform === selectedPlatform);
   const buttonStyle = {
     padding: '0px 6px',
   };
@@ -67,7 +69,6 @@ export const ViewProfile = () => {
         src={image}
         alt="User profile"
       />
-      {/* get dynamic values for these fields */}
       <div className="mb-8 mt-4 inline-block">
         <div className="flex items-center justify-center space-x-6">
           <h2 className="text-lg font-bold text-gray-600">
@@ -134,7 +135,7 @@ export const ViewProfile = () => {
                 }}
               >
                 <option value="">Select a platform</option>
-                {Array.from(new Set(rates?.map((rate) => rate.platform))).map((platform) => (
+                {Array.from(new Set(rates.map((rate) => rate.platform))).map((platform) => (
                   <option
                     key={platform}
                     value={platform}
@@ -147,7 +148,7 @@ export const ViewProfile = () => {
 
             {/* get dynamic values for these fields */}
 
-            {/* <div className="flex flex-col items-start justify-center p-4">
+            <div className="flex flex-col items-start justify-center p-4">
                 <div className="flex items-center space-x-2">
                   <InstagramIcon className="h-6 w-6" />
                   <div className="mr-4">
@@ -168,8 +169,8 @@ export const ViewProfile = () => {
                     </div>
                   </div>
                 </div>
-              </div> */}
-            {filteredRates && filteredRates.length > 0 && (
+              </div>
+            {filteredRates.length > 0 && (
               <div className="flex items-center justify-start space-x-2 p-4">
                 {/* <InstagramIcon className="h-6 w-6" /> */}
                 <div className="mr-4">

@@ -1,18 +1,16 @@
-import 'react-international-phone/style.css';
-
 import { Textarea } from 'flowbite-react';
-import { Controller, set, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { IndustryDropdown } from '@/components/inputs/IndustryDropdown';
 import { ProfileImageUploader } from '@/components/inputs/ProfileImageUploader';
-import { useManageUserProfile } from '@/hooks/useManageUserProfile';
-import { useAuthStore } from '@/stores/authStore';
 import { BASE_API_URL } from '@/utils/constants';
 
-import type { UserProfile } from '@/types';
+import type { UpdateUserProfile, UserProfile } from '@/types';
+import { forwardRef } from 'react';
 
 interface EditProfileFormProps {
-  toggleEdit: () => void;
+  userProfile: UserProfile;
+  handleSave: (data: UpdateUserProfile, profilePicture: File | null) => void;
 }
 
 interface FormFields {
@@ -26,37 +24,38 @@ interface FormFields {
   profilePicture: File | null;
 }
 
-export const EditProfileForm = ({ toggleEdit }: EditProfileFormProps) => {
-  const userProfile = useAuthStore((state) => state.userProfile) as UserProfile;
-  const { saveUserProfile, isProcessing } = useManageUserProfile();
+export const EditProfileForm = forwardRef<HTMLFormElement, EditProfileFormProps>(
+  ({ userProfile, handleSave }, ref) => {
+    EditProfileForm.displayName = 'EditProfileForm';
 
-  const formMethods = useForm<FormFields>({
-    defaultValues: {
-      profilePicture: null,
-      shortBio: userProfile.shortBio ?? '',
-      industryIds: userProfile.industries?.map((industry) => industry.id) ?? [],
-    },
-  });
+    const formMethods = useForm<FormFields>({
+      defaultValues: {
+        profilePicture: null,
+        shortBio: userProfile.shortBio ?? '',
+        industryIds: userProfile.industries?.map((industry) => industry.id) ?? [],
+      },
+    });
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    control,
-    formState: { errors, isValid },
-  } = formMethods;
+    const {
+      register,
+      handleSubmit,
+      setValue,
+      control,
+      formState: { errors, isValid },
+    } = formMethods;
 
-  const onSubmit = (data: FormFields) => {
-    const { profilePicture, ...profileData } = data;
-    const profileInfo = { ...profileData, id: userProfile.id };
-    saveUserProfile(profileInfo, profilePicture);
-    toggleEdit();
-  };
+    const onSubmit = (formData: FormFields) => {
+      const { id } = userProfile;
+      const { profilePicture, ...profileData } = formData;
+      const data = { id, ...profileData };
+      
+      handleSave(data, profilePicture ?? null);
+    };
 
-  return (
-    <>
+    return (
       <div className="mx-40 flex flex-1 flex-col items-center justify-start overflow-y-auto p-4">
         <form
+          ref={ref}
           onSubmit={handleSubmit(onSubmit)}
           className="w-full space-y-10 bg-gray-10"
         >
@@ -121,6 +120,6 @@ export const EditProfileForm = ({ toggleEdit }: EditProfileFormProps) => {
           </div>
         </form>
       </div>
-    </>
-  );
-};
+    );
+  },
+);
