@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
 import { getTheme, Sidebar } from 'flowbite-react';
-import { Chart, Envelope, UsersGroup, ChevronRight } from 'flowbite-react-icons/outline';
+import { Chart, ChevronRight, Envelope, UsersGroup } from 'flowbite-react-icons/outline';
+import { useEffect, useState } from 'react';
 import { HiOutlineHome } from 'react-icons/hi';
+import { Link, useLocation } from 'react-router-dom';
+
 import Icons, { CampaignIcon, NotificationIcon, SettingsIcon } from '@/assets/icons';
 import profilePic from '@/assets/images/authentication/agency.png';
 import logo from '@/assets/logo-title-black.svg';
 import { useAuthStore } from '@/stores/authStore';
 import { css, Global, useTheme } from '@emotion/react';
-import { type CustomFlowbiteTheme } from 'flowbite-react';
-import '@/styles/sidebar-styles.css';
 
+import type { CustomFlowbiteTheme } from 'flowbite-react';
 interface CSSidebarProps {
   className?: string;
 }
@@ -34,7 +35,14 @@ export const CSSidebar = ({ className }: CSSidebarProps) => {
   }, [location]);
 
   // this will check if current path name above is active to keep selected sub menu item highlighted
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => activeItem === path;
+
+  const isCampaignActive = () => {
+    const campaignPaths = ['/active-campaigns', '/past-campaigns', '/applied-campaigns'];
+    return campaignPaths.some((path) => location.pathname.includes(path));
+  };
+
+  const [activeItem, setActiveItem] = useState(location.pathname);
 
   const sidebarTheme: CustomFlowbiteTheme['sidebar'] = getTheme().sidebar;
 
@@ -42,6 +50,8 @@ export const CSSidebar = ({ className }: CSSidebarProps) => {
     ...sidebarTheme,
     item: {
       ...sidebarTheme.item,
+      base: `${sidebarTheme.item?.base} hover:text-primary font-semibold text-gray-60`,
+      active: `${sidebarTheme.item?.active} text-primary bg-gray-100`,
       icon: {
         ...sidebarTheme.item?.icon,
         base: `${sidebarTheme.item?.icon?.base} text-gray-600`,
@@ -52,27 +62,27 @@ export const CSSidebar = ({ className }: CSSidebarProps) => {
   const userType = useAuthStore((state) => state.user?.userType);
 
   const menuItems = [
-    { href: '/', icon: HiOutlineHome, label: 'Home' },
-    { href: '#', icon: Icons.CompassIcon, label: 'Discover' },
+    { to: '/', icon: HiOutlineHome, label: 'Home' },
+    { to: '#', icon: Icons.CompassIcon, label: 'Discover' },
     {
-      href: '/active-campaigns',
+      to: '/active-campaigns',
       icon: CampaignIcon,
       label: 'Campaigns',
       campaignItems: [
-        { href: '/active-campaigns', label: 'Active' },
-        { href: '/past-campaigns', label: 'Past' },
-        { href: '/applied-campaigns', label: 'Applied' },
+        { to: '/active-campaigns', label: 'Active' },
+        { to: '/past-campaigns', label: 'Past' },
+        { to: '/applied-campaigns', label: 'Applied' },
       ],
     },
-    { href: '#', icon: Envelope, label: 'Inbox' },
-    { href: '#', icon: Icons.CalendarIcon, label: 'Calendar' },
+    { to: '#', icon: Envelope, label: 'Inbox' },
+    { to: '#', icon: Icons.CalendarIcon, label: 'Calendar' },
     userType === 'Agency'
-      ? { href: '#', icon: UsersGroup, label: 'Clients' }
-      : { href: '#', icon: Icons.ClipboardListIcon, label: 'Tasks' },
-    { href: '#', icon: Chart, label: 'Analytics' },
+      ? { to: '#', icon: UsersGroup, label: 'Clients' }
+      : { to: '#', icon: Icons.ClipboardListIcon, label: 'Tasks' },
+    { to: '#', icon: Chart, label: 'Analytics' },
     userType === 'Creator'
-      ? { href: '#', icon: Icons.DollarIcon, label: 'Earnings' }
-      : { href: '#', icon: Icons.DollarIcon, label: 'Payments' },
+      ? { to: '#', icon: Icons.DollarIcon, label: 'Earnings' }
+      : { to: '#', icon: Icons.DollarIcon, label: 'Payments' },
   ];
 
   return (
@@ -83,12 +93,6 @@ export const CSSidebar = ({ className }: CSSidebarProps) => {
             background-color: ${theme.colors.white};
             width: 100%;
           }
-          .sidebar-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-          }
         `}
       />
       <div className={`flex h-full flex-col ${className}`}>
@@ -97,8 +101,8 @@ export const CSSidebar = ({ className }: CSSidebarProps) => {
           className="cs-sidebar flex-grow"
         >
           <div className="mb-5 flex items-center">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="mb-5 flex items-center"
             >
               <img
@@ -106,51 +110,63 @@ export const CSSidebar = ({ className }: CSSidebarProps) => {
                 alt="Logo"
                 className="mr-3 h-12"
               />
-            </a>
+            </Link>
           </div>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
               {menuItems.map((item) =>
                 item.campaignItems ? (
-                  <React.Fragment key={item.label}>
+                  <div
+                    key={item.label}
+                    onMouseEnter={() => {
+                      setCampaignSubMenuOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      !isCampaignActive() && setCampaignSubMenuOpen(false);
+                    }}
+                  >
                     <Sidebar.Item
-                      icon={item.icon}
                       onClick={() => {
-                        setCampaignSubMenuOpen(!campaignSubMenuOpen);
+                        !isCampaignActive() && setActiveItem(item.label);
                       }}
+                      icon={item.icon}
+                      active={isCampaignActive()}
                     >
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          cursor: 'pointer',
-                        }}
-                      >
+                      <div className="flex cursor-default justify-between">
                         {item.label}
                         <ChevronRight
                           className={`transition-transform ${campaignSubMenuOpen ? 'rotate-90' : ''}`}
                         />
                       </div>
                     </Sidebar.Item>
-                    {campaignSubMenuOpen && (
-                      <div className="pl-4">
-                        {item.campaignItems.map((subIcampaignItem) => (
+                    <div className={`mt-2 pl-4 ${campaignSubMenuOpen ? 'block' : 'hidden'}`}>
+                      <div className={`pl-4 ${campaignSubMenuOpen ? '' : 'hidden'}`}>
+                        {item.campaignItems.map((subItem) => (
                           <Link
-                            to={subIcampaignItem.href}
-                            key={subIcampaignItem.label}
-                            className={`campaign-item block p-2 ${isActive(subIcampaignItem.href) ? 'active-item' : ''}`}
+                            to={subItem.to}
+                            key={subItem.label}
+                            className={classNames(
+                              'block rounded-lg p-2 text-dark hover:bg-gray-10 hover:text-primary',
+                              { 'font-semibold text-primary': isActive(subItem.to) },
+                            )}
                           >
-                            {subIcampaignItem.label}
+                            {subItem.label}
                           </Link>
                         ))}
                       </div>
-                    )}
-                  </React.Fragment>
+                    </div>
+                  </div>
                 ) : (
                   <Sidebar.Item
                     key={item.label}
-                    href={item.href}
+                    as={Link}
+                    to={item.to}
                     icon={item.icon}
+                    className={classNames({ 'cursor-not-allowed': item.to === '#' })}
+                    active={isActive(item.to)}
+                    onClick={() => {
+                      item.to !== '#' && setActiveItem(item.to);
+                    }}
                   >
                     {item.label}
                   </Sidebar.Item>
