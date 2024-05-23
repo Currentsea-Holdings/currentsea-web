@@ -1,11 +1,8 @@
 import { axiosClient as api } from '@/api/axiosClient';
 import { API_ENDPOINTS } from '@/utils/constants';
 
-import type { UpdateUserProfileDto } from '@/api/types';
+import type { ShowcaseContent, UpdateUserProfileDto } from '@/api/types';
 import type { UserProfile } from '@/types';
-export interface GetShowCaseContentResponse {
-  showcaseContent: string[];
-}
 
 export const userProfileApi = {
   createUserProfile: async (payload: FormData): Promise<UserProfile> => {
@@ -51,15 +48,8 @@ export const userProfileApi = {
     );
   },
 
-  // get showcase content
-  getShowCaseContent: async (id: string): Promise<GetShowCaseContentResponse> => {
-    const response = await api.get<GetShowCaseContentResponse>(
-      `${API_ENDPOINTS.USER_PROFILE}/${id}/show-showcase-content`,
-    );
-    const cleanedUrls = response.showcaseContent.map((url) =>
-      url.replace(/\\/g, '').replace(/"/g, ''),
-    );
-    return { showcaseContent: cleanedUrls };
+  getShowCaseContent: async (id: string): Promise<ShowcaseContent[]> => {
+    return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}/show-showcase-content`);
   },
 
   // delete showcase content
@@ -86,5 +76,4 @@ export const userProfileApi = {
   getUserProfileActiveCampaignById: async (id: string): Promise<UserProfile> => {
     return await api.get(`${API_ENDPOINTS.USER_PROFILE}/${id}/get-active-campaign-details`);
   },
-
 };

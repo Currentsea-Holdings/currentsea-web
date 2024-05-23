@@ -75,12 +75,17 @@ export interface User {
   profile: UserProfile;
   /** @default [] */
   socialMediaLinks: object;
-  /** @default "b50fff99-ce39-4515-acd7-6d88d894ee75" */
+  /** @default [] */
+  campaigns: object;
+  /** @default "c54dee38-c905-4345-8cb5-5ec386ebdbd7" */
   id: string;
-  /** @default "2024-05-13T10:47:49.966Z" */
+  /** @default "2024-05-23T02:46:32.007Z" */
   createdAt: object;
-  /** @default "2024-05-13T10:47:49.966Z" */
-  updatedAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 export type Collection = object;
@@ -106,15 +111,18 @@ export interface UserProfile {
   /** @default [] */
   rates: object;
   /** @default [] */
-  showcaseContent: object;
+  showcaseContent: Collection;
   /** @default [] */
   industries: Collection;
-  /** @default "9b8a90f7-3c82-4b7b-82e2-a20a31588e6f" */
+  /** @default "55fad818-80d9-4926-90bd-27cabe5cc607" */
   id: string;
-  /** @default "2024-05-13T10:47:49.965Z" */
+  /** @default "2024-05-23T02:46:32.007Z" */
   createdAt: object;
-  /** @default "2024-05-13T10:47:49.965Z" */
-  updatedAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 export interface LoginResponseDto {
@@ -199,10 +207,17 @@ export interface UpdateUserDto {
 
 export interface Industry {
   name: string;
-  /** @default "3c774a07-c70a-4e4e-936c-2d937c49b71a" */
-  id: string;
   /** @default [] */
   userProfile: object;
+  /** @default "9bc0ae02-0dae-4322-a3ae-486ab2865fd1" */
+  id: string;
+  /** @default "2024-05-23T02:46:32.015Z" */
+  createdAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 export interface CreateUserProfileDto {
@@ -227,6 +242,20 @@ export interface UpdateUserProfileDto {
   industryIds?: string[];
   content?: ShowcaseContentDto[];
   userProfileCompleted?: boolean;
+}
+
+export interface ShowcaseContent {
+  mediaPath: string;
+  profile: UserProfile;
+  /** @default "02f93236-f1a0-4650-8f72-f846a882d18e" */
+  id: string;
+  /** @default "2024-05-23T02:46:32.023Z" */
+  createdAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 import type {
@@ -1394,7 +1423,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/user-profile/{id}/show-showcase-content
      */
     userProfileControllerGetUserProfileShowcaseContent: (id: string, params: RequestParams = {}) =>
-      this.request<UserProfile, any>({
+      this.request<ShowcaseContent[], any>({
         path: `/user-profile/${id}/show-showcase-content`,
         method: 'GET',
         format: 'json',

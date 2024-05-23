@@ -16,10 +16,6 @@ import { useAuthStore } from '@/stores/authStore';
 import { API_ENDPOINTS, BASE_API_URL } from '@/utils/constants';
 import { useMutation } from '@tanstack/react-query';
 
-interface GetShowCaseContentResponse {
-  showcaseContent: string[];
-}
-
 interface HighlightsProps {
   isEditing: boolean;
 }
@@ -53,10 +49,10 @@ export const Highlights = ({ isEditing }: HighlightsProps) => {
     setIsDataLoading(true);
     try {
       if (!userProfile || !user) throw new Error('User profile is not available.');
-      const content = (await userProfileApi.getShowCaseContent(
-        userProfile.id,
-      )) as GetShowCaseContentResponse;
-      setFilePreviews(content.showcaseContent);
+      const highlights = await userProfileApi.getShowCaseContent(userProfile.id);
+      const highlightMediaPaths = highlights.map((content) => content.mediaPath)
+      
+      setFilePreviews(highlightMediaPaths);
     } catch (error) {
       console.error('Error fetching user content:', error);
     }
