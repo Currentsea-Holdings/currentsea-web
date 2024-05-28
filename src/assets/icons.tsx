@@ -45,7 +45,7 @@ export const InboxIcon = ({ className = '' }: IconProps = {}) => {
 export const CalendarIcon = ({ className = '' }: IconProps = {}) => {
   return (
     <svg
-      className={`h-[20px] w-[20px] text-gray-800 dark:text-white ${className}`}
+      className={`h-[20px] w-[20px] ${className}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
