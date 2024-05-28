@@ -1,25 +1,17 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-/* eslint-disable @typescript-eslint/no-confusing-void-expression */
-/* eslint-disable react/prop-types */
-// /* eslint-disable @typescript-eslint/no-useless-template-literals */
-// /* eslint-disable react/prop-types */
-
 import { WaitingTimeIcon } from '@/assets/icons';
-import React from 'react';
+import { Fragment } from 'react';
 
-interface CampaignProgressProps {
-  stepNum: number; 
-  waitingForCreators: boolean; 
-  showNav: boolean; 
+interface CampaignProgressTimelineProps {
+  stepNum: number;
+  waitingForCreators: boolean;
+  showNav: boolean;
 }
 
-const CampaignProgress: React.FC<CampaignProgressProps> = ({
+export const CampaignProgressTimeline = ({
   stepNum,
   waitingForCreators,
   showNav,
-}) => {
+}: CampaignProgressTimelineProps) => {
   const stages = ['Discovery', 'Negotiation', 'Content Production', 'Live Campaign', 'Reviews'];
   const isComplete = stepNum === stages.length + 1; // Assume the 6th step is "Campaign Complete"
 
@@ -41,8 +33,7 @@ const CampaignProgress: React.FC<CampaignProgressProps> = ({
         )}
       </div>
 
-      
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         {stages.map((stage, index) => (
           <div
             key={index}
@@ -51,23 +42,22 @@ const CampaignProgress: React.FC<CampaignProgressProps> = ({
             {index + 1 === stepNum && (
               <>
                 <span
-                  className="absolute text-xs p-0 font-bold text-blue-500"
+                  className="absolute p-0 text-xs font-bold text-blue-500"
                   style={{
                     bottom: '50%',
                     transform: 'translateY(50%)',
                     fontSize: '0.46rem',
                     whiteSpace: 'normal',
                     lineHeight: '0.7rem',
-                    textAlign: 'center', 
-                    width: '100%' 
-                    
+                    textAlign: 'center',
+                    width: '100%',
                   }}
                 >
                   {stage.split(' ').map((word, i) => (
-                    <React.Fragment key={i}>
+                    <Fragment key={i}>
                       {word}
                       {i < stage.split(' ').length - 1 && <br />}
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </span>
                 <span
@@ -100,22 +90,26 @@ const CampaignProgress: React.FC<CampaignProgressProps> = ({
           style={{ fontSize: '0.5rem' }}
         >
           {stepNum > 1 ? (
-            <span
-              className="cursor-pointer hover:text-gray-600 font-semibold"
-              onClick={() => console.log('Previous Stage')}
+            <button
+              className="cursor-pointer font-semibold hover:text-gray-600"
+              onClick={() => {
+                console.log('Previous Stage');
+              }}
             >
               &#60; previous stage
-            </span>
+            </button>
           ) : (
-            <span className="text-gray-600">&#60; Previous</span> 
+            <span className="text-gray-600">&#60; Previous</span>
           )}
           {stepNum < stages.length ? (
-            <span
-              className="cursor-pointer hover:text-gray-600 font-semibold"
-              onClick={() => console.log('Next Stage')}
+            <button
+              className="cursor-pointer font-semibold hover:text-gray-600"
+              onClick={() => {
+                console.log('Next Stage');
+              }}
             >
               next stage &#62;
-            </span>
+            </button>
           ) : (
             <span className="text-gray-600">next stage &#62;</span>
           )}
@@ -124,5 +118,3 @@ const CampaignProgress: React.FC<CampaignProgressProps> = ({
     </div>
   );
 };
-
-export default CampaignProgress;
