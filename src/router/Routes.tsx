@@ -16,10 +16,10 @@ import { PrivacyPolicyView } from '@/views/Policies/PrivacyPolicyView';
 import { TermsOfServiceView } from '@/views/Policies/TermsOfServiceView';
 import { ProfileView } from '@/views/Profile/ProfileView';
 import { ThemeProvider } from '@emotion/react';
-import ActiveCampaignsView from '@/views/CampaignViews/ActiveCampaignsView';
-import PastCampaignsView from '@/views/CampaignViews/PastCampaignsView';
-import AppliedCampaignsView from '@/views/CampaignViews/AppliedCampaignsView';
-import ActiveCampaignDetailView from '@/views/CampaignViews/ActiveCampaignDetailView';
+import { ActiveCampaigns } from '@/views/Campaigns/ActiveCampaigns';
+import { PastCampaignsView } from '@/views/Campaigns/PastCampaignsView';
+import { AppliedCampaignsView } from '@/views/Campaigns/AppliedCampaignsView';
+import { ActiveCampaignDetailView } from '@/views/Campaigns/ActiveCampaignDetailView';
 
 export const Routes = () => {
   const { theme } = useTheme();
@@ -64,7 +64,7 @@ export const Routes = () => {
         /* CAMPAIGN ROUTES */
         {
           path: '/active-campaigns',
-          element: <ActiveCampaignsView />,
+          element: <ActiveCampaigns />,
         },
         // {
         //   path: '/active-campaigns/detail', // placeholder path for now use the one below when back end is integrated

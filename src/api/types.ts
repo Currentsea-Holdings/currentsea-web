@@ -75,12 +75,17 @@ export interface User {
   profile: UserProfile;
   /** @default [] */
   socialMediaLinks: object;
-  /** @default "b50fff99-ce39-4515-acd7-6d88d894ee75" */
+  /** @default [] */
+  campaigns: object;
+  /** @default "e9d7fd66-fd32-47c2-95f8-a183724a09ab" */
   id: string;
-  /** @default "2024-05-13T10:47:49.966Z" */
+  /** @default "2024-05-24T02:11:23.536Z" */
   createdAt: object;
-  /** @default "2024-05-13T10:47:49.966Z" */
-  updatedAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 export type Collection = object;
@@ -106,15 +111,18 @@ export interface UserProfile {
   /** @default [] */
   rates: object;
   /** @default [] */
-  showcaseContent: object;
+  showcaseContent: Collection;
   /** @default [] */
   industries: Collection;
-  /** @default "9b8a90f7-3c82-4b7b-82e2-a20a31588e6f" */
+  /** @default "aa7b42f1-ed6a-4456-bb7e-c2bd453cf56c" */
   id: string;
-  /** @default "2024-05-13T10:47:49.965Z" */
+  /** @default "2024-05-24T02:11:23.535Z" */
   createdAt: object;
-  /** @default "2024-05-13T10:47:49.965Z" */
-  updatedAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 export interface LoginResponseDto {
@@ -197,12 +205,72 @@ export interface UpdateUserDto {
   emailVerified?: boolean;
 }
 
+export type CreateCampaignDto = object;
+
+export enum CampaignStage {
+  Discovery = 'Discovery',
+  Negotiation = 'Negotiation',
+  ContentProduction = 'Content Production',
+  LiveCampaign = 'Live Campaign',
+  Reviews = 'Reviews',
+  Completed = 'Completed',
+}
+
+export enum CampaignType {
+  AffiliateProgram = 'Affiliate Program',
+  Gifting = 'Gifting',
+  Experience = 'Experience',
+  NonProfit = 'Non-Profit',
+  Paid = 'Paid',
+}
+
+export interface Campaign {
+  name: string;
+  /** @format date-time */
+  startDate: string;
+  /** @format date-time */
+  endDate: string;
+  /** @format date-time */
+  applicationDueDate: string;
+  description: string;
+  coverPhoto: string;
+  minComp: number;
+  maxComp: number;
+  stage: CampaignStage;
+  type: CampaignType;
+  /** @default [] */
+  requirements: object;
+  /** @default [] */
+  documents: object;
+  brand: User;
+  /** @default [] */
+  creators: object;
+  /** @default "f1aa812b-1b5a-47fa-bf4d-4164415b2df1" */
+  id: string;
+  /** @default "2024-05-24T02:11:23.544Z" */
+  createdAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
+}
+
+export type UpdateCampaignDto = object;
+
 export interface Industry {
   name: string;
-  /** @default "3c774a07-c70a-4e4e-936c-2d937c49b71a" */
-  id: string;
   /** @default [] */
   userProfile: object;
+  /** @default "9810c831-16a5-4741-9fde-12d70689ebd1" */
+  id: string;
+  /** @default "2024-05-24T02:11:23.547Z" */
+  createdAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 export interface CreateUserProfileDto {
@@ -227,6 +295,20 @@ export interface UpdateUserProfileDto {
   industryIds?: string[];
   content?: ShowcaseContentDto[];
   userProfileCompleted?: boolean;
+}
+
+export interface ShowcaseContent {
+  mediaPath: string;
+  profile: UserProfile;
+  /** @default "812b7aa7-4917-4d16-8638-dca4ee4955aa" */
+  id: string;
+  /** @default "2024-05-24T02:11:23.562Z" */
+  createdAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
 }
 
 import type {
@@ -643,6 +725,85 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/users/social-media/access-tokens`,
         method: 'POST',
         format: 'json',
+        ...params,
+      }),
+  };
+  campaigns = {
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerCreate
+     * @request POST:/campaigns
+     */
+    campaignControllerCreate: (data: CreateCampaignDto, params: RequestParams = {}) =>
+      this.request<Campaign, any>({
+        path: `/campaigns`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerFindAll
+     * @request GET:/campaigns
+     */
+    campaignControllerFindAll: (params: RequestParams = {}) =>
+      this.request<Campaign[], any>({
+        path: `/campaigns`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerFindOne
+     * @request GET:/campaigns/{id}
+     */
+    campaignControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<Campaign, any>({
+        path: `/campaigns/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerUpdate
+     * @request PATCH:/campaigns/{id}
+     */
+    campaignControllerUpdate: (id: string, data: UpdateCampaignDto, params: RequestParams = {}) =>
+      this.request<Campaign, any>({
+        path: `/campaigns/${id}`,
+        method: 'PATCH',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerRemove
+     * @request DELETE:/campaigns/{id}
+     */
+    campaignControllerRemove: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/campaigns/${id}`,
+        method: 'DELETE',
         ...params,
       }),
   };
@@ -1394,7 +1555,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/user-profile/{id}/show-showcase-content
      */
     userProfileControllerGetUserProfileShowcaseContent: (id: string, params: RequestParams = {}) =>
-      this.request<UserProfile, any>({
+      this.request<ShowcaseContent[], any>({
         path: `/user-profile/${id}/show-showcase-content`,
         method: 'GET',
         format: 'json',

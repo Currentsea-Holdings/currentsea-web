@@ -1,15 +1,15 @@
 import { DashboardLayout } from '@/layouts';
 import { useNavigate, useParams } from 'react-router-dom';
 import nikeLogo from '@/assets/nikelogo.png';
-import CampaignCard from '../Home/components/CampaignComponents/FullCampaignCard';
-import CampaignCardDetailPreview from '../Home/components/CampaignComponents/CampaignCardPreview';
+import { FullCampaignCard } from './components/FullCampaignCard';
+import CampaignCardDetailPreview from './components/CampaignCardPreview';
 import { CSUpcomingTasks } from '../Home/components/CSUpcomingTasks';
-import CampaignDetailsCard from '../Home/components/CampaignComponents/CampaignDetailsCard';
-import { CampaignTaskCard } from '../Home/components/CampaignComponents/CampaignTaskCard';
+import CampaignDetailsCard from './components/CampaignDetailsCard';
+import { CampaignTaskCard } from './components/CampaignTaskCard';
 import { userProfileApi } from '@/api/userProfileApi';
 import { useAuthStore } from '@/stores/authStore';
 import { useEffect, useState } from 'react';
-import { CampaignCreatorsListCard } from '../Home/components/CampaignComponents/CampaignCreatorsListCard';
+import { CampaignCreatorsListCard } from './components/CampaignCreatorsListCard';
 import keeta from '@/assets/keeta.jpeg';
 import tyla from '@/assets/tyla.jpeg';
 import mrbeast from '@/assets/mrbeast.webp';
@@ -17,7 +17,7 @@ import loganpaul from '@/assets/loganpaulboxing.jpeg';
 import caleb from '@/assets/caleb.jpg';
 
 
-const ActiveCampaignDetailView = () => {
+export const ActiveCampaignDetailView = () => {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const userProfile = useAuthStore((state) => state.userProfile);
@@ -135,5 +135,3 @@ const ActiveCampaignDetailView = () => {
     </DashboardLayout>
   );
 };
-
-export default ActiveCampaignDetailView;
