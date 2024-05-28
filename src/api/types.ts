@@ -77,9 +77,9 @@ export interface User {
   socialMediaLinks: object;
   /** @default [] */
   campaigns: object;
-  /** @default "c54dee38-c905-4345-8cb5-5ec386ebdbd7" */
+  /** @default "e9d7fd66-fd32-47c2-95f8-a183724a09ab" */
   id: string;
-  /** @default "2024-05-23T02:46:32.007Z" */
+  /** @default "2024-05-24T02:11:23.536Z" */
   createdAt: object;
   /**
    * @format date-time
@@ -114,9 +114,9 @@ export interface UserProfile {
   showcaseContent: Collection;
   /** @default [] */
   industries: Collection;
-  /** @default "55fad818-80d9-4926-90bd-27cabe5cc607" */
+  /** @default "aa7b42f1-ed6a-4456-bb7e-c2bd453cf56c" */
   id: string;
-  /** @default "2024-05-23T02:46:32.007Z" */
+  /** @default "2024-05-24T02:11:23.535Z" */
   createdAt: object;
   /**
    * @format date-time
@@ -205,13 +205,66 @@ export interface UpdateUserDto {
   emailVerified?: boolean;
 }
 
+export type CreateCampaignDto = object;
+
+export enum CampaignStage {
+  Discovery = 'Discovery',
+  Negotiation = 'Negotiation',
+  ContentProduction = 'Content Production',
+  LiveCampaign = 'Live Campaign',
+  Reviews = 'Reviews',
+  Completed = 'Completed',
+}
+
+export enum CampaignType {
+  AffiliateProgram = 'Affiliate Program',
+  Gifting = 'Gifting',
+  Experience = 'Experience',
+  NonProfit = 'Non-Profit',
+  Paid = 'Paid',
+}
+
+export interface Campaign {
+  name: string;
+  /** @format date-time */
+  startDate: string;
+  /** @format date-time */
+  endDate: string;
+  /** @format date-time */
+  applicationDueDate: string;
+  description: string;
+  coverPhoto: string;
+  minComp: number;
+  maxComp: number;
+  stage: CampaignStage;
+  type: CampaignType;
+  /** @default [] */
+  requirements: object;
+  /** @default [] */
+  documents: object;
+  brand: User;
+  /** @default [] */
+  creators: object;
+  /** @default "f1aa812b-1b5a-47fa-bf4d-4164415b2df1" */
+  id: string;
+  /** @default "2024-05-24T02:11:23.544Z" */
+  createdAt: object;
+  /**
+   * @format date-time
+   * @default null
+   */
+  updatedAt: string | null;
+}
+
+export type UpdateCampaignDto = object;
+
 export interface Industry {
   name: string;
   /** @default [] */
   userProfile: object;
-  /** @default "9bc0ae02-0dae-4322-a3ae-486ab2865fd1" */
+  /** @default "9810c831-16a5-4741-9fde-12d70689ebd1" */
   id: string;
-  /** @default "2024-05-23T02:46:32.015Z" */
+  /** @default "2024-05-24T02:11:23.547Z" */
   createdAt: object;
   /**
    * @format date-time
@@ -247,9 +300,9 @@ export interface UpdateUserProfileDto {
 export interface ShowcaseContent {
   mediaPath: string;
   profile: UserProfile;
-  /** @default "02f93236-f1a0-4650-8f72-f846a882d18e" */
+  /** @default "812b7aa7-4917-4d16-8638-dca4ee4955aa" */
   id: string;
-  /** @default "2024-05-23T02:46:32.023Z" */
+  /** @default "2024-05-24T02:11:23.562Z" */
   createdAt: object;
   /**
    * @format date-time
@@ -672,6 +725,85 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/users/social-media/access-tokens`,
         method: 'POST',
         format: 'json',
+        ...params,
+      }),
+  };
+  campaigns = {
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerCreate
+     * @request POST:/campaigns
+     */
+    campaignControllerCreate: (data: CreateCampaignDto, params: RequestParams = {}) =>
+      this.request<Campaign, any>({
+        path: `/campaigns`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerFindAll
+     * @request GET:/campaigns
+     */
+    campaignControllerFindAll: (params: RequestParams = {}) =>
+      this.request<Campaign[], any>({
+        path: `/campaigns`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerFindOne
+     * @request GET:/campaigns/{id}
+     */
+    campaignControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<Campaign, any>({
+        path: `/campaigns/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerUpdate
+     * @request PATCH:/campaigns/{id}
+     */
+    campaignControllerUpdate: (id: string, data: UpdateCampaignDto, params: RequestParams = {}) =>
+      this.request<Campaign, any>({
+        path: `/campaigns/${id}`,
+        method: 'PATCH',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Campaigns
+     * @name CampaignControllerRemove
+     * @request DELETE:/campaigns/{id}
+     */
+    campaignControllerRemove: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/campaigns/${id}`,
+        method: 'DELETE',
         ...params,
       }),
   };

@@ -53,9 +53,10 @@ export const useAuthStore = create<AuthStore>()(
         name: 'auth-storage',
       },
     ),
+    { name: 'AuthStore' },
   ),
 );
 
 if (process.env.NODE_ENV === 'development') {
-  mountStoreDevtool('Store', useAuthStore);
+  mountStoreDevtool('AuthStore', useAuthStore);
 }

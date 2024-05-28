@@ -6,7 +6,7 @@ import emptyState from '@/assets/images/common/empy-state.svg';
 import { CSCard } from '@/components';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { CSUpcomingTasksCard } from '../CSUpcomingTasksCard';
+import { CSUpcomingTasksCard } from '../../Home/components/CSUpcomingTasksCard';
 
 interface TasksProps {
   title: string;

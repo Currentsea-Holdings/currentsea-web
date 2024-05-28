@@ -1,16 +1,28 @@
-import { DashboardLayout } from '@/layouts';
-import CampaignSearchBar from '../Home/components/CampaignComponents/CampaignSearchBar';
-import CampaignCard from '../Home/components/CampaignComponents/FullCampaignCard';
 import '@/styles/campaign-card.styles.css';
-import nikeLogo from '@/assets/nikelogo.png';
-import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/stores/authStore';
-import { userProfileApi } from '@/api/userProfileApi';
-import FullCampaignCard from '../Home/components/CampaignComponents/FullCampaignCard';
 
-const ActiveCampaignsView = () => {
+import { useEffect, useState } from 'react';
+
+import { userProfileApi } from '@/api/userProfileApi';
+import nikeLogo from '@/assets/nikelogo.png';
+import { ButtonAdd } from '@/components/ButtonAdd';
+import { DashboardLayout } from '@/layouts';
+import { useAuthStore } from '@/stores/authStore';
+import { useCreateCampaignStore } from '@/stores/createCampaignStore';
+
+import CampaignSearchBar from './components/CampaignSearchBar';
+import { CreateCampaignPrompt } from './components/CreateCampaignPrompt';
+import { FullCampaignCard } from './components/FullCampaignCard';
+import { CreateCampaignWizard } from './CreateCampaign/CreateCampaignWizard';
+
+export const ActiveCampaigns = () => {
   const user = useAuthStore((state) => state.user);
   const userProfile = useAuthStore((state) => state.userProfile);
+  const showCreateCampaignWizard = useCreateCampaignStore(
+    (state) => state.showCreateCampaignWizard,
+  );
+  const setShowCreateCampaignWizard = useCreateCampaignStore(
+    (state) => state.setShowCreateCampaignWizard,
+  );
   // const [campaigns, setCampaigns] = useState<Array[]>([]);
 
   useEffect(() => {
@@ -32,6 +44,8 @@ const ActiveCampaignsView = () => {
     endDate: '07/29/23',
     linkUrl: 'http://www.nike.com',
   };
+
+  const [showCreateCampaignPrompt, setShowCreateCampaignPrompt] = useState(false);
 
   return (
     <DashboardLayout>
@@ -61,9 +75,19 @@ const ActiveCampaignsView = () => {
             detailPath={`/active-campaigns/${campaign.id}/detail`} 
           />
         ))} */}
+        <CreateCampaignPrompt
+          show={showCreateCampaignPrompt}
+          setShow={setShowCreateCampaignPrompt}
+          startWizard={setShowCreateCampaignWizard}
+        />
+        <ButtonAdd
+          size="sm"
+          onClick={() => {
+            setShowCreateCampaignPrompt(true);
+          }}
+        />
       </div>
+      {showCreateCampaignWizard && <CreateCampaignWizard />}
     </DashboardLayout>
   );
 };
-
-export default ActiveCampaignsView;

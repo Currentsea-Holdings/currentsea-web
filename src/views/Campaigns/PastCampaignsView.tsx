@@ -1,7 +1,7 @@
 import { DashboardLayout } from '@/layouts';
-import CampaignSearchBar from '../Home/components/CampaignComponents/CampaignSearchBar';
+import CampaignSearchBar from './components/CampaignSearchBar';
 
-const PastCampaignsView = () => {
+export const PastCampaignsView = () => {
   return (
     <DashboardLayout>
       <div className="flex justify-between items-center">
@@ -12,4 +12,3 @@ const PastCampaignsView = () => {
   );
 };
 
-export default PastCampaignsView;

@@ -6,6 +6,8 @@ import type {
   Industry,
   CreateUserDto,
   RateDto,
+  CampaignStage,
+  CampaignType,
 } from '@/api/types';
 
 export type UserType = 'Creator' | 'Agency' | 'Brand';
@@ -40,4 +42,17 @@ export interface UpdateUserProfile extends UpdateUserProfileDto {
 export interface UploadProfilePicture {
   id: string;
   profilePicture?: File | null;
+}
+
+export interface CampaignFormData {
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  applicationDueDate: Date;
+  description: string;
+  coverPhoto: string;
+  minComp: number;
+  maxComp: number;
+  stage: CampaignStage;
+  type: CampaignType;
 }

@@ -10,7 +10,7 @@ interface CampaignCardProps {
   detailPath: string;
 }
 
-const FullCampaignCard: React.FC<CampaignCardProps> = ({
+export const FullCampaignCard: React.FC<CampaignCardProps> = ({
   title,
   brand,
   endDate,
@@ -78,5 +78,3 @@ const FullCampaignCard: React.FC<CampaignCardProps> = ({
     </Card>
   );
 };
-
-export default FullCampaignCard;
