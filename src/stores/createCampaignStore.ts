@@ -9,26 +9,32 @@ interface CampaignState {
   setFormData: (data: Partial<CampaignFormData>) => void;
   showCreateCampaignWizard: boolean;
   setShowCreateCampaignWizard: (show: boolean) => void;
+  currentStep: number;
+  setCurrentStep: (step: number) => void;
 }
 
 export const useCreateCampaignStore = create<CampaignState>()(
   devtools(
     (set) => ({
       formData: {
-        name: '',
-        startDate: new Date(),
-        endDate: new Date(),
-        applicationDueDate: new Date(),
-        description: '',
-        coverPhoto: '',
-        minComp: 0,
-        maxComp: 0,
-        stage: CampaignStage.Discovery,
-        type: CampaignType.AffiliateProgram,
+        campaignDetails: {
+          name: '',
+          startDate: null,
+          endDate: null,
+          applicationDueDate: null,
+          description: '',
+          coverPhoto: '',
+          minComp: 0,
+          maxComp: 0,
+          stage: CampaignStage.Discovery,
+          type: undefined,
+        }
       },
       setFormData: (data) => { set((state) => ({ formData: { ...state.formData, ...data } })); },
       showCreateCampaignWizard: false,
       setShowCreateCampaignWizard: (show) => { set({ showCreateCampaignWizard: show }); },
+      currentStep: 1,
+      setCurrentStep: (step) => { set({ currentStep: step }); },
     }),
     { name: 'CreateCampaignStore' }
   )
