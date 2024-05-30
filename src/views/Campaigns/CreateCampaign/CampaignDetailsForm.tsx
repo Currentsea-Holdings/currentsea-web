@@ -7,17 +7,21 @@ import { CSButton } from '@/components';
 import { CSDatepicker } from '@/components/CSDatepicker';
 import { useCreateCampaignStore } from '@/stores/createCampaignStore';
 import { DevTool } from '@hookform/devtools';
+import { useEffect, useState } from 'react';
 
 interface CampaignDetailsFormProps {
   title: string;
 }
 
 export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
-  const { formData, setFormData, setCurrentStep } = useCreateCampaignStore((state) => ({
-    formData: state.formData,
-    setFormData: state.setFormData,
-    setCurrentStep: state.setCurrentStep,
-  }));
+  const { formData, setFormData, setCurrentStep, coverPhoto, setCoverPhoto } =
+    useCreateCampaignStore((state) => ({
+      formData: state.formData,
+      setFormData: state.setFormData,
+      setCurrentStep: state.setCurrentStep,
+      coverPhoto: state.coverPhoto,
+      setCoverPhoto: state.setCoverPhoto,
+    }));
 
   type FormFields = CampaignFormData['campaignDetails'];
 
@@ -29,11 +33,38 @@ export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
       endDate: formData.campaignDetails?.endDate || null,
       applicationDueDate: formData.campaignDetails?.applicationDueDate || null,
       description: formData.campaignDetails?.description || '',
+      coverPhoto: formData.campaignDetails?.coverPhoto || null,
     },
   });
 
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState('No file chosen');
+
+  useEffect(() => {
+    if (coverPhoto) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(coverPhoto);
+      setSelectedFileName(coverPhoto.name);
+    } else {
+      setPreviewImage(null);
+      setSelectedFileName('No file chosen');
+    }
+  }, [coverPhoto]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setCoverPhoto(file);
+    } else {
+      setCoverPhoto(null);
+    }
+  };
+
   const onSubmit = (data: FormFields) => {
-    setFormData({ campaignDetails: data });
+    setFormData({ campaignDetails: { ...data, coverPhoto } });
     setCurrentStep(2);
   };
 
@@ -59,7 +90,7 @@ export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
         </div>
         <div className="w-full md:mb-10 md:w-1/2 md:pl-2">
           <Label
-            htmlFor="campaignName"
+            htmlFor="campaignType"
             value="Campaign Type"
             className="mb-2 block"
           />
@@ -98,6 +129,7 @@ export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <CSDatepicker
+                id="startDate"
                 placeholder="Select date"
                 value={value ? new Date(value).toISOString().split('T')[0] : ''}
                 onChange={(date) => {
@@ -121,6 +153,7 @@ export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <CSDatepicker
+                id="endDate"
                 placeholder="Select date"
                 value={value ? new Date(value).toISOString().split('T')[0] : ''}
                 onChange={(date) => {
@@ -144,6 +177,7 @@ export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <CSDatepicker
+                id="applicationDueDate"
                 placeholder="Select date"
                 value={value ? new Date(value).toISOString().split('T')[0] : ''}
                 onChange={(date) => {
@@ -161,10 +195,40 @@ export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
             value="Campaign Cover Photo"
             className="mb-2 block"
           />
-          <FileInput
-            id="cover_photo"
-            color=""
-          />
+          <div className="flex items-center">
+            {previewImage && (
+              <div className="mr-2 shrink-0">
+                <img
+                  src={previewImage}
+                  alt="Cover Preview"
+                  className="h-12 w-12 rounded-full object-cover"
+                />
+              </div>
+            )}
+            <label
+              htmlFor="coverPhoto"
+              className="cursor-pointer rounded-l-xl border border-primary bg-primary px-4 py-2 text-white"
+            >
+              Choose file
+            </label>
+            <div className="relative flex-1 rounded-r-xl border border-gray-300 px-4 py-2 text-gray-700">
+              <span id="file-chosen">{selectedFileName}</span>
+              <Controller
+                control={control}
+                name="coverPhoto"
+                render={({ field: { ref, onBlur } }) => (
+                  <input
+                    type="file"
+                    id="coverPhoto"
+                    className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                    ref={ref}
+                    onBlur={onBlur}
+                    onChange={handleFileChange}
+                  />
+                )}
+              />
+            </div>
+          </div>
         </div>
         <div className="mb-10 w-full">
           <Label

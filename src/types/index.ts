@@ -51,7 +51,7 @@ export interface CampaignFormData {
     endDate: Date | null;
     applicationDueDate: Date | null;
     description: string;
-    coverPhoto?: string;
+    coverPhoto?: File | null;
     minComp: number;
     maxComp: number;
     stage: CampaignStage;

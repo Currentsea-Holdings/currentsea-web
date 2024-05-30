@@ -11,6 +11,8 @@ interface CampaignState {
   setShowCreateCampaignWizard: (show: boolean) => void;
   currentStep: number;
   setCurrentStep: (step: number) => void;
+  coverPhoto: File | null;
+  setCoverPhoto: (photo: File | null) => void;
 }
 
 export const useCreateCampaignStore = create<CampaignState>()(
@@ -23,13 +25,15 @@ export const useCreateCampaignStore = create<CampaignState>()(
           endDate: null,
           applicationDueDate: null,
           description: '',
-          coverPhoto: '',
+          coverPhoto: null,
           minComp: 0,
           maxComp: 0,
           stage: CampaignStage.Discovery,
           type: undefined,
-        }
+        },
       },
+      coverPhoto: null,
+      setCoverPhoto: (photo) => { set({ coverPhoto: photo }); },
       setFormData: (data) => { set((state) => ({ formData: { ...state.formData, ...data } })); },
       showCreateCampaignWizard: false,
       setShowCreateCampaignWizard: (show) => { set({ showCreateCampaignWizard: show }); },
