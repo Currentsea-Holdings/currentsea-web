@@ -46,11 +46,11 @@ const FlowbiteButton = ({
     ...buttonTheme,
     base: `${buttonTheme.base} bg-primary hover:opacity-90`,
     size: {
-      xs: 'px-2 py-2 text-xs',
-      sm: 'px-3 py-3 text-sm',
-      md: 'px-4 py-4 text-sm',
-      lg: 'px-5 py-5 text-base',
-      xl: 'px-6 py-6 text-base',
+      xs: 'p-0.5 text-sm',
+      sm: 'p-2 text-sm',
+      md: 'p-4 text-sm',
+      lg: 'p-5 text-base',
+      xl: 'p-6 text-base',
     },
   };
 
@@ -58,17 +58,19 @@ const FlowbiteButton = ({
     <Button
       theme={componentTheme}
       color={color}
-      size="md"
+      size={size}
       pill={true}
-      className={classNames(
-        'border-radius fixed bottom-20 right-28 flex items-center justify-center text-white',
-        className,
-      )}
+      className={classNames('border-radius flex items-center justify-center text-white', className)}
       {...props}
       disabled={disabled}
     >
-      <HiPlus 
-      className={classNames({ 'h-8 w-8': size === 'lg', 'h-6 w-6': size === 'sm' })} />
+      <HiPlus
+        className={classNames({
+          'h-8 w-8': size === 'lg',
+          'h-6 w-6': size === 'sm',
+          'h-5 w-5': size === 'xs',
+        })}
+      />
     </Button>
   );
 };

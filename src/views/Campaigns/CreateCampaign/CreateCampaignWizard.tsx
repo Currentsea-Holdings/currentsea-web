@@ -25,8 +25,8 @@ export const CreateCampaignWizard = ({ className }: CreateCampaignWizardProps) =
     switch (currentStep) {
       case 1:
         return <CampaignDetailsForm title={formTitles[0]} />;
-      // case 2:
-      //   return <RequirementsCompensationForm title={formTitles[1]} />;
+      case 2:
+        return <RequirementsCompensationForm title={formTitles[1]} />;
       // case 3:
       //   return <TasksForm />;
       // case 4:

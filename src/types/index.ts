@@ -43,18 +43,3 @@ export interface UploadProfilePicture {
   id: string;
   profilePicture?: File | null;
 }
-
-export interface CampaignFormData {
-  campaignDetails: {
-    name: string;
-    startDate: Date | null;
-    endDate: Date | null;
-    applicationDueDate: Date | null;
-    description: string;
-    coverPhoto?: File | null;
-    minComp: number;
-    maxComp: number;
-    stage: CampaignStage;
-    type: CampaignType | undefined;
-  }
-}

@@ -1,5 +1,5 @@
-import type { CampaignFormData } from '@/types';
 import { FileInput, Label, Select, Textarea, TextInput } from 'flowbite-react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { CampaignType } from '@/api/types';
@@ -7,8 +7,8 @@ import { CSButton } from '@/components';
 import { CSDatepicker } from '@/components/CSDatepicker';
 import { useCreateCampaignStore } from '@/stores/createCampaignStore';
 import { DevTool } from '@hookform/devtools';
-import { useEffect, useState } from 'react';
 
+import type { CampaignFormData } from '@/stores/createCampaignStore';
 interface CampaignDetailsFormProps {
   title: string;
 }
