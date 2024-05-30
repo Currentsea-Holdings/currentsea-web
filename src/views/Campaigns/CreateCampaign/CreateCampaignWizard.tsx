@@ -3,18 +3,20 @@ import { Close } from 'flowbite-react-icons/outline';
 
 import { useCreateCampaignStore } from '@/stores/createCampaignStore';
 
-import { CampaignDetailsForm } from './CampaignDetailsForm';
 import { CreateCampaignWizardTimeline } from './components/CreateCampaignWizardTimeline';
+import { CampaignDetailsForm } from './CampaignDetailsForm';
+import { RequirementsCompensationForm } from './RequirementsCompensationForm';
 
 interface CreateCampaignWizardProps {
   className?: string;
 }
 export const CreateCampaignWizard = ({ className }: CreateCampaignWizardProps) => {
-  const { showCreateCampaignWizard, setShowCreateCampaignWizard, currentStep } =
+  const { showCreateCampaignWizard, setShowCreateCampaignWizard, currentStep, setCurrentStep } =
     useCreateCampaignStore((state) => ({
       showCreateCampaignWizard: state.showCreateCampaignWizard,
       setShowCreateCampaignWizard: state.setShowCreateCampaignWizard,
       currentStep: state.currentStep,
+      setCurrentStep: state.setCurrentStep,
     }));
 
   const formTitles = ['Campaign Details', 'Requirements & Compensation', 'Tasks', 'Review'];
@@ -24,7 +26,7 @@ export const CreateCampaignWizard = ({ className }: CreateCampaignWizardProps) =
       case 1:
         return <CampaignDetailsForm title={formTitles[0]} />;
       // case 2:
-      //   return <RequirementsCompensationForm />;
+      //   return <RequirementsCompensationForm title={formTitles[1]} />;
       // case 3:
       //   return <TasksForm />;
       // case 4:
@@ -34,8 +36,6 @@ export const CreateCampaignWizard = ({ className }: CreateCampaignWizardProps) =
     }
   };
 
-  const stepNumber = 1;
-
   return (
     <div
       className={classNames(
@@ -43,7 +43,7 @@ export const CreateCampaignWizard = ({ className }: CreateCampaignWizardProps) =
         { hidden: !showCreateCampaignWizard },
       )}
     >
-      <div className="flex h-full w-full flex-col items-center bg-white px-10 pt-10">
+      <div className="relative flex h-full w-full flex-col items-center overflow-y-auto bg-white px-10 py-10">
         <div className="absolute left-10 top-10">
           <Close
             className="cursor-pointer"
@@ -55,7 +55,11 @@ export const CreateCampaignWizard = ({ className }: CreateCampaignWizardProps) =
         </div>
         <div className="lg:mx-[15%]">{renderForm()}</div>
       </div>
-      <CreateCampaignWizardTimeline stepNum={stepNumber} />
+      <CreateCampaignWizardTimeline
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        stepTitles={formTitles}
+      />
     </div>
   );
 };

@@ -3,17 +3,20 @@ import { getTheme, Timeline } from 'flowbite-react';
 
 import background from '@/assets/images/create-campaign.svg';
 import logo from '@/assets/logo-title-black.png';
-import { useCreateCampaignStore } from '@/stores/createCampaignStore';
 
 import type { CustomFlowbiteTheme } from 'flowbite-react';
-const steps = ['Campaign Details', 'Requirements & Compensation', 'Tasks', 'Review'];
 
-export const CreateCampaignWizardTimeline = ({ stepNum }: { stepNum: number }) => {
-  const { currentStep, setCurrentStep } = useCreateCampaignStore((state) => ({
-    currentStep: state.currentStep,
-    setCurrentStep: state.setCurrentStep,
-  }));
+interface CreateCampaignWizardTimelineProps {
+  currentStep: number;
+  setCurrentStep: (step: number) => void;
+  stepTitles: string[];
+}
 
+export const CreateCampaignWizardTimeline = ({
+  currentStep,
+  setCurrentStep,
+  stepTitles
+}: CreateCampaignWizardTimelineProps) => {
   return (
     <div
       className="h-full w-full bg-cover bg-center bg-no-repeat p-4 md:w-1/2"
@@ -33,7 +36,7 @@ export const CreateCampaignWizardTimeline = ({ stepNum }: { stepNum: number }) =
 
           <div className="relative ml-5 mt-6 text-left text-sm">
             <WizardTimeline
-              steps={steps}
+              stepTitles={stepTitles}
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
             />
@@ -44,33 +47,27 @@ export const CreateCampaignWizardTimeline = ({ stepNum }: { stepNum: number }) =
   );
 };
 
-interface WizardTimelineProps {
-  steps: string[];
-  currentStep: number;
-  setCurrentStep: (step: number) => void;
-}
+interface WizardTimelineProps extends CreateCampaignWizardTimelineProps {}
 
-const WizardTimeline = ({ steps, currentStep, setCurrentStep }: WizardTimelineProps) => {
-  const timelineTheme: CustomFlowbiteTheme['timeline'] = getTheme().timeline;
-
-  const componentTheme: CustomFlowbiteTheme['timeline'] = {
+const WizardTimeline = ({ stepTitles, currentStep, setCurrentStep }: WizardTimelineProps) => {
+  const timelineTheme: CustomFlowbiteTheme['timeline'] = {
     root: {
       direction: {
-        vertical: `${timelineTheme.root?.direction?.vertical} border-dark`,
+        vertical: `${getTheme().timeline.root.direction.vertical} border-dark`,
       },
     },
     item: {
       content: {
         title: {
-          base: `${timelineTheme.item?.content?.title?.base} font-medium`,
+          base: `${getTheme().timeline.item.content.title.base} font-medium`,
         },
       },
     },
   };
 
   return (
-    <Timeline theme={componentTheme}>
-      {steps.map((step, index) => (
+    <Timeline theme={timelineTheme}>
+      {stepTitles.map((step, index) => (
         <Timeline.Item
           key={index}
           className={classNames('relative cursor-default', {
@@ -83,7 +80,7 @@ const WizardTimeline = ({ steps, currentStep, setCurrentStep }: WizardTimelinePr
           <div
             className={classNames(
               'absolute left-[-2.3rem] flex h-6 w-6 items-center justify-center rounded-full border border-dark bg-white text-dark',
-              { 'top-[.25rem]': steps.length === index + 1 },
+              { 'top-[.25rem]': stepTitles.length === index + 1 },
               { 'border-primary text-primary': currentStep >= index + 1 },
             )}
           >
