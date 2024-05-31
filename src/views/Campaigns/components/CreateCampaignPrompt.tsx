@@ -1,5 +1,6 @@
 import type { CustomFlowbiteTheme } from 'flowbite-react';
-import { Button, Modal, getTheme } from 'flowbite-react';
+import { Button, getTheme, Modal } from 'flowbite-react';
+
 import { CSButton } from '@/components';
 
 interface CreateCampaignPromptProps {
@@ -43,7 +44,7 @@ export const CreateCampaignPrompt = ({ show, setShow, startWizard }: CreateCampa
       popup
     >
       <Modal.Header>
-        <h2 className="font-semibold">Create a New Campaign</h2>
+        <span className="text-2xl font-semibold">Create a New Campaign</span>
       </Modal.Header>
       <Modal.Body>
         <div className="text-center">

@@ -44,15 +44,7 @@ export interface UploadProfilePicture {
   profilePicture?: File | null;
 }
 
-export interface CampaignFormData {
+export interface SocialMediaPlatform {
   name: string;
-  startDate: Date;
-  endDate: Date;
-  applicationDueDate: Date;
-  description: string;
-  coverPhoto: string;
-  minComp: number;
-  maxComp: number;
-  stage: CampaignStage;
-  type: CampaignType;
+  icon: string;
 }

@@ -81,6 +81,7 @@ export const ActiveCampaigns = () => {
           startWizard={setShowCreateCampaignWizard}
         />
         <ButtonAdd
+          className="fixed bottom-20 right-28"
           size="sm"
           onClick={() => {
             setShowCreateCampaignPrompt(true);
