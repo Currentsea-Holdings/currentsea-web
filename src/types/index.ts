@@ -43,3 +43,8 @@ export interface UploadProfilePicture {
   id: string;
   profilePicture?: File | null;
 }
+
+export interface SocialMediaPlatform {
+  name: string;
+  icon: string;
+}

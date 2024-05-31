@@ -1,11 +1,14 @@
 import type { CampaignFormData } from '@/stores/createCampaignStore';
 import { Label, TextInput } from 'flowbite-react';
 import { Dollar } from 'flowbite-react-icons/outline';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { CSButton } from '@/components';
 import { ButtonAdd } from '@/components/ButtonAdd';
+import { SocialMediaIcon } from '@/components/SocialMediaIcon';
 import { useCreateCampaignStore } from '@/stores/createCampaignStore';
+import { socialMediaPlatforms } from '@/utils/socialMediaIconsCircle';
 import { DevTool } from '@hookform/devtools';
 
 interface RequirementsCompensationFormProps {
@@ -24,11 +27,12 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
 
   type FormFields = CampaignFormData['reqAndComp'];
 
-  const { register, control, handleSubmit } = useForm<FormFields>({
+  const { register, control, handleSubmit, watch, setValue } = useForm<FormFields>({
     defaultValues: {
       requirements: formData.reqAndComp?.requirements || [''],
       minComp: formData.reqAndComp?.minComp || null,
       maxComp: formData.reqAndComp?.maxComp || null,
+      platforms: formData.reqAndComp?.platforms || [],
     },
   });
 
@@ -37,9 +41,39 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
     setFormData({ reqAndComp: { ...formData.reqAndComp, requirements: newRequirements } });
   };
 
+  const handlePlatformSelection = (platformName: string) => {
+    const currentPlatforms = watch('platforms') || [];
+    const isSelected = currentPlatforms.includes(platformName);
+    const updatedPlatforms = isSelected
+      ? currentPlatforms.filter((p) => p !== platformName)
+      : [...currentPlatforms, platformName];
+
+    setValue('platforms', updatedPlatforms);
+  };
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name === 'platforms') {
+        const platformsArray = (value.platforms || []).filter(
+          (item): item is string => item !== undefined,
+        );
+        setFormData({
+          reqAndComp: {
+            ...formData.reqAndComp,
+            platforms: platformsArray,
+          },
+        });
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [watch, formData, setFormData]);
+
   const onSubmit = (data: FormFields) => {
-    const filteredRequirements = data.requirements.filter(
-      (requirement) => requirement.trim() !== '',
+    const filteredRequirements = (data.requirements || []).filter(
+      (requirement) => requirement && requirement.trim() !== '',
     );
     setFormData({
       reqAndComp: {
@@ -47,6 +81,7 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
         requirements: filteredRequirements,
         minComp: data.minComp,
         maxComp: data.maxComp,
+        platforms: data.platforms,
       },
     });
     setCurrentStep(2);
@@ -59,14 +94,14 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
         className="flex flex-wrap"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="mb-4 w-full md:mb-10">
+        <div className="mb-4 w-full">
           <Label
             htmlFor="campaignName"
             value="Content Requirements"
             className="mb-2 block"
           />
           <ol className="space-y-4">
-            {formData.reqAndComp?.requirements.map((requirement, index) => (
+            {formData.reqAndComp?.requirements?.map((requirement, index) => (
               <li
                 key={index}
                 className="flex items-center"
@@ -104,6 +139,7 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
             <TextInput
               id="minComp"
               icon={Dollar}
+              placeholder="Min"
               color=""
               required
               {...register('minComp', { required: true })}
@@ -116,6 +152,7 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
             <TextInput
               id="maxComp"
               icon={Dollar}
+              placeholder="Max"
               color=""
               required
               {...register('maxComp', { required: true })}
@@ -129,6 +166,16 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
             value="Required Social Media Platforms"
             className="mb-2 block"
           />
+          {socialMediaPlatforms.map((platform) => (
+            <SocialMediaIcon
+              key={platform.name}
+              platform={platform}
+              onClick={() => {
+                handlePlatformSelection(platform.name);
+              }}
+              isSelected={watch('platforms')?.includes(platform.name)}
+            />
+          ))}
         </div>
         <CSButton
           type="button"

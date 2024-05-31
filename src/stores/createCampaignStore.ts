@@ -19,9 +19,10 @@ export interface CampaignFormData {
     type: CampaignType | undefined;
   };
   reqAndComp: {
-    requirements: string[];
+    requirements?: string[];
     minComp?: number | null;
     maxComp?: number | null;
+    platforms?: string[];
   };
 }
 
@@ -56,6 +57,7 @@ export const useCreateCampaignStore = create<CampaignState>()(
           requirements: [''],
           minComp: null,
           maxComp: null,
+          platforms: [],
         },
       },
       coverPhoto: null,
