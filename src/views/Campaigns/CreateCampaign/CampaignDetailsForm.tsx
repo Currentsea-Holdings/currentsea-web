@@ -254,7 +254,7 @@ export const CampaignDetailsForm = ({ title }: CampaignDetailsFormProps) => {
           Next: Content
         </CSButton>
       </form>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 };

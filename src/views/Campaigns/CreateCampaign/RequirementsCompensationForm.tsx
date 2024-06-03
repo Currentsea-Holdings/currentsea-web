@@ -84,7 +84,7 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
         platforms: data.platforms,
       },
     });
-    setCurrentStep(2);
+    setCurrentStep(3);
   };
 
   return (
@@ -186,7 +186,7 @@ export const RequirementsCompensationForm = ({ title }: RequirementsCompensation
           Next: tasks
         </CSButton>
       </form>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 };
