@@ -1,17 +1,13 @@
 import type { CampaignFormData, campaignTask } from '@/stores/createCampaignStore';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
-import { Label, Tabs, TextInput, getTheme } from 'flowbite-react';
-import { Dollar } from 'flowbite-react-icons/outline';
-import { useEffect, useState } from 'react';
+import { getTheme, Tabs } from 'flowbite-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { CSButton } from '@/components';
-import { ButtonAdd } from '@/components/ButtonAdd';
-import { SocialMediaIcon } from '@/components/SocialMediaIcon';
-import { useCreateCampaignStore } from '@/stores/createCampaignStore';
-import { socialMediaPlatforms } from '@/utils/socialMediaIconsCircle';
-import { DevTool } from '@hookform/devtools';
 import { TaskCard } from '@/components/TaskCard';
+import { useCreateCampaignStore } from '@/stores/createCampaignStore';
+import { DevTool } from '@hookform/devtools';
 
 interface TasksFormProps {
   title: string;
@@ -81,9 +77,14 @@ export const TasksForm = ({ title }: TasksFormProps) => {
   };
 
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
+  const [dueDate2, setDueDate2] = useState<Date | undefined>(undefined);
 
   const handleDueDateChange = (date: Date) => {
     setDueDate(date);
+    // Perform any other necessary actions
+  };
+  const handleDueDateChange2 = (date: Date) => {
+    setDueDate2(date);
     // Perform any other necessary actions
   };
 
@@ -102,38 +103,32 @@ export const TasksForm = ({ title }: TasksFormProps) => {
           active
           title="Discovery"
         >
+          <h3 className="font-semibold text-dark">My Tasks</h3>
           <TaskCard
             headerText="Review Applications"
             status="incomplete"
             bodyText="Review applications"
             dueDate={dueDate}
-            onDueDateChange={(date: Date | null | undefined) => { handleDueDateChange(date as Date); }}
+            onDueDateChange={(date: Date | null | undefined) => {
+              handleDueDateChange(date as Date);
+            }}
           />
+          <div className="mt-10">
+            <h3 className="font-semibold text-dark">Creator Tasks</h3>
+            <TaskCard
+              headerText="Review Applications"
+              status="incomplete"
+              bodyText="Review applications"
+              dueDate={dueDate2}
+              onDueDateChange={(date: Date | null | undefined) => {
+                handleDueDateChange2(date as Date);
+              }}
+            />
+          </div>
         </Tabs.Item>
-        <Tabs.Item title="Negotiations">
-          This is{' '}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Dashboardassociated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the next. The tab
-          JavaScript swaps classes to control the content visibility and styling.
-        </Tabs.Item>
-        <Tabs.Item title="Content Production">
-          This is{' '}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Settingsassociated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the next. The tab
-          JavaScript swaps classes to control the content visibility and styling.
-        </Tabs.Item>
-        <Tabs.Item title="Live Campaign">
-          This is{' '}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Contactsassociated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the next. The tab
-          JavaScript swaps classes to control the content visibility and styling.
-        </Tabs.Item>
+        <Tabs.Item title="Negotiations">Negotiations Tasks</Tabs.Item>
+        <Tabs.Item title="Content Production">Content Production Tasks</Tabs.Item>
+        <Tabs.Item title="Live Campaign">Live Campaign Tasks</Tabs.Item>
       </Tabs>
       <CSButton
         type="button"
@@ -141,7 +136,7 @@ export const TasksForm = ({ title }: TasksFormProps) => {
         className="flex h-12 w-full items-center justify-center rounded-lg border bg-primary px-5"
         onClick={handleSubmit(onSubmit)}
       >
-        Next: tasks
+        Next: Negotiations
       </CSButton>
     </>
   );
