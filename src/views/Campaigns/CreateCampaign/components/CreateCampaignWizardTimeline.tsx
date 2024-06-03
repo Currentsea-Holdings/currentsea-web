@@ -74,7 +74,9 @@ const WizardTimeline = ({ stepTitles, currentStep, setCurrentStep }: WizardTimel
             'cursor-pointer': currentStep >= index + 1,
           })}
           onClick={() => {
-            currentStep > index + 1 && setCurrentStep(index + 1);
+            // uncomment when finished with form
+            // currentStep > index + 1 && setCurrentStep(index + 1);
+            setCurrentStep(index + 1);
           }}
         >
           <div

@@ -6,6 +6,7 @@ import { useCreateCampaignStore } from '@/stores/createCampaignStore';
 import { CreateCampaignWizardTimeline } from './components/CreateCampaignWizardTimeline';
 import { CampaignDetailsForm } from './CampaignDetailsForm';
 import { RequirementsCompensationForm } from './RequirementsCompensationForm';
+import { TasksForm } from './TasksForm';
 
 interface CreateCampaignWizardProps {
   className?: string;
@@ -27,8 +28,8 @@ export const CreateCampaignWizard = ({ className }: CreateCampaignWizardProps) =
         return <CampaignDetailsForm title={formTitles[0]} />;
       case 2:
         return <RequirementsCompensationForm title={formTitles[1]} />;
-      // case 3:
-      //   return <TasksForm />;
+      case 3:
+        return <TasksForm title={formTitles[2]} />;
       // case 4:
       //   return <ReviewForm />;
       default:

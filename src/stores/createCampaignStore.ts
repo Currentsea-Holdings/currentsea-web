@@ -5,6 +5,13 @@ import { devtools } from 'zustand/middleware';
 import { CampaignStage } from '@/api/types';
 
 import type { CampaignType } from '@/api/types';
+
+export interface campaignTask {
+  title: string;
+  description: string;
+  dueDate: Date | null;
+  status: 'incomplete' | 'inReview' | 'complete';
+}
 export interface CampaignFormData {
   campaignDetails: {
     name: string;
@@ -23,6 +30,24 @@ export interface CampaignFormData {
     minComp?: number | null;
     maxComp?: number | null;
     platforms?: string[];
+  };
+  tasks: {
+    discovery?: {
+      creatorTasks?: campaignTask[];
+      brandTasks?: campaignTask[];
+    };
+    negotiations?: {
+      creatorTasks?: campaignTask[];
+      brandTasks?: campaignTask[];
+    };
+    contentProduction?: {
+      creatorTasks?: campaignTask[];
+      brandTasks?: campaignTask[];
+    };
+    liveCampaign?: {
+      creatorTasks?: campaignTask[];
+      brandTasks?: campaignTask[];
+    };
   };
 }
 
@@ -59,6 +84,24 @@ export const useCreateCampaignStore = create<CampaignState>()(
           maxComp: null,
           platforms: [],
         },
+        tasks: {
+          discovery: {
+            creatorTasks: [],
+            brandTasks: [],
+          },
+          negotiations: {
+            creatorTasks: [],
+            brandTasks: [],
+          },
+          contentProduction: {
+            creatorTasks: [],
+            brandTasks: [],
+          },
+          liveCampaign: {
+            creatorTasks: [],
+            brandTasks: [],
+          },
+        }
       },
       coverPhoto: null,
       setCoverPhoto: (photo) => {
