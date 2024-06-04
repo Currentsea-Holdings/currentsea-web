@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { HiStar } from 'react-icons/hi';
+import { useMediaQuery } from 'react-responsive';
 
 import { userProfileApi } from '@/api/userProfileApi';
 import { InstagramIcon } from '@/assets/icons';
@@ -38,6 +38,8 @@ export const ViewProfile = ({ userProfile }: ViewProfileFormProps) => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [image, setImage] = useState<string | undefined>();
 
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
   useEffect(() => {
     if (userProfile.profilePicturePath) {
       setImagePreviewUrl(`${BASE_API_URL}/${userProfile.profilePicturePath}`);
@@ -63,7 +65,7 @@ export const ViewProfile = ({ userProfile }: ViewProfileFormProps) => {
     padding: '0px 6px',
   };
   return (
-    <div className=" overflow-hidden text-center sm:rounded-lg">
+    <div className="flex flex-col items-center overflow-hidden text-center sm:rounded-lg">
       <img
         className="mx-auto h-36 w-36 rounded-full"
         src={image}
@@ -85,16 +87,17 @@ export const ViewProfile = ({ userProfile }: ViewProfileFormProps) => {
           </span>
         </div>
       </div>
-      <div className="mx-auto max-w-xl px-4 text-sm">
+      <div className="max-w-xl text-sm">
         <p>{shortBio}</p>
 
         {userType === 'Creator' ? (
-          <div className="flex w-full justify-center space-x-8 px-20 py-4">
+          <div className="flex w-full justify-center space-x-2 py-4 md:space-x-8">
             {industries?.map(({ id, name }) => (
               <CSButton
                 key={id}
                 style={buttonStyle}
                 className="rounded-half bg-primary-light-20 font-semibold text-white"
+                size={isTabletOrMobile ? 'xs' : 'md'}
               >
                 {name}
               </CSButton>
@@ -148,28 +151,28 @@ export const ViewProfile = ({ userProfile }: ViewProfileFormProps) => {
 
             {/* get dynamic values for these fields */}
 
-            <div className="flex flex-col items-start justify-center p-4">
-                <div className="flex items-center space-x-2">
-                  <InstagramIcon className="h-6 w-6" />
-                  <div className="mr-4">
-                    <span className="mr-12 font-semibold text-blue-600">@mayathompson</span>
+            {/* <div className="flex flex-col items-start justify-center p-4">
+              <div className="flex items-center space-x-2">
+                <InstagramIcon className="h-6 w-6" />
+                <div className="mr-4">
+                  <span className="mr-12 font-semibold text-blue-600">@mayathompson</span>
+                </div>
+                <div className="mt-2 flex space-x-20">
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-gray-600">Post</div>
+                    <div className="text-md font-bold text-gray-800">$750</div>{' '}
                   </div>
-                  <div className="mt-2 flex space-x-20">
-                    <div className="text-center">
-                      <div className="text-sm font-semibold text-gray-600">Post</div>
-                      <div className="text-md font-bold text-gray-800">$750</div>{' '}
-                    </div>
-                    <div className="text-center">
-                      <div className="text-sm font-semibold text-gray-600">Story</div>
-                      <div className="text-md font-bold text-gray-800">$400</div>{' '}
-                    </div>
-                    <div className="text-center">
-                      <div className="text-sm font-semibold text-gray-600">Reel</div>
-                      <div className="text-md font-bold text-gray-800">$650</div>{' '}
-                    </div>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-gray-600">Story</div>
+                    <div className="text-md font-bold text-gray-800">$400</div>{' '}
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-gray-600">Reel</div>
+                    <div className="text-md font-bold text-gray-800">$650</div>{' '}
                   </div>
                 </div>
               </div>
+            </div> */}
             {filteredRates.length > 0 && (
               <div className="flex items-center justify-start space-x-2 p-4">
                 {/* <InstagramIcon className="h-6 w-6" /> */}

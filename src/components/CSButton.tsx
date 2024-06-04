@@ -50,7 +50,7 @@ const FlowbiteButton = ({
     spinnerSlot: `${buttonTheme.spinnerSlot} relative h-full`,
     inner: {
       ...buttonTheme.inner,
-      base: `${buttonTheme.inner?.base} max-h-9`,
+      base: `${buttonTheme.inner?.base}`,
       isProcessingPadding: { ...buttonTheme.inner?.isProcessingPadding, md: 'p-2' },
     },
     spinnerLeftPosition: { ...buttonTheme.spinnerLeftPosition, md: 'left-0' },
@@ -65,7 +65,7 @@ const FlowbiteButton = ({
       theme={componentTheme}
       color="primary"
       className={classNames(
-        'rounded text-sm font-medium text-white outline-none focus:outline-none enabled:hover:opacity-90',
+        'items-center rounded text-sm font-medium text-white outline-none focus:outline-none enabled:hover:opacity-90',
         { 'border border-primary bg-transparent': outline },
         className,
       )}
