@@ -76,7 +76,7 @@ export const ProfileView = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-20">
+      <div className="lg:p-20">
         <div className="mb-20 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">{title}</h1>
           <div className="flex">{buttons}</div>
