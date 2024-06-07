@@ -22,7 +22,9 @@
 }
 
 :root {
+  /* colors based on Figma design */
   --primary-color: #2b74e7; /* Default primary color */
+  --primary-color-800: #1E429F;
   --primary-light-color-10: #9bd4ee;
   --primary-light-color-20: #25a7e3;
   --primary-dark-color-10: #1a4a99;

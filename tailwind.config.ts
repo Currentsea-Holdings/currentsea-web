@@ -13,14 +13,17 @@ const config: Config = {
         montserrat: ['Montserrat'],
       },
       colors: {
-        primary: 'var(--primary-color)',
-        'primary-light': {
-          10: 'var(--primary-light-color-10)',
-          20: 'var(--primary-light-color-20)',
-        },
-        'primary-dark': {
-          10: 'var(--primary-dark-color-10)',
-          20: 'var(--primary-dark-color-20)',
+        primary: {
+          DEFAULT: 'var(--primary-color)',
+          800: 'var(--primary-color-800)',
+          light: {
+            10: 'var(--primary-light-color-10)',
+            20: 'var(--primary-light-color-20)',
+          },
+          dark: {
+            10: 'var(--primary-dark-color-10)',
+            20: 'var(--primary-dark-color-20)',
+          },
         },
         offwhite: 'var(--offwhite-color)',
         white: 'var(--white-color)',

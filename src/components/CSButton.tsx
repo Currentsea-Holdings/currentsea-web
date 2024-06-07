@@ -1,14 +1,13 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
-import type { ButtonSizes, CustomFlowbiteTheme } from 'flowbite-react';
-import { getTheme, Button } from 'flowbite-react';
-import { CSSpinner } from '@/components/CSSpinner';
+import type { ButtonSizes, CustomFlowbiteTheme, FlowbiteColors } from 'flowbite-react';
 import classNames from 'classnames';
+import { Button, getTheme } from 'flowbite-react';
 
-type PrimaryColors = 'primary' | 'primary-light-10' | 'primary-light-20';
+import { CSSpinner } from '@/components/CSSpinner';
 
 export type CSButtonProps<T extends ElementType = 'button'> = {
   isProcessing?: boolean;
-  color?: PrimaryColors;
+  color?: FlowbiteColors | string;
   disabled?: boolean;
   className?: string;
   children?: ReactNode;
@@ -22,7 +21,7 @@ export const CSButton = (props: CSButtonProps) => {
     <>
       <FlowbiteButton
         isProcessing={isProcessing}
-        color={color as PrimaryColors}
+        color={color}
         {...otherProps}
       >
         {isProcessing ? null : children}
@@ -40,32 +39,32 @@ const FlowbiteButton = ({
   children,
   ...props
 }: CSButtonProps) => {
-  const buttonTheme: CustomFlowbiteTheme['button'] = getTheme().button;
-
-  const componentTheme: CustomFlowbiteTheme['button'] = {
-    ...buttonTheme,
-    disabled: `${buttonTheme.disabled} opacity-100 !bg-gray-30 !text-white`,
-    base: `${buttonTheme.base} !hover:bg-${color}`,
-    label: `${buttonTheme.label} bg-transparent`,
-    spinnerSlot: `${buttonTheme.spinnerSlot} relative h-full`,
-    inner: {
-      ...buttonTheme.inner,
-      base: `${buttonTheme.inner?.base}`,
-      isProcessingPadding: { ...buttonTheme.inner?.isProcessingPadding, md: 'p-2' },
+  const buttonTheme: CustomFlowbiteTheme['button'] = {
+    ...getTheme().button,
+    color: {
+      ...getTheme().button.color,
+      primary: `bg-primary text-white`,
     },
-    spinnerLeftPosition: { ...buttonTheme.spinnerLeftPosition, md: 'left-0' },
+    disabled: `${getTheme().button.disabled} opacity-100 !bg-gray-30 !text-white`,
+    base: `${getTheme().button.base} !hover:bg-${color} rounded-lg`,
+    label: `${getTheme().button.label} bg-transparent`,
+    spinnerSlot: `${getTheme().button.spinnerSlot} relative h-full`,
+    inner: {
+      base: getTheme().button.inner.base,
+      isProcessingPadding: { ...getTheme().button.inner.isProcessingPadding, md: 'p-2' },
+    },
+    spinnerLeftPosition: { ...getTheme().button.spinnerLeftPosition, md: 'left-0' },
     size: {
-      ...buttonTheme.size,
       lg: 'px-5 text-lg',
     },
   };
 
   return (
     <Button
-      theme={componentTheme}
-      color="primary"
+      theme={buttonTheme}
+      color={color}
       className={classNames(
-        'items-center rounded text-sm font-medium text-white outline-none focus:outline-none enabled:hover:opacity-90',
+        'items-center text-sm font-medium text-white outline-none focus:outline-none enabled:hover:opacity-90',
         { 'border border-primary bg-transparent': outline },
         className,
       )}

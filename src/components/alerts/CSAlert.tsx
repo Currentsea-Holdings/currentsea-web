@@ -1,9 +1,13 @@
-import { Alert, Button } from 'flowbite-react';
+import type { CustomFlowbiteTheme } from 'flowbite-react';
+import { Alert, getTheme } from 'flowbite-react';
 import { CheckCircle, ExclamationCircle } from 'flowbite-react-icons/solid';
-import { useState, type ComponentType } from 'react';
+import type { ComponentType } from 'react';
+import { useState } from 'react';
+
+import { CSButton } from '../CSButton';
 
 interface CSAlertProps {
-  type: 'success' | 'failure' | 'warning' | 'info';
+  color: 'success' | 'failure' | 'warning' | 'info' | 'gray' | 'primary';
   title: string;
   message?: string;
   buttonText?: string;
@@ -12,7 +16,7 @@ interface CSAlertProps {
 }
 
 export const CSAlert = ({
-  type = 'success',
+  color = 'success',
   title,
   message,
   buttonText,
@@ -27,19 +31,35 @@ export const CSAlert = ({
     setIsVisible(false);
   };
 
-  const icon = type === 'success' ? CheckCircle : ExclamationCircle;
+  const icon = color === 'success' ? CheckCircle : ExclamationCircle;
+
+  const alertTheme: CustomFlowbiteTheme['alert'] = {
+    closeButton: {
+      ...getTheme().alert.closeButton,
+      color: {
+        ...getTheme().alert.closeButton.color,
+        primary: `bg-transparent text-primary-800 hover:bg-blue-200 focus:ring-blue-400 dark:bg-blue-200 dark:text-blue-600 dark:hover:bg-blue-300`,
+      },
+    },
+    color: {
+      ...getTheme().alert.color,
+      primary: `${getTheme().alert.color.blue} text-primary-800`,
+    },
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-gray-800 bg-opacity-50"></div>
       <div className="relative z-10">
         <Alert
-          color={type}
+          theme={alertTheme}
+          className="max-w-[632px]"
+          color={color}
           icon={icon}
           onDismiss={handleClose}
           additionalContent={
             <BodyContent
-              type={type}
+              color={color}
               message={message}
               buttonText={buttonText}
               buttonIcon={buttonIcon}
@@ -60,7 +80,7 @@ interface BodyContentProps extends Omit<CSAlertProps, 'title'> {
 }
 
 const BodyContent = ({
-  type,
+  color,
   message,
   buttonText,
   buttonIcon: ButtonIcon,
@@ -72,18 +92,20 @@ const BodyContent = ({
     onClose();
   };
 
+  const buttonColor = color === 'gray' ? 'dark' : color;
+
   return (
     <>
       {message && <div className="mb-4 mt-2 text-lg">{message}</div>}
       <div className="flex justify-center">
         {buttonText && (
-          <Button
-            color={type}
+          <CSButton
+            color={buttonColor}
             onClick={handleClick}
           >
             {ButtonIcon && <ButtonIcon className="mr-2 h-full w-4" />}
             {buttonText}
-          </Button>
+          </CSButton>
         )}
       </div>
     </>
