@@ -1,23 +1,23 @@
 import { Modal } from 'flowbite-react';
-import { useState, useEffect } from 'react';
-import CreatorInfoForm from './BrandInfoForm';
+import { useState } from 'react';
 
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { CSAlert } from '@/components/alerts/CSAlert';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import BrandProfileCreationModal from './BrandProfileCreationModal';
+
+import BrandCompletetionModal from './BrandCompletionModal';
 import BrandInfoForm from './BrandInfoForm';
 import BrandShowcase from './BrandShowcase';
-import BrandCompletetionModal from './BrandCompletionModal';
 
 const steps = [
-  { title: 'One more thing...', component: BrandProfileCreationModal },
   { title: 'Tell us a little more about your brand...', component: BrandInfoForm },
   { title: 'Add content that best represents your brand...', component: BrandShowcase },
-  { title: 'You\'re read to go!', component: BrandCompletetionModal },
+  { title: "You're read to go!", component: BrandCompletetionModal },
 ];
 
 const BrandProfileCreationSteps = () => {
-  const { user, currentStep, nextStep, completeProfile, profileCompleted } = useUserProfile();
+  const { currentStep, completeProfile, profileCompleted } = useUserProfile();
+
+  const [showModal, setShowModal] = useState(false);
 
   if (profileCompleted) {
     return null;
@@ -26,15 +26,26 @@ const BrandProfileCreationSteps = () => {
   const CurrentForm = steps[currentStep].component;
 
   return (
-    <Modal
-      show={true}
-      onClose={completeProfile}
-    >
-      <Modal.Header>{steps[currentStep].title}</Modal.Header>
-      <Modal.Body>
-        <CurrentForm />
-      </Modal.Body>
-    </Modal>
+    <>
+      <CSAlert
+        color="primary"
+        title={'One more thing...'}
+        message="Before you get started, you need a profile. Stand out from other brands with an epic profile. Get started now!"
+        buttonText="Create profile"
+        onButtonClick={() => {
+          setShowModal(true);
+        }}
+      />
+      <Modal
+        show={showModal}
+        onClose={completeProfile}
+      >
+        <Modal.Header>{steps[currentStep].title}</Modal.Header>
+        <Modal.Body>
+          <CurrentForm />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 

@@ -1,19 +1,16 @@
 import { Modal } from 'flowbite-react';
-import { useState, useEffect } from 'react';
-import CreatorInfoForm from './AgencyInfoForm';
+import { useState } from 'react';
 
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { CSAlert } from '@/components/alerts/CSAlert';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import AgencyProfileCreationModal from './AgencyProfileCreationModal';
-import AgencyInfoForm from './AgencyInfoForm';
-import AgencyShowcase from './AgencyShowcase';
-import AgencyCompletetionModal from './AgencySavedProgressModal';
-import InviteClientsForm from './InviteClientsForm';
-import AgencySavedProgressModal from './AgencySavedProgressModal';
+
 import AgencyEmailInviteConfirmation from './AgencyEmailInviteConfirmation';
+import AgencyInfoForm from './AgencyInfoForm';
+import AgencySavedProgressModal from './AgencySavedProgressModal';
+import AgencyShowcase from './AgencyShowcase';
+import InviteClientsForm from './InviteClientsForm';
 
 const steps = [
-  { title: 'One more thing...', component: AgencyProfileCreationModal },
   { title: 'Tell us a little more about your agency...', component: AgencyInfoForm },
   { title: 'Amplify some of your clients work...', component: AgencyShowcase },
   { title: "You're read to go!", component: AgencySavedProgressModal },
@@ -22,7 +19,9 @@ const steps = [
 ];
 
 const AgencyProfileCreationSteps = () => {
-  const { user, currentStep, nextStep, completeProfile, profileCompleted } = useUserProfile();
+  const { currentStep, completeProfile, profileCompleted } = useUserProfile();
+
+  const [showModal, setShowModal] = useState(false);
 
   if (profileCompleted) {
     return null;
@@ -31,15 +30,26 @@ const AgencyProfileCreationSteps = () => {
   const CurrentForm = steps[currentStep].component;
 
   return (
-    <Modal
-      show={true}
-      onClose={completeProfile}
-    >
-      <Modal.Header>{steps[currentStep].title}</Modal.Header>
-      <Modal.Body>
-        <CurrentForm />
-      </Modal.Body>
-    </Modal>
+    <>
+      <CSAlert
+        color="gray"
+        title={'One more thing...'}
+        message="Before you get started, you need a profile. Get started now!"
+        buttonText="Create profile"
+        onButtonClick={() => {
+          setShowModal(true);
+        }}
+      />
+      <Modal
+        show={showModal}
+        onClose={completeProfile}
+      >
+        <Modal.Header>{steps[currentStep].title}</Modal.Header>
+        <Modal.Body>
+          <CurrentForm />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 
