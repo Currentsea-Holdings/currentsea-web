@@ -7,6 +7,8 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import BrandCompletetionModal from './BrandCompletionModal';
 import BrandInfoForm from './BrandInfoForm';
 import BrandShowcase from './BrandShowcase';
+import { ProgressBar } from '../ProgressBar';
+import { InfoTooltip } from '../InfoTooltip';
 
 const steps = [
   { title: 'Tell us a little more about your brand...', component: BrandInfoForm },
@@ -40,8 +42,15 @@ const BrandProfileCreationSteps = () => {
         show={showModal}
         onClose={completeProfile}
       >
-        <Modal.Header>{steps[currentStep].title}</Modal.Header>
-        <Modal.Body>
+        <Modal.Header></Modal.Header>
+        <ProgressBar
+          currentStep={currentStep}
+          totalSteps={steps.length}
+        />
+        <Modal.Body className="flex flex-col md:min-h-[700px]">
+          <span className="flex">
+            <h1 className="mb-6 text-3xl font-semibold text-dark">{steps[currentStep].title}</h1>
+          </span>
           <CurrentForm />
         </Modal.Body>
       </Modal>

@@ -183,27 +183,27 @@ const CreatorBaseRateForm = () => {
   };
 
   return (
-    <Modal
-      show={true}
-      onClose={closeModal}
-      className="border-none"
-    >
-      <Modal.Header className="border-none">
-        <div className="flex items-center justify-between">
-          Set your base rates...
-          <Tooltip
-            content="These prices are a starting point. You will have the opportunity to negotiate prices with brands"
-            style="light"
-          >
-            <InfoCircle
-              size={21}
-              fill="#2b4498"
-              className="text-white"
-            />
-          </Tooltip>
-        </div>
-      </Modal.Header>
-      <Modal.Body className="modal-body-custom border-none text-custom-blue">
+    // <Modal
+    //   show={true}
+    //   onClose={closeModal}
+    //   className="border-none"
+    // >
+    //   <Modal.Header className="border-none">
+    //     <div className="flex items-center justify-between">
+    //       Set your base rates...
+    //       <Tooltip
+    //         content="These prices are a starting point. You will have the opportunity to negotiate prices with brands"
+    //         style="light"
+    //       >
+    //         <InfoCircle
+    //           size={21}
+    //           fill="#2b4498"
+    //           className="text-white"
+    //         />
+    //       </Tooltip>
+    //     </div>
+    //   </Modal.Header>
+    //   <Modal.Body className="modal-body-custom border-none text-custom-blue">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-6"
@@ -261,8 +261,8 @@ const CreatorBaseRateForm = () => {
             </>
           )}
         </form>
-      </Modal.Body>
-    </Modal>
+    //   </Modal.Body>
+    // </Modal>
   );
 };
 export default CreatorBaseRateForm;
