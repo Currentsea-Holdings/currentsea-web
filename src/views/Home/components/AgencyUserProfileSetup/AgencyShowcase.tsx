@@ -169,17 +169,18 @@ const AgencyShowcase = () => {
   };
 
   return (
-    <Modal
-      show={true}
-      onClose={closeModal}
-      className="border-none"
-    >
-      <Modal.Header className="border-none">
-        <div className="flex items-center justify-between">Amplify some of your clients work...</div>
-      </Modal.Header>
-      <Modal.Body
-        className="modal-body-custom border-none text-custom-blue"
-      >
+    // <Modal
+    //   show={true}
+    //   onClose={closeModal}
+    //   className="border-none"
+    // >
+    //   <Modal.Header className="border-none">
+    //     <div className="flex items-center justify-between">Amplify some of your clients work...</div>
+    //   </Modal.Header>
+    //   <Modal.Body
+    //     className="modal-body-custom border-none text-custom-blue"
+    //   >
+      <span className="text-custom-blue">
         <div className="highlights-header">
           <b>Highlights</b>
         </div>
@@ -324,8 +325,9 @@ const AgencyShowcase = () => {
             </button>
           </div>
         )}
-      </Modal.Body>
-    </Modal>
+        </span>
+    //   </Modal.Body>
+    // </Modal>
   );
 };
 

@@ -1,4 +1,5 @@
-import { Modal } from 'flowbite-react';
+import type { CustomFlowbiteTheme } from 'flowbite-react';
+import { Modal, Progress, getTheme } from 'flowbite-react';
 import { useState } from 'react';
 
 import { CSAlert } from '@/components/alerts/CSAlert';
@@ -9,9 +10,11 @@ import AgencyInfoForm from './AgencyInfoForm';
 import AgencySavedProgressModal from './AgencySavedProgressModal';
 import AgencyShowcase from './AgencyShowcase';
 import InviteClientsForm from './InviteClientsForm';
+import { ProgressBar } from '../ProgressBar';
+import { InfoTooltip } from '../InfoTooltip';
 
 const steps = [
-  { title: 'Tell us a little more about your agency...', component: AgencyInfoForm },
+  { title: 'Tell us a little more about yourself...', component: AgencyInfoForm },
   { title: 'Amplify some of your clients work...', component: AgencyShowcase },
   { title: "You're read to go!", component: AgencySavedProgressModal },
   { title: 'Invite Clients', component: InviteClientsForm },
@@ -29,6 +32,12 @@ const AgencyProfileCreationSteps = () => {
 
   const CurrentForm = steps[currentStep].component;
 
+  const progressTheme: CustomFlowbiteTheme['progress'] = {
+    ...getTheme().progress,
+    base: `${getTheme().progress.base} rounded-none`,
+    bar: `${getTheme().progress.bar} rounded-none`,
+  };
+
   return (
     <>
       <CSAlert
@@ -44,8 +53,15 @@ const AgencyProfileCreationSteps = () => {
         show={showModal}
         onClose={completeProfile}
       >
-        <Modal.Header>{steps[currentStep].title}</Modal.Header>
-        <Modal.Body>
+        <Modal.Header></Modal.Header>
+        <ProgressBar
+          currentStep={currentStep}
+          totalSteps={steps.length}
+        />
+        <Modal.Body className="flex flex-col md:min-h-[700px]">
+          <span className="flex">
+            <h1 className="mb-6 text-3xl font-semibold text-dark">{steps[currentStep].title}</h1>
+          </span>
           <CurrentForm />
         </Modal.Body>
       </Modal>
