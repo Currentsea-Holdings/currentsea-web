@@ -1,9 +1,7 @@
 import { Textarea, Tooltip } from 'flowbite-react';
-import { InfoCircle } from 'flowbite-react-icons/outline';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { CSButton } from '@/components';
-import { IndustryDropdown } from '@/components/inputs/IndustryDropdown';
 import { useManageUserProfile } from '@/hooks/useManageUserProfile';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useAuthStore } from '@/stores/authStore';
@@ -70,39 +68,6 @@ export const AgencyInfoForm = () => {
         {errors.shortBio && <p className="text-red-500">{errors.shortBio.message}</p>}
 
         <div className="flex flex-col space-y-4">
-          <div className="space-y-4">
-            <label
-              htmlFor="industryIds"
-              className="flex text-sm font-medium text-gray-700"
-            >
-              Select your industry
-              <Tooltip
-                content="Select the industry that best represents the content you create."
-                style="light"
-              >
-                <InfoCircle
-                  size={20}
-                  fill="#cfcfcf"
-                  className="text-white"
-                />
-              </Tooltip>
-            </label>
-            <Controller
-              name="industryIds"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <IndustryDropdown
-                  selectedIndustryIds={value}
-                  onSelectIndustryId={(industryId) => {
-                    onChange([...value, industryId]);
-                  }}
-                  onRemoveIndustryId={(industryId) => {
-                    onChange(value.filter((id) => id !== industryId));
-                  }}
-                />
-              )}
-            />
-          </div>
           <div className="space-y-4">
             <label
               htmlFor="website"
