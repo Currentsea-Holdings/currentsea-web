@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom';
 import { updateUserProfile } from '@/services/userProfileService';
 import { CSButton } from '@/components';
 import '@/styles/rate-form.styles.css';
+import { SocialMediaIcon } from '@/components/SocialMediaIcon';
+import { socialMediaPlatforms } from '@/utils/socialMediaIconsCircle';
 
 type PlatformFieldNames =
   | 'Video'
@@ -154,7 +156,7 @@ const CreatorBaseRateForm = () => {
         <div className="input-prefix-wrapper">
           <span
             className="input-prefix"
-            style={{ visibility: inputValue ? 'hidden' : 'visible' }}
+            // style={{ visibility: inputValue ? 'hidden' : 'visible' }}
           >
             $
           </span>
@@ -215,13 +217,15 @@ const CreatorBaseRateForm = () => {
             {socialLogoArray.map((platform) => {
               if (connections[platform.id]) {
                 const inputsToRender = inputTypes[platform.id];
+                const socialMediaPlatform = socialMediaPlatforms.find((p) => p.name === platform.name);
                 return (
                   <div
                     key={platform.id}
                     className="platform-section"
                   >
                     <div className="platform-header">
-                      <platform.Icon className="platform-icon" />
+                      {/* <platform.Icon className="platform-icon" /> */}
+                      {socialMediaPlatform && <SocialMediaIcon platform={socialMediaPlatform} isSelected={true} /> }
                       <span className="platform-name text-primary">{platform.name}</span>
                     </div>
                     <div className="platform-inputs">
