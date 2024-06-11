@@ -160,7 +160,7 @@ const CreatorBaseRateForm = () => {
           </span>
           <input
             type="number"
-            className="input-field input-with-prefix"
+            className="input-field input-with-prefix text-dark"
             style={{ width: '150px', borderRadius: '12px', paddingLeft: '20px' }}
             {...register(fieldName)}
             onChange={(e) => {
@@ -204,13 +204,15 @@ const CreatorBaseRateForm = () => {
     //     </div>
     //   </Modal.Header>
     //   <Modal.Body className="modal-body-custom border-none text-custom-blue">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6"
-        >
-          {baseRateError && <p className="text-red-500">{baseRateError}</p>}
-          {Object.entries(connections).some(([_, connected]) => connected) ? (
-            socialLogoArray.map((platform) => {
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-1 flex-grow flex-col"
+    >
+      {baseRateError && <p className="text-red-500">{baseRateError}</p>}
+      {Object.entries(connections).some(([_, connected]) => connected) ? (
+        <>
+          <div className="space-y-12">
+            {socialLogoArray.map((platform) => {
               if (connections[platform.id]) {
                 const inputsToRender = inputTypes[platform.id];
                 return (
@@ -220,47 +222,47 @@ const CreatorBaseRateForm = () => {
                   >
                     <div className="platform-header">
                       <platform.Icon className="platform-icon" />
-                      <span className="platform-name">{platform.name}</span>
+                      <span className="platform-name text-primary">{platform.name}</span>
                     </div>
                     <div className="platform-inputs">
                       {inputsToRender.map((inputType) =>
                         renderInputForPlatform(platform.id, inputType, register, watch),
                       )}
                     </div>
-                    <CSButton
-                      type="submit"
-                      disabled={!isValid || isPending}
-                      isProcessing={isPending}
-                      className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-                    >
-                      Save Rates
-                    </CSButton>
                   </div>
                 );
               }
               return null;
-            })
-          ) : (
-            <>
-              <CSButton
-                onClick={goToConnectSocialMedia}
-                className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-              >
-                Connect Social Media
-              </CSButton>
-              <div
-                style={{ width: '100%', textAlign: 'center', marginTop: '10px', cursor: 'pointer' }}
-              >
-                <button
-                  onClick={nextStep}
-                  style={{ fontSize: '12px', background: 'none' }}
-                >
-                  Skip for now
-                </button>
-              </div>
-            </>
-          )}
-        </form>
+            })}
+          </div>
+          <CSButton
+            type="submit"
+            disabled={!isValid || isPending}
+            isProcessing={isPending}
+            className="mt-auto w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          >
+            Next: highlights
+          </CSButton>
+        </>
+      ) : (
+        <>
+          <CSButton
+            onClick={goToConnectSocialMedia}
+            className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          >
+            Connect Social Media
+          </CSButton>
+          <div style={{ width: '100%', textAlign: 'center', marginTop: '10px', cursor: 'pointer' }}>
+            <button
+              onClick={nextStep}
+              style={{ fontSize: '12px', background: 'none' }}
+            >
+              Skip for now
+            </button>
+          </div>
+        </>
+      )}
+    </form>
     //   </Modal.Body>
     // </Modal>
   );
