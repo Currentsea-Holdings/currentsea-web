@@ -16,7 +16,7 @@ import { InfoTooltip } from '../InfoTooltip';
 const steps = [
   { title: 'Tell us a little more about yourself...', component: AgencyInfoForm },
   { title: 'Amplify some of your clients work...', component: AgencyShowcase },
-  { title: "You're read to go!", component: AgencySavedProgressModal },
+  { title: "You're ready to go!", component: AgencySavedProgressModal },
   { title: 'Invite Clients', component: InviteClientsForm },
   { title: 'Invites have been sent!', component: AgencyEmailInviteConfirmation },
 ];

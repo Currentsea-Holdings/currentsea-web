@@ -38,7 +38,7 @@ const BrandCompletetionModal = () => {
             className="text-custom-blue"
             style={{ fontWeight: '600' }}
           >
-            You&apos;re read to go!
+            You&apos;re ready to go!
           </p>
         </div>
       </Modal.Header>

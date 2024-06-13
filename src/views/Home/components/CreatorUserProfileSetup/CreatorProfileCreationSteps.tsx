@@ -21,7 +21,7 @@ const steps = [
     component: BaseRateForm,
   },
   { title: 'Showcase your best content...', component: Showcase },
-  { title: "You're read to go!", component: CompletetionModal },
+  { title: "You're ready to go!", component: CompletetionModal },
 ];
 
 const CreatorProfileCreationSteps = () => {
@@ -46,30 +46,34 @@ const CreatorProfileCreationSteps = () => {
           setShowModal(true);
         }}
       />
-      <Modal
-        show={showModal}
-        onClose={completeProfile}
-      >
-        <Modal.Header></Modal.Header>
-        <ProgressBar
-          currentStep={currentStep}
-          totalSteps={steps.length}
-        />
-        <Modal.Body className="flex flex-col md:min-h-[700px]">
-          <span className="flex">
-            <h1 className="mb-6 text-3xl font-semibold text-dark">{steps[currentStep].title}</h1>
-            {steps[currentStep].tooltip && (
-              <InfoTooltip
-                content="These prices are a starting point. You will have the opportunity to negotiate prices with brands."
-                size={21}
-                placement="bottom"
-                className="ml-4"
-              />
-            )}
-          </span>
-          <CurrentForm />
-        </Modal.Body>
-      </Modal>
+      {currentStep + 1 < steps.length ? (
+        <Modal
+          show={showModal}
+          onClose={completeProfile}
+        >
+          <Modal.Header></Modal.Header>
+          <ProgressBar
+            currentStep={currentStep}
+            totalSteps={steps.length}
+          />
+          <Modal.Body className="flex flex-col md:max-h-[700px] md:min-h-[700px]">
+            <span className="flex">
+              <h1 className="mb-6 text-3xl font-semibold text-dark">{steps[currentStep].title}</h1>
+              {steps[currentStep].tooltip && (
+                <InfoTooltip
+                  content="These prices are a starting point. You will have the opportunity to negotiate prices with brands."
+                  size={21}
+                  placement="bottom"
+                  className="ml-4"
+                />
+              )}
+            </span>
+            <CurrentForm />
+          </Modal.Body>
+        </Modal>
+      ) : (
+        <CurrentForm />
+      )}
     </>
   );
 };

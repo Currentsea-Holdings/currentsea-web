@@ -48,8 +48,8 @@ const CreatorShowcase = () => {
     try {
       if (!userProfile || !user) throw new Error('User profile is not available.');
       const highlights = await userProfileApi.getShowCaseContent(userProfile.id);
-      const highlightMediaPaths = highlights.map((content) => content.mediaPath)
-      
+      const highlightMediaPaths = highlights.map((content) => content.mediaPath);
+
       setFilePreviews(highlightMediaPaths);
     } catch (error) {
       console.error('Error fetching user content:', error);
@@ -109,7 +109,7 @@ const CreatorShowcase = () => {
     onSuccess: () => {
       console.log('Profile updated successfully.');
       fetchShowcaseContent()
-      .then(() => {
+        .then(() => {
           setSelectedFiles([]);
           setSelectedFileNames([]);
           setUploadSuccess(true);
@@ -169,163 +169,159 @@ const CreatorShowcase = () => {
   };
 
   return (
-    <Modal
-      show={true}
-      onClose={closeModal}
-      className="border-none"
-    >
-      <Modal.Header className="border-none">
-        <div className="flex items-center justify-between">Showcase your best content...</div>
-      </Modal.Header>
-      <Modal.Body
-        className="modal-body-custom border-none text-custom-blue"
-        // style={{ height: '450px' }}
+    // <Modal
+    //   show={true}
+    //   onClose={closeModal}
+    //   className="border-none"
+    // >
+    //   <Modal.Header className="border-none">
+    //     <div className="flex items-center justify-between">Showcase your best content...</div>
+    //   </Modal.Header>
+    //   <Modal.Body
+    //     className="modal-body-custom border-none text-custom-blue"
+    //     // style={{ height: '450px' }}
+    //   >
+    <>
+    <span className="flex flex-1 flex-grow flex-col border-none text-custom-blue">
+      <div className="highlights-header">
+        <b>Highlights</b>
+      </div>
+      <div className="file-previews-container flex-grow overflow-y-auto empty:hidden">
+        {isDataLoading ? (
+          <div className="spinner-container">
+            <PuffLoader
+              color="#123abc"
+              loading={isDataLoading}
+              size={10}
+            />
+          </div>
+        ) : (
+          filePreviews.map((path, index) => {
+            const fileType = getFileType(path);
+            return (
+              <div
+                key={index}
+                className="file-preview-item"
+              >
+                {fileType === 'image' && (
+                  <img
+                    src={`${BASE_API_URL}${path}`}
+                    alt={`Content ${index}`}
+                  />
+                )}
+                {fileType === 'video' && (
+                  <video
+                    width="320"
+                    height="240"
+                    controls
+                  >
+                    <source
+                      src={`${BASE_API_URL}${path}`}
+                      type="video/mp4"
+                    />
+                    <source
+                      src={`${BASE_API_URL}${path}`}
+                      type="video/quicktime"
+                    />
+                    <track
+                      src="captions_en.vtt"
+                      kind="captions"
+                      label="English"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                )}
+                <button
+                  type="button"
+                  className="delete-button"
+                  onClick={() => deleteShowcaseContent(path)}
+                >
+                  <img
+                    id="trashcan-icon"
+                    src={trashcanIcon}
+                    alt="trash"
+                  />
+                </button>
+              </div>
+            );
+          })
+        )}
+      </div>
+      <form
+        onSubmit={onUpload}
+        className="flex flex-1 flex-grow flex-col"
       >
-        <div className="highlights-header">
-          <b>Highlights</b>
-        </div>
-        <div className="file-previews-container">
-          {isDataLoading ? (
-            <div className="spinner-container">
-              <PuffLoader
-                color="#123abc"
-                loading={isDataLoading}
-                size={10}
-              />
-            </div>
-          ) : (
-            filePreviews.map((path, index) => {
-              const fileType = getFileType(path);
-              return (
+        <div>
+          <div className="file-drop-area">
+            <Upload />
+            <span className="file-msg mt-2">
+              <b>Click to upload </b>or drag and drop <br></br>Max file Size: 30MB
+            </span>
+            <input
+              className="file-input"
+              type="file"
+              multiple
+              onChange={handleFileSelect}
+              accept="image/*, video/*"
+              // {...register('content')}
+            />
+            <div className="mt-2.5 flex w-full flex-col text-left">
+              {selectedFileNames.map((name, index) => (
                 <div
                   key={index}
-                  className="file-preview-item"
+                  className="z-0 mt-1 flex justify-between rounded bg-gray-100 p-1.5 text-xs"
                 >
-                  {fileType === 'image' && (
-                    <img
-                      src={`${BASE_API_URL}${path}`}
-                      alt={`Content ${index}`}
-                    />
-                  )}
-                  {fileType === 'video' && (
-                    <video
-                      width="320"
-                      height="240"
-                      controls
-                    >
-                      <source
-                        src={`${BASE_API_URL}${path}`}
-                        type="video/mp4"
-                      />
-                      <source
-                        src={`${BASE_API_URL}${path}`}
-                        type="video/quicktime"
-                      />
-                      <track
-                        src="captions_en.vtt"
-                        kind="captions"
-                        label="English"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
+                  {name}
                   <button
                     type="button"
-                    className="delete-button"
-                    onClick={() => deleteShowcaseContent(path)}
+                    onClick={() => {
+                      handleDeleteFileName(index);
+                    }}
                   >
-                    <img
-                      id="trashcan-icon"
-                      src={trashcanIcon}
-                      alt="trash"
-                    />
+                    Delete
                   </button>
                 </div>
-              );
-            })
-          )}
-        </div>
-        <form
-          onSubmit={onUpload}
-          className="space-y-6"
-        >
-          <div>
-            <div className="file-drop-area">
-              <Upload />
-              <span className="file-msg mt-2">
-                <b>Click to upload </b>or drag and drop <br></br>Max file Size: 30MB
-              </span>
-              <input
-                className="file-input"
-                type="file"
-                multiple
-                onChange={handleFileSelect}
-                accept="image/*, video/*"
-                // {...register('content')}
-              />
-              <div className="file-names">
-                {selectedFileNames.map((name, index) => (
-                  <div
-                    key={index}
-                    className="file-name-item"
-                  >
-                    {name}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        handleDeleteFileName(index);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
+            {selectedFiles.length > 0 && (
+              <div
+                className="z-0 flex w-full flex-col items-center justify-center"
+                role="presentation"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <CSButton
+                  type="submit"
+                  color="primary"
+                  disabled={!isValid || isPending}
+                  isProcessing={isPending}
+                  className="w-26 mt-4"
+                >
+                  Upload files
+                </CSButton>
+              </div>
+            )}
           </div>
-
-          {selectedFiles.length > 0 ? (
-            <CSButton
-              type="submit"
-              disabled={!isValid || isPending}
-              isProcessing={isPending}
-              className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
-              Upload
-            </CSButton>
-          ) : filePreviews.length > 0 ? (
-            <CSButton
-              onClick={nextStep}
-              disabled={!isValid || isPending}
-              isProcessing={isPending}
-              className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
-              Create Profile
-            </CSButton>
-          ) : (
-            <CSButton
-              disabled // You can decide what should happen if there are no files selected and no previews
-              className="w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
-              Select Files
-            </CSButton>
-          )}
-          <div style={{ width: '100%', textAlign: 'center', fontSize: '14px' }}>
-            {uploadError && <div style={{ color: 'red', marginBottom: '10px' }}>{uploadError}</div>}
-          </div>
-        </form>
-        {!uploadSuccess && (
-          <div style={{ width: '100%', textAlign: 'center', marginTop: '10px', cursor: 'pointer' }}>
-            <button
-              onClick={skip}
-              style={{ fontSize: '12px', background: 'none' }}
-            >
-              Skip for now
-            </button>
-          </div>
-        )}
-      </Modal.Body>
-    </Modal>
+        </div>
+        <div style={{ width: '100%', textAlign: 'center', fontSize: '14px' }}>
+          {uploadError && <div style={{ color: 'red', marginBottom: '10px' }}>{uploadError}</div>}
+        </div>
+      </form>
+      {/* </div> */}
+      {/* )} */}
+    </span>
+      <CSButton
+        onClick={nextStep}
+        disabled={!isValid || isPending}
+        isProcessing={isPending}
+        className="mt-auto w-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+      >
+        Create Profile
+      </CSButton>
+      </>
+    //   </Modal.Body>
+    // </Modal>
   );
 };
 
