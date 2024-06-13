@@ -13,7 +13,7 @@ import { InfoTooltip } from '../InfoTooltip';
 const steps = [
   { title: 'Tell us a little more about your brand...', component: BrandInfoForm },
   { title: 'Add content that best represents your brand...', component: BrandShowcase },
-  { title: "You're read to go!", component: BrandCompletetionModal },
+  { title: "You're ready to go!", component: BrandCompletetionModal },
 ];
 
 const BrandProfileCreationSteps = () => {

@@ -57,7 +57,7 @@
   color: #333;
 }
 
-.file-drop-area .file-names {
+/* .file-drop-area .file-names {
   margin-top: 10px;
   text-align: left;
   width: 100%;
@@ -75,7 +75,7 @@
   display: flex;
   z-index: 0;
   justify-content: space-between;
-}
+} */
 
 .file-previews-container {
   max-width: 100%;
